@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tienda - Inventario SXMY</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body class="min-h-screen bg-[#f5f7f8] text-[#111827]">
+<header class="store-header">
+    <nav class="store-nav">
+        <a class="brand-mark" href="index.html">
+            <span>SXMY</span>
+            <small>Electronicos</small>
+        </a>
+        <div class="store-search">
+            <input id="search" class="form-field" placeholder="Buscar producto o codigo">
+        </div>
+        <div class="store-actions">
+            <span id="adminBadge" class="admin-chip hidden">Admin</span>
+            <a id="loginLink" class="text-link" href="login.html">Login</a>
+            <div id="adminNav" class="hidden flex-wrap items-center gap-2">
+                <a class="nav-pill" href="admin.html#productos">Panel</a>
+                <button id="cartToggle" class="cart-toggle" type="button" title="Ver carrito">
+                    <span class="cart-icon" aria-hidden="true"></span>
+                    <span>Carrito</span>
+                    <strong id="cartBadge">0</strong>
+                </button>
+                <button id="logout" class="nav-pill" type="button">Salir</button>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<main class="store-main">
+    <section class="store-hero">
+        <div>
+            <p class="eyebrow">Catalogo</p>
+            <h1>Tienda</h1>
+            <p>Productos disponibles con precios, stock e imagenes claras.</p>
+        </div>
+        <span id="productCount" class="count-pill">0 productos</span>
+    </section>
+
+    <div id="statusBox" class="mb-4 rounded-lg border border-[#d8e0e4] bg-white px-4 py-3 text-sm text-[#52616b]">Cargando productos...</div>
+
+    <section id="grid" class="product-grid"></section>
+
+    <section id="adminCheckout" class="checkout-panel hidden">
+        <div class="checkout-head">
+            <div>
+                <p class="eyebrow">Admin</p>
+                <h2>Carrito</h2>
+                <p id="saleMode">La venta se guardara en Historial.</p>
+            </div>
+            <button id="checkoutClose" class="icon-button" type="button" title="Cerrar">X</button>
+        </div>
+        <div class="checkout-body">
+            <ul id="cartList" class="checkout-list"></ul>
+            <div>
+                <label class="text-sm font-semibold text-[#374151]" for="discountAmount">Descuento Bs</label>
+                <input id="discountAmount" type="number" min="0" step="0.01" class="form-field mt-1" placeholder="0">
+            </div>
+            <div class="checkout-total">
+                <span>Total</span>
+                <strong><span id="total">0</span> Bs</strong>
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+                <button id="openSaleModal" class="btn-primary px-4 py-2.5 text-sm" type="button">Nota de venta</button>
+                <button id="clearCart" class="btn-light px-4 py-2.5 text-sm" type="button">Cancelar orden</button>
+            </div>
+            <div class="grid grid-cols-1 gap-2">
+                <button id="printLastSale" class="btn-light px-4 py-2.5 text-sm" type="button" disabled>Imprimir</button>
+            </div>
+            <div id="saleStatus" class="sale-status">Carrito listo.</div>
+        </div>
+    </section>
+</main>
+
+<div id="saleModal" class="sale-modal hidden">
+    <section class="sale-modal-card">
+        <div class="sale-modal-head">
+            <div>
+                <p class="eyebrow">Datos opcionales</p>
+                <h2>Nota de venta</h2>
+            </div>
+            <button id="saleModalClose" class="icon-button" type="button" title="Cerrar">X</button>
+        </div>
+        <div class="sale-modal-body">
+            <div>
+                <label class="text-sm font-semibold text-[#374151]" for="customerName">Cliente</label>
+                <input id="customerName" class="form-field mt-1" placeholder="Sin nombre">
+            </div>
+            <div>
+                <label class="text-sm font-semibold text-[#374151]" for="customerPhone">Telefono</label>
+                <input id="customerPhone" class="form-field mt-1" placeholder="Opcional">
+            </div>
+            <div>
+                <label class="text-sm font-semibold text-[#374151]" for="customerAddress">Direccion</label>
+                <input id="customerAddress" class="form-field mt-1" placeholder="Opcional">
+            </div>
+            <div>
+                <label class="text-sm font-semibold text-[#374151]" for="paymentMethod">Pago</label>
+                <select id="paymentMethod" class="form-field mt-1">
+                    <option value="Efectivo">Efectivo</option>
+                    <option value="Transferencia">Transferencia</option>
+                </select>
+            </div>
+        </div>
+        <div class="sale-modal-actions">
+            <button id="saveSale" class="btn-primary px-4 py-2.5 text-sm" type="button">Crear nota</button>
+            <button id="cancelOrder" class="btn-light px-4 py-2.5 text-sm" type="button">Cancelar orden</button>
+        </div>
+    </section>
+</div>
+
+<section id="salePrintArea" class="print-note hidden"></section>
+
+<script type="module" src="js/catalog.js"></script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cajeros - Inventario SXMY</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body class="min-h-screen bg-[#f5f7f8] text-[#111827]">
+<div class="admin-layout">
+    <div id="sidebarOverlay" class="sidebar-overlay"></div>
+    <aside class="admin-sidebar">
+        <div class="sidebar-brand">
+            <div>
+                <a href="index.html">INVENTARIO SXMY</a>
+                <span>Panel admin</span>
+            </div>
+            <button id="sidebarClose" class="icon-button sidebar-close" type="button" title="Cerrar">X</button>
+        </div>
+        <nav class="sidebar-nav">
+            <a class="sidebar-link" href="admin.html#productos"><span>Productos</span><small>Inventario, precios y stock</small></a>
+            <a class="sidebar-link" href="admin.html#historial"><span>Historial</span><small>Notas de venta</small></a>
+            <a class="sidebar-link" href="admin.html#analisis"><span>Analisis</span><small>Mas vendidos por dia</small></a>
+            <a class="sidebar-link active" href="admin-users.html"><span>Cajeros</span><small>Usuarios y ventas</small></a>
+        </nav>
+        <div class="sidebar-actions">
+            <a class="sidebar-store" href="index.html">Tienda</a>
+            <button id="logout" class="sidebar-logout" type="button">Salir</button>
+        </div>
+    </aside>
+
+    <main class="admin-main">
+        <div class="admin-topbar">
+            <button id="sidebarToggle" class="hamburger-button" type="button" title="Menu"><span></span><span></span><span></span></button>
+            <div>
+                <p>Administracion</p>
+                <h1>Cajeros</h1>
+            </div>
+            <a class="btn-primary px-4 py-2.5 text-sm" href="index.html">Tienda</a>
+        </div>
+
+        <div id="statusBox" class="mb-4 rounded-lg border border-[#cfd9df] bg-white px-4 py-3 text-sm text-[#4b5563]">Cargando...</div>
+
+        <section class="grid gap-4 lg:grid-cols-[380px_1fr]">
+            <form id="cashierForm" class="rounded-lg border border-[#cfd9df] bg-white p-4 shadow-sm">
+                <h2 class="text-xl font-black text-[#111827]">Crear cajero</h2>
+                <p class="mt-1 text-sm text-[#65727c]">El cajero podra entrar, vender, agregar productos e imprimir notas.</p>
+                <div class="mt-4 space-y-3">
+                    <div>
+                        <label class="text-sm font-semibold text-[#374151]" for="cashierName">Nombre</label>
+                        <input id="cashierName" class="form-field mt-1" placeholder="Ej. Cajero 1" required>
+                    </div>
+                    <div>
+                        <label class="text-sm font-semibold text-[#374151]" for="cashierEmail">Correo</label>
+                        <input id="cashierEmail" type="email" class="form-field mt-1" placeholder="cajero@correo.com" required>
+                    </div>
+                    <div>
+                        <label class="text-sm font-semibold text-[#374151]" for="cashierPassword">Contrasena</label>
+                        <input id="cashierPassword" type="password" minlength="6" class="form-field mt-1" placeholder="Minimo 6 caracteres" required>
+                    </div>
+                    <button class="btn-primary w-full px-4 py-2.5 text-sm" type="submit">Crear usuario</button>
+                </div>
+            </form>
+
+            <section>
+                <div class="mb-3 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+                    <div>
+                        <h2 class="text-xl font-black text-[#111827]">Usuarios cajeros</h2>
+                        <p id="usersSummary" class="mt-1 text-sm text-[#65727c]">0 cajeros</p>
+                    </div>
+                    <input id="userSearch" class="form-field sm:w-80" placeholder="Buscar cajero o correo">
+                </div>
+                <div id="usersList" class="grid gap-3"></div>
+            </section>
+        </section>
+    </main>
+</div>
+
+<script type="module" src="js/admin-users.js"></script>
+</body>
+</html>

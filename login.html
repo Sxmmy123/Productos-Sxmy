@@ -1,0 +1,35 @@
+﻿<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Login - Inventario SXMY</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body class="min-h-screen bg-[#d8e1ea] text-[#0b0d10]">
+<main class="mx-auto flex min-h-screen max-w-md items-center px-4 py-10">
+    <section class="w-full rounded-lg border border-[#cbd5df] bg-white p-5 shadow-sm">
+        <a href="index.html" class="text-sm font-bold text-[#65717d] hover:text-[#0b0d10]">INVENTARIO SXMY</a>
+        <h1 class="mt-5 text-2xl font-black">Acceso</h1>
+        <p class="mt-1 text-sm text-[#65717d]">Ingresa con tu cuenta autorizada.</p>
+        <form id="loginForm" class="mt-5 space-y-3">
+            <div>
+                <label for="email" class="text-sm font-semibold text-[#374151]">Correo</label>
+                <input id="email" type="email" class="form-field mt-1" autocomplete="email" required>
+            </div>
+            <div>
+                <label for="password" class="text-sm font-semibold text-[#374151]">Contraseña</label>
+                <input id="password" type="password" class="form-field mt-1" autocomplete="current-password" required>
+            </div>
+            <button class="w-full rounded-lg bg-[#aab9c7] px-4 py-2.5 text-sm font-bold text-[#0b0d10] hover:bg-[#96a7b6]" type="submit">Entrar</button>
+            <div id="statusBox" class="rounded-lg border border-[#cbd5df] bg-[#f3f5f7] px-4 py-3 text-sm text-[#4b5563]">Listo.</div>
+        </form>
+    </section>
+</main>
+<script type="module" src="js/login.js"></script>
+</body>
+</html>
+
+
+
