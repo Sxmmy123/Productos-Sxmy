@@ -1,0 +1,77 @@
+codigo,nombre,precioCompra,precioVenta,stock,descripcion,imagenArchivo,imagenUrl,activo
+001,Plantilla de Trupan Ruleta,40,50,,Juego de ruleta educativa fabricada en trupan. Se utiliza en actividades didácticas y de aprendizaje.,,https://i.postimg.cc/sDFDBySJ/Whats-App-Image-2024-09-15-at-6-07-47-PM.jpg,true
+002,Plantilla de Trupan Ascensor,25,35,,Modelo de ascensor en trupan. Ideal para proyectos de ingeniería y demostración de poleas y contrapesos.,,https://i.postimg.cc/Df4wymWZ/Whats-App-Image-2024-09-15-at-6-07-47-PM-1.jpg,true
+003,Plantilla de Trupan Browser,25,35,,Mini proyecto de navegador hecho en trupan. Usado como ejemplo en prácticas de programación y diseño.,,https://i.postimg.cc/W1TNnn5F/Whats-App-Image-2024-09-15-at-6-07-46-PM.jpg,true
+004,Plantilla de Trupan Moto,25,35,,Mini moto en trupan. Se utiliza en proyectos mecánicos y demostraciones de movimiento.,,https://i.postimg.cc/3RVrFQqY/Whats-App-Image-2024-09-15-at-6-07-48-PM-1.jpg,true
+005,Plantilla de Trupan Wall-e,30,40,,Mini robot Wall-e en trupan. Usado en demostraciones de robótica básica.,,https://i.postimg.cc/7Y0khn3m/Captura-de-pantalla-2025-08-29-192513.png,true
+006,Plantilla de Trupan Caracol,20,30,,Modelo de caracol en trupan. Representa robótica de movimiento lento y didáctico.,,https://i.postimg.cc/j2fx8kVN/Whats-App-Image-2024-09-15-at-6-07-47-PM-2.jpg,true
+007,Plantilla de Trupan Tanque,25,35,,Mini tanque en trupan. Se utiliza en proyectos de tracción y movilidad.,,https://i.postimg.cc/bryrzVMD/Captura-de-pantalla-2025-08-29-192513.png,true
+008,Plantilla de Trupan Brazo hidráulico,45,55,,Brazo hidráulico en trupan. Muestra principios de hidráulica para levantar y mover objetos.,,https://i.postimg.cc/Zqf50dF9/Whats-App-Image-2024-09-15-at-8-36-08-PM.jpg,true
+009,Plantilla de Trupan Base Auto,10,25,,Base para auto en trupan. Usada como chasis para proyectos de vehículos pequeños.,,https://img.lazcdn.com/g/p/4bdf573d74b9beb992beb5590f06ae62.jpg_720x720q80.jpg,true
+010,Motorreductor,9.50,25,,"Motor con caja reductora. Convierte velocidad en fuerza, usado en robótica y pequeños vehículos.",,https://multimarcas.com.bo/storage/images/productos/4345-0-1719854122.jpg,true
+011,Motor DC 9V,6.5,14,,"Motor eléctrico de corriente continua 9V. Se usa en juguetes, prototipos y ventiladores caseros.",,https://5.imimg.com/data5/SELLER/Default/2023/7/329569507/ZR/KT/AS/9484237/3v-9v-dc-micro-toy-motor-500x500.jpg,true
+012,Porta pila AA (para 1 pila),2,5,,Porta pilas AA simple. Suministra energía a proyectos pequeños.,,https://sumador.com/cdn/shop/products/Portapilapara1bateria18650-min_2048x2048.jpg?v=1589128653,true
+013,Porta pila AA (para 2 pilas),3,6,,Porta pilas AA doble. Suministra energía a proyectos pequeños.,,https://i2celectronica.com/1800-large_default/porta-pilas-aa-2-pilas.jpg,true
+014,Llantas motorreductor,5,9,,Ruedas para motores TT. Usadas en robots móviles y carritos.,,https://marboltec.com/wp-content/uploads/2022/10/Rueda-para-Motor-01.jpg,true
+015,Porta pila 18650 (1 celda),8,13,,Soporte para batería 18650. Permite alimentar proyectos electrónicos de forma segura.,,https://marboltec.com/wp-content/uploads/2023/11/porta-pilas-18650-x1.jpg,true
+016,Cautine punta plata,70,85,,Cautín con punta de plata. Herramienta para soldadura en electrónica.,,https://i.postimg.cc/Vs7pWDnF/123.jpg,true
+017,Modulo de Carga TP 4056,13,30,,Módulo Cargador de batería litio TP4056 con protección USB-C,,https://naylampmechatronics.com/3970-superlarge_default/cargador-de-bateria-litio-tp4056-con-proteccion-usb-c.jpg,true
+018,Elice Grande para Motor,4,6,,HELICE PLASTICA 4 HOJAS 1.5,,https://velascostore.com/27978-large_default/helice-plastica-4-hojas-1-12-pulgadas.jpg,true
+019,INTERRUPTOR DE 6 PINES 6A 125VAC ON-OFF-ON,4.50,7,,Interruptor de palanca ON-OFF-ON de 6 pines. Usado para controlar circuitos eléctricos.,,https://ae01.alicdn.com/kf/HTB1jiZumS3PL1JjSZFxq6ABBVXai.jpg,true
+020,Rueda Loca,5,9,,Rueda loca para robots. Proporciona soporte y estabilidad en vehículos móviles.,,https://epyelectronica.com/wp-content/uploads/2020/09/Rueda-Loca.png,true
+021,Elice para Motor,3,5,,Hélice plástica para motor. Usada en proyectos de ventilación y pequeños drones.,,http://ecetronics.com/wp-content/uploads/2023/10/HELICE-DE-PLASTICO-4-ASPAS-DE-PLASTICO-PARA-MOTOR-DC-3V-6V-2.jpg,true
+022,Transistor BC547,1,3,,Transistor bipolar NPN BC547. Usado para amplificación y conmutación en circuitos electrónicos.,,https://tienda.sawers.com.bo/image/cache/catalog/00024-500x500.jpg,true
+023,Borneras de 2 pines,2,4,,Borneras eléctricas de 2 pines. Usadas para conexiones seguras en circuitos.,,https://mvelectronica.s3.us-east-2.amazonaws.com/productos/BOR2/60a3f5c1de45d.webp,true
+024,Sensor PIR HC-SR501,18,25,,Sensor de movimiento PIR HC-SR501. Detecta presencia humana para alarmas y automatización.,,https://www.prometec.net/wp-content/uploads/2015/09/HC-SR501.jpg,true
+025,Display 7 segmentos 1 dígito,3,6,,Display de 7 segmentos 1 digito. Usado para mostrar números en proyectos electrónicos.,,https://tienda.sawers.com.bo/image/cache/catalog/00138-500x500.jpg,true
+026,Display 7 segmentos 2 dígitos,6,12,,Display de 7 segmentos 2 dígitos. Ideal para relojes y contadores.,,https://tienda.sawers.com.bo/image/cache/catalog/01166-500x500.jpg,true
+027,Placa virgen - Baquelita 10x20,12,18,,Placa virgen 10x20 cm. Usada en diseño de circuitos electrónicos.,,https://cdtechnologia.net/27879-large_default/baquelita-virgen-para-prototipo-pcb-de-cobre.jpg,true
+028,Módulo Puente H L298N,18,25,,Driver de motores L298N. Permite controlar motores DC en dos direcciones.,,https://cdtechnologia.net/3065-large_default/modulo-puente-h-doble-l298n-2a.jpg,true
+029,Pila 18650 Caffini,20,28,,"Batería recargable 18650 marca Caffini. Se usa en linternas, robots y proyectos portátiles.",,https://epyelectronica.com/wp-content/uploads/Par-de-pilas-Recargable-CAFINI-4.2v-jpg.webp,true
+030,Porta pila 18650 (2 celdas),15,20,,Porta pilas para 2 celdas 18650. Da mayor autonomía a proyectos.,,https://patzitec.com/wp-content/uploads/2025/01/Porta-Bateria-2x18650_43.webp,true
+031,Interruptor doble pulsador,2.5,5,,Doble pulsador eléctrico. Usado en controles y encendido/apagado.,,https://sc04.alicdn.com/kf/H1d564933da63492ab296fc819138d64c3.jpg,true
+032,Resistencia Cualquier Valor,0.10,1,,Resistencias eléctricas. Limitan la corriente en circuitos electrónicos.,,https://eloctavobit.com/imagenes/2020/10/1685813560_f0e765e94453cb80e4bb.webp,true
+033,Arduino Uno + Cable,75,95,,Placa de desarrollo Arduino Uno. Usada para programación y control de proyectos educativos.,,https://epyelectronica.com/wp-content/uploads/2020/09/arduino-uno.png,true
+034,Arduino Nano + Cable,80,85,,Placa Arduino Nano. Versión compacta para proyectos con espacio limitado.,,https://d22fxaf9t8d39k.cloudfront.net/830a529ec7d4b2dcfc62ed5531d843d8f23e70213f35178f2a18bb8c73b5a1e8368513.png,true
+035,Shield Arduino Motor,40,75,,Shield motor para Arduino. Facilita el control,,https://i2celectronica.com/132-thickbox_default/motor-driver-l293d-shield-arduino.jpg,true
+036,Correa plana para motor,1.5,3,,Placa Arduino Mega. Ofrece más pines y memoria para proyectos complejos.,,https://reelec.es/58019-large_default/correa-para-motor-lavadora-universal-1280j5.jpg,true
+037,Modulo Bluetooth HC-05,45,55,,Módulo Bluetooth HC-05. Comunicación inalámbrica entre Arduino y celular.,,https://marboltec.com/wp-content/uploads/2022/05/Modulo-Bluetooth-HC-05-ME-con-Boton-03.jpg,true
+038,Modulo Rele 1 canal,11,20,,Relé de 1 canal. Permite controlar cargas de alto voltaje con bajo voltaje.,,https://cdn.awsli.com.br/600x700/468/468162/produto/19414308/26bd484baf.jpg,true
+039,Motor 9v con polea,9.5,17,,Motor DC 9V con polea. Usado en proyectos de robótica y mecánica.,,https://i.postimg.cc/G2Bf97Cq/953aa08f-e15c-43f2-8690-ea9ef2a8b86b.jpg,true
+040,Motor DC 3-6v,6.5,13,,Motor DC de 3 a 6V. Usado en robótica básica y juguetes.,,https://sumador.com/cdn/shop/files/Motor-DC_2048x2048.jpg?v=1755198866,true
+041,Protoboard 830,18,28,,Protoboard de 830 puntos. Sirve para prototipar circuitos sin soldadura.,,https://tienda.sawers.com.bo/image/cache/catalog/00732-500x500.jpg,true
+042,Protoboard 400,12,22,,Protoboard de 400 puntos. Para proyectos pequeños de electrónica.,,https://patzitec.com/wp-content/uploads/2025/01/Protoboard-400_73_11zon-1024x1024.webp,true
+043,Protoboard pequeño,3,6,,Protoboard de 170 puntos. Ideal para pruebas rápidas.,,https://www.tecneu.com/cdn/shop/files/mini-protoboard-170-puntos-proto-929317.jpg,true
+044,Circuito Integrado LM3915,9.5,18,,Integrado LM3915. Driver de LEDs para indicadores de nivel de voltaje o sonido.,,https://marboltec.com/wp-content/uploads/2022/08/6039148acfe6c-1.webp,true
+045,Perilla de Potenciómetro,1.5,3,,Perilla para potenciómetro. Mejora el agarre y ajuste de resistencias variables.,,https://sumador.com/cdn/shop/products/Perillasparapotenciometro_2048x2048.jpg?v=1588479072,true
+046,Potenciómetro (Cualquier Valor),2.5,6,,Potenciómetro. Resistencia variable usada para ajustar voltaje o volumen.,,https://upload.wikimedia.org/wikipedia/commons/b/b5/Potentiometer.jpg,true
+047,Circuito Integrado CD4017,4,8,,Circuito integrado CD4017. Contador y secuenciador para proyectos electrónicos.,,https://ventas.ardunel.com.bo/659-large_default/cd4017-contador.jpg,true
+048,Diodo zener (cualquier valor),2,4,,"Diodo zener. Mantiene un voltaje constante, usado en regulación.",,https://circuitoslistos.com/wp-content/uploads/2020/08/diodo-zener-3v3-13w-do41.jpg,true
+049,Capacitor Ceramico (cualquier valor),1,2,,Capacitor cerámico 104. Almacena y filtra energía en circuitos.,,https://www.anypcba.com/upfile/blogs/articles/907/104-ceramic-capacitor.webp,true
+050,Diodo 1N4007,0.25,1,,Diodo rectificador 1N4007. Permite el paso de corriente en una sola dirección.,,https://marboltec.com/wp-content/uploads/2022/06/Diodo-Rectificador-1n4007-1A1000V-01.jpg,true
+051,Foquito LED o Diodo LED(cualquier color),0.25,1,,Diodo emisor de luz (LED). Usado como indicador visual en circuitos.,,https://www.make-it.ca/wp-content/uploads/2021/09/5mm-led-set-featured.jpg,true
+052,Transistor TIP31C,4,8,,Transistor Darlington TIP31C. Amplificador y controlador de motores.,,https://electrojobsbolivia.com/wp-content/uploads/2024/07/Diseno-sin-titulo-2025-02-28T181347.478.png,true
+053,Transistor TIP41C,4,8,,Transistor TIP41C. Amplificador y controlador de motores.,,https://altronics.cl/image/image/catalog/productos/electronica/componentes_activos/tip41c/tip41c-1-500x500.webp,true
+054,Panel Solar 6v 1w,35,42,,Panel solar 6V 1W. Convierte luz solar en energía eléctrica para proyectos.,,https://i.ebayimg.com/images/g/RBEAAOSwIWZZgeI7/s-l1200.jpg,true
+055,Cable rojo con negro delgado (1m),1.5,5,,Cable eléctrico rojo y negro. Usado en conexiones básicas de corriente.,,https://www.escenografiasparaelbelen.es/recursos/IMG_792852_G.jpg,true
+056,Circuito Integrado L293D,8,14,,Driver de motores L293D. Controla motores DC y paso a paso pequeños.,,https://electronicamade.com/wp-content/uploads/2020/05/circuito-integrado-l293d-driver-motor-puente-h.jpg,true
+057,Motor paso a paso + ULN2003,30,40,,Motor paso a paso 28BYJ-48 con controlador ULN2003. Usado en proyectos de precisión.,,https://robots-argentina.com.ar/didactica/wp-content/uploads/28BYJ-48-y-ULN2003.png,true
+058,Pulsador 2 pines,1,2,,Pulsador simple de 2 pines. Activa o desactiva un circuito momentáneamente.,,https://ja-bots.com/wp-content/uploads/2022/04/Pulsador-2-pines-2--320x320.jpg,true
+059,Interruptor mediano,1.5,3,,Interruptor mediano. Usado para encender o apagar circuitos eléctricos.,,https://mtlab.pe/wp-content/uploads/PU63.jpeg,true
+060,Buzzer o Speaker,3.5,7,,Buzzer piezoeléctrico. Genera sonidos y alarmas en circuitos.,,https://www.abcomponents.co.uk/wp-content/uploads/2017/10/ABT-460-RC.jpg,true
+061,Condensador 10uF 16v,1,2,,Condensador electrolítico 10uF 16V. Almacena carga y filtra señales.,,https://itecelectronic.lk/wp-content/uploads/2024/09/10uf-16v.jpg,true
+062,Condensador 100uF 16v,1,2.50,,Condensador electrolítico 100uF 16V. Almacena carga y filtra señales.,,https://www.electrocomponentes.es/8498-large_default/condensadores-electroliticos-100uf-16v-20-5x11mm.jpg,true
+063,Condensador 470uF 16v,2,4,,Condensador electrolítico 470uF 16V. Almacena carga y filtra señales.,,https://5.imimg.com/data5/ECOM/Default/2024/6/427341870/VN/HQ/YB/2755789/470uf-16v-capacitor-0e2c557b-ffc0-445e-8acf-11f4f54af584.jpg,true
+064,Condensador 1000uF 16v,2.5,6,,Condensador electrolítico 1000uF 16V. Almacena carga y filtra señales.,,https://www.electrocomponentes.es/8530-large_default/condensadores-electroliticos-1000uf-16v-20-8x16mm.jpg,true
+065,Acido ferrico (bolsa),20,30,,Ácido férrico. Se usa para grabar circuitos en placas de cobre.,,https://ventas.ardunel.com.bo/1504-large_default/acido-percloruro-ferrico-en-polvo-para-placa-pcb-100g.jpg,true
+066,Microfono 9.7mm,6,12,,Micrófono electret de 9.7mm. Captura sonido para proyectos de audio.,,https://sumador.com/cdn/shop/products/Microfonoelectret9x7mm1_grande.jpg?v=1588287816,true
+067,Circuito Integrado NE555,2,4,,Circuito integrado NE555. Temporizador usado en osciladores y control de tiempo.,,"https://m.media-amazon.com/images/I/31u53G-0YnL._UF894,1000_QL80_.jpg",true
+068,Transistor 2N2222a,1,2,,"Transistor Bipolar BJT del tipo NPN. Un transistor tiene dos propósitos principalmente, el actuar como un amplificador o como un switch digital. El 2N2222A esta construido con un material semiconductor dopado de 3 capas. Estos dos materiales se les conoce como semiconductor tipo N y tipo P. Es un semiconductor de silicio.",,https://tienda.sawers.com.bo/image/cache/catalog/01572-500x500.jpg,true
+069,Micromotor 500rpm,55,65,,Micromotor de 500 rpm para proyectos mecánicos.,,https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSylWj7Vo8ICysd9-7jQsBljyElfy1tLpCXog&s,true
+070,Pantalla LCD 16X2 1602A FONDO AZUL,22,32,,Pantalla LCD para proyectos electrónicos.,,https://patzitec.com/wp-content/uploads/2024/01/Display-LCD-16x2-Azul.webp,true
+071,Servomotor SG90 180 GRADOS,20,30,,Servomotor para control de ángulo en robótica.,,https://tienda.sawers.com.bo/image/cache/catalog/00301-500x500.jpg,true
+072,Sensor infrarrojo TCR5000,15,20,,Sensor infrarrojo para detección de obstáculos.,,https://www.lacasadelabanda.com/wp-content/uploads/2019/05/Modulo-sensor-infrarrojo-TCRT5000-Arduino-La-Casa-de-la-Banda-Mercadolibre-001.jpg,true
+073,Sensor de distancia Ultrasonico HC-SR04,18,28,,Sensor ultrasonido HCSR-04 para medir distancias.,,https://paraarduino.com/wp-content/uploads/2023/10/01.jpg,true
+074,Jumper Pequeños (10 colores) 10cm,10,5,,Cables jumper  de 10cm. Usados para conexión en protoboard.,,https://ventas.ardunel.com.bo/449-large_default/cables-jumper-macho-macho-10cm-alta-calidad.jpg,true
+075,Jumpers (10 colores) 20cm,10,8,,Juego de Cables jumper  de 20cm para protoboard.,,https://circuitarte.com/wp-content/uploads/2019/05/jumper-cable-de-protoboard-arduino-raspberry-6.png,true
+076,LDR-Fotoresistencia,1.6,3.50,,"En esta sesión vamos a trabajar con un pequeño gran sensor que nos va a permitir medir la intensidad de la luz en el entorno donde tengamos realizado nuestro montaje, de tal manera que podamos decidir qué acciones a realizar en función de los umbrales de luz u oscuridad que estimemos oportuno..",,https://educarparaelcambio.com/wp-content/uploads/2017/10/ldr-fotorresistor-arduino.jpg,true

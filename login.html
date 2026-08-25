@@ -1,0 +1,55 @@
+﻿<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Login - Inventario SXMY</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/login.css">
+</head>
+<body class="login-page min-h-screen bg-[#d8e1ea] text-[#0b0d10]">
+<main class="login-shell">
+    <section class="login-panel">
+        <div class="login-brand-row">
+            <a href="index.html" class="login-brand">
+                <span class="login-logo-icon" aria-hidden="true"></span>
+                <span>PRODUCTOS SXMY</span>
+            </a>
+            <button class="theme-toggle" data-theme-toggle type="button">Oscuro</button>
+        </div>
+        <div class="login-copy">
+            <p>Panel autorizado</p>
+            <h1>Login Member Area</h1>
+            <span>Ingresa con tu cuenta de admin o cajero.</span>
+        </div>
+        <form id="loginForm" class="login-form">
+            <div>
+                <label for="email">E-mail:</label>
+                <input id="email" type="email" class="form-field" placeholder="ej. correo@gmail.com" autocomplete="email" required>
+            </div>
+            <div>
+                <label for="password">Password:</label>
+                <div class="password-wrap">
+                    <input id="password" type="password" class="form-field" autocomplete="current-password" required>
+                    <button id="togglePassword" class="password-toggle" type="button" aria-label="Mostrar contraseña" title="Mostrar contraseña">
+                        <span></span>
+                    </button>
+                </div>
+            </div>
+            <label class="remember-row" for="rememberSession">
+                <input id="rememberSession" type="checkbox" checked>
+                <span>Mantener sesión iniciada</span>
+            </label>
+            <button class="login-submit" type="submit">Login</button>
+            <div id="statusBox" class="login-status">Listo.</div>
+        </form>
+        <p class="login-foot">¿No tienes acceso? Habla con el administrador.</p>
+    </section>
+</main>
+<script type="module" src="js/login.js"></script>
+</body>
+</html>
+
+
+

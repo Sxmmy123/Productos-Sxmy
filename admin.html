@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Panel - Inventario SXMY</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/admin-compact.css?v=14">
+</head>
+<body class="min-h-screen bg-[#edf1f4] text-[#111827]">
+<div class="admin-layout">
+    <div id="sidebarOverlay" class="sidebar-overlay"></div>
+    <aside class="admin-sidebar">
+        <div class="sidebar-brand">
+            <div>
+                <a href="index.html">PRODUCTOS SXMY</a>
+                <span>Panel admin</span>
+            </div>
+            <button id="sidebarCollapse" class="sidebar-collapse-toggle" type="button" title="Contraer menu" aria-label="Contraer menu">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
+            </button>
+            <button id="sidebarClose" class="icon-button sidebar-close" type="button" title="Cerrar">X</button>
+        </div>
+        <nav class="sidebar-nav">
+            <button class="sidebar-link" data-section-target="productos" type="button" title="Productos">
+                <span class="sidebar-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 7h16"/><path d="M4 12h16"/><path d="M4 17h10"/></svg></span>
+                <span class="sidebar-copy"><span class="sidebar-text">Productos</span><small>Inventario, precios y stock</small></span>
+            </button>
+            <button class="sidebar-link" data-section-target="historial" type="button" title="Historial">
+                <span class="sidebar-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 6h13"/><path d="M8 12h13"/><path d="M8 18h13"/><path d="M3 6h.01"/><path d="M3 12h.01"/><path d="M3 18h.01"/></svg></span>
+                <span class="sidebar-copy"><span class="sidebar-text">Historial</span><small>Notas de venta</small></span>
+            </button>
+            <button class="sidebar-link" data-section-target="analisis" type="button" title="Analisis">
+                <span class="sidebar-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 19V5"/><path d="M4 19h16"/><path d="M8 16v-5"/><path d="M13 16V8"/><path d="M18 16v-3"/></svg></span>
+                <span class="sidebar-copy"><span class="sidebar-text">Analisis</span><small>Mas vendidos por dia</small></span>
+            </button>
+            <a class="sidebar-link" href="admin-users.html" title="Cajeros">
+                <span class="sidebar-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="9.5" cy="7" r="4"/><path d="M20 8v6"/><path d="M23 11h-6"/></svg></span>
+                <span class="sidebar-copy"><span class="sidebar-text">Cajeros</span><small>Usuarios y ventas</small></span>
+            </a>
+        </nav>
+        <div class="sidebar-actions">
+            <button class="theme-toggle theme-toggle-wide" data-theme-toggle type="button">Oscuro</button>
+            <a class="sidebar-store" href="index.html" title="Tienda"><span class="sidebar-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 9l2-5h14l2 5"/><path d="M4 9h16v11H4z"/><path d="M9 20v-6h6v6"/></svg></span><span class="sidebar-action-text">Tienda</span></a>
+            <button id="logout" class="sidebar-logout" type="button" title="Salir"><span class="sidebar-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/><path d="M21 3v18"/></svg></span><span class="sidebar-action-text">Salir</span></button>
+        </div>
+    </aside>
+
+<main class="admin-main">
+    <div class="admin-topbar">
+        <button id="sidebarToggle" class="hamburger-button" type="button" title="Menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <div>
+            <h1 id="adminTopTitle">Productos</h1>
+        </div>
+        <a class="btn-primary px-4 py-2.5 text-sm" href="index.html">Tienda</a>
+    </div>
+    <div id="statusBox" class="hidden mb-4 rounded-lg border border-[#cfd9df] bg-white px-4 py-3 text-sm text-[#4b5563]">Cargando...</div>
+
+    <section id="productosSection" class="admin-section compact-section space-y-3">
+        <div class="section-toolbar rounded-lg border border-[#cfd9df] bg-white p-4 shadow-sm">
+            <div class="flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
+                <div>
+                    <h1 class="text-2xl font-black text-[#12313f]">Productos</h1>
+                    <p id="totalProducts" class="mt-1 text-sm text-[#60727d]">0 productos</p>
+                </div>
+                <div class="admin-product-toolbar grid gap-2 md:grid-cols-[minmax(190px,320px)_180px_auto] md:items-center">
+                    <input id="adminSearch" class="form-field" placeholder="Buscar por nombre o codigo">
+                    <select id="adminSort" class="form-field">
+                        <option value="codigo">Orden por codigo</option>
+                        <option value="precio-asc">Menor precio</option>
+                        <option value="precio-desc">Mayor precio</option>
+                        <option value="stock">Stock</option>
+                        <option value="nombre">Nombre</option>
+                        <option value="fecha">Fecha agregada</option>
+                    </select>
+                    <div class="product-filter-row flex flex-wrap items-center gap-2">
+                        <details class="product-options-menu">
+                            <summary>Opciones</summary>
+                            <div>
+                                <label class="filter-chip">
+                                    <input id="showActiveProducts" type="checkbox" checked class="h-4 w-4 accent-[#146c43]"> Habilitados
+                                </label>
+                                <label class="filter-chip">
+                                    <input id="showDisabledProducts" type="checkbox" class="h-4 w-4 accent-[#146c43]"> Deshabilitados
+                                </label>
+                                <label class="filter-chip">
+                                    <input id="onlyNoImage" type="checkbox" class="h-4 w-4 accent-[#146c43]"> Sin imagen
+                                </label>
+                                <label class="filter-chip">
+                                    <input id="showPriceHistory" type="checkbox" class="h-4 w-4 accent-[#146c43]"> Precios anteriores
+                                </label>
+                                <button id="openBulkModal" class="btn-light h-10 px-4 text-sm" type="button">CSV</button>
+                            </div>
+                        </details>
+                        <button id="openProductModal" class="btn-primary h-10 px-4 text-sm" type="button">+ Producto</button>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-4 product-view-switch" aria-label="Vista de productos">
+                <button class="view-button" data-product-view="table" type="button">Tabla</button>
+                <button class="view-button" data-product-view="cards" type="button">Tarjetas</button>
+                <button class="view-button" data-product-view="compact" type="button">Compacta</button>
+            </div>
+        </div>
+
+        <section class="products-view-shell">
+            <div id="productsTableView" class="table-scroll overflow-x-auto rounded-lg border border-[#cfd9df] bg-white shadow-sm">
+                <table class="min-w-full text-left text-sm">
+                    <thead class="border-b border-[#cfd9df] bg-[#f7fafb] text-xs uppercase tracking-wide text-[#60727d]">
+                        <tr>
+                            <th class="px-4 py-3">Imagen</th>
+                            <th class="px-4 py-3">Codigo</th>
+                            <th class="px-4 py-3">Producto</th>
+                            <th class="px-4 py-3">Compra</th>
+                            <th class="px-4 py-3">Venta</th>
+                            <th class="px-4 py-3">Stock</th>
+                            <th class="px-4 py-3">Fecha</th>
+                            <th class="px-4 py-3">Estado</th>
+                            <th class="px-4 py-3">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="productsTable"></tbody>
+                </table>
+            </div>
+            <div id="productsAltView" class="hidden"></div>
+        </section>
+    </section>
+
+    <section id="historialSection" class="admin-section compact-section hidden space-y-3">
+        <div class="section-toolbar rounded-lg border border-[#cfd9df] bg-white p-4 shadow-sm">
+            <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+                <div>
+                    <h1 class="text-2xl font-black text-[#12313f]">Historial de ventas</h1>
+                    <p id="salesSummary" class="mt-1 text-sm text-[#60727d]">0 ventas registradas</p>
+                </div>
+                <div class="sales-filters">
+                    <select id="salesDateFilter" class="form-field">
+                        <option value="all">Todas las fechas</option>
+                        <option value="today">Hoy</option>
+                        <option value="week">Esta semana</option>
+                        <option value="month">Este mes</option>
+                    </select>
+                    <input id="salesSearch" class="form-field" placeholder="Buscar cliente, codigo o producto">
+                </div>
+            </div>
+        </div>
+        <section id="salesList" class="grid gap-3"></section>
+    </section>
+
+    <section id="analisisSection" class="admin-section compact-section hidden space-y-3">
+        <div class="section-toolbar rounded-lg border border-[#cfd9df] bg-white p-4 shadow-sm">
+            <h1 class="text-2xl font-black text-[#12313f]">Analisis</h1>
+            <p class="mt-1 text-sm text-[#60727d]">Resumen calculado con las notas de venta guardadas.</p>
+        </div>
+        <div class="analytics-metrics grid gap-3 md:grid-cols-5">
+            <article class="metric-card"><span>Ventas</span><strong id="metricSales">0</strong></article>
+            <article class="metric-card"><span>Ingresos</span><strong id="metricIncome">0 Bs</strong></article>
+            <article class="metric-card"><span>Productos vendidos</span><strong id="metricUnits">0</strong></article>
+            <article class="metric-card"><span>Hoy</span><strong id="metricToday">0 Bs</strong></article>
+            <article class="metric-card"><span>Producto top</span><strong id="metricTop">Sin ventas</strong></article>
+        </div>
+        <div class="analytics-grid grid gap-3 lg:grid-cols-2">
+            <section class="analytics-panel rounded-lg border border-[#cfd9df] bg-white p-4 shadow-sm">
+                <h2 class="text-lg font-black text-[#12313f]">Mas vendidos</h2>
+                <div id="topProducts" class="mt-4 space-y-2"></div>
+            </section>
+            <section class="analytics-panel rounded-lg border border-[#cfd9df] bg-white p-4 shadow-sm">
+                <h2 class="text-lg font-black text-[#12313f]">Ventas por dia</h2>
+                <div id="salesByDay" class="mt-4 space-y-2"></div>
+            </section>
+        </div>
+    </section>
+</main>
+</div>
+
+<div id="productModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/35 p-4">
+    <section class="max-h-[92vh] w-full max-w-xl overflow-y-auto rounded-lg border border-[#b8c7cf] bg-white shadow-2xl">
+        <div class="flex items-center justify-between border-b border-[#d6e0e6] px-5 py-4">
+            <div>
+                <h2 id="productModalTitle" class="text-xl font-black text-[#12313f]">Agregar producto</h2>
+                <p class="mt-1 text-sm text-[#60727d]">La imagen puedes agregarla o reemplazarla desde la lista.</p>
+            </div>
+            <button class="btn-light px-3 py-2 text-sm" data-close-modal type="button">Cerrar</button>
+        </div>
+        <form id="productForm" class="space-y-3 p-5">
+            <input type="hidden" id="productId">
+            <input type="hidden" id="currentImageUrl">
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="text-sm font-semibold text-[#374151]" for="codigo">Codigo</label>
+                    <input id="codigo" class="form-field mt-1" placeholder="001" required>
+                </div>
+                <div>
+                    <label class="text-sm font-semibold text-[#374151]" for="stock">Stock opcional</label>
+                    <input id="stock" type="number" min="0" step="1" class="form-field mt-1" placeholder="Opcional">
+                </div>
+            </div>
+            <div>
+                <label class="text-sm font-semibold text-[#374151]" for="nombre">Nombre</label>
+                <input id="nombre" class="form-field mt-1" required>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="text-sm font-semibold text-[#374151]" for="precioCompra">Precio compra</label>
+                    <input id="precioCompra" type="number" min="0" step="0.01" class="form-field mt-1">
+                </div>
+                <div>
+                    <label class="text-sm font-semibold text-[#374151]" for="precioVenta">Precio venta</label>
+                    <input id="precioVenta" type="number" min="0" step="0.01" class="form-field mt-1" required>
+                </div>
+            </div>
+            <div>
+                <label class="text-sm font-semibold text-[#374151]" for="descripcion">Descripcion</label>
+                <textarea id="descripcion" rows="3" class="form-area mt-1"></textarea>
+            </div>
+            <label class="flex items-center gap-2 text-sm font-semibold text-[#374151]"><input id="activo" type="checkbox" class="h-4 w-4 accent-[#146c43]" checked> Producto habilitado</label>
+            <div class="grid grid-cols-2 gap-2 pt-2">
+                <button type="submit" class="btn-primary px-4 py-2.5 text-sm">Guardar</button>
+                <button type="button" id="resetForm" class="btn-light px-4 py-2.5 text-sm">Limpiar</button>
+            </div>
+        </form>
+    </section>
+</div>
+
+<div id="bulkModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/35 p-4">
+    <section class="w-full max-w-xl rounded-lg border border-[#b8c7cf] bg-white shadow-2xl">
+        <div class="flex items-center justify-between border-b border-[#d6e0e6] px-5 py-4">
+            <div>
+                <h2 class="text-xl font-black text-[#12313f]">Agregar en masa</h2>
+                <p class="mt-1 text-sm text-[#60727d]">CSV de productos. Imagenes opcionales por codigo.</p>
+            </div>
+            <button class="btn-light px-3 py-2 text-sm" data-close-modal type="button">Cerrar</button>
+        </div>
+        <div class="space-y-3 p-5">
+            <div>
+                <label class="text-sm font-semibold text-[#374151]" for="bulkCsv">Archivo CSV</label>
+                <input id="bulkCsv" type="file" accept=".csv,text/csv" class="file-input">
+            </div>
+            <div>
+                <label class="text-sm font-semibold text-[#374151]" for="bulkImages">Carpeta de imagenes</label>
+                <input id="bulkImages" type="file" accept="image/*" multiple webkitdirectory directory class="file-input">
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+                <button id="bulkImport" type="button" class="btn-primary px-4 py-2.5 text-sm">Importar CSV</button>
+                <button id="downloadTemplate" type="button" class="btn-light px-4 py-2.5 text-sm">Plantilla</button>
+            </div>
+            <div id="bulkStatus" class="rounded-lg border border-[#d6e0e6] bg-[#f7fafb] px-4 py-3 text-sm text-[#60727d]">Sin archivo seleccionado.</div>
+        </div>
+    </section>
+</div>
+
+<div id="imageModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 p-4">
+    <section class="w-full max-w-2xl rounded-lg border border-[#b8c7cf] bg-white p-4 shadow-2xl">
+        <div class="flex items-center justify-between gap-3 border-b border-[#d6e0e6] pb-3">
+            <div>
+                <h2 id="imageModalTitle" class="text-xl font-black text-[#12313f]">Imagen</h2>
+                <p class="text-sm text-[#60727d]">Puedes reemplazarla por una nueva.</p>
+            </div>
+            <button class="btn-light px-3 py-2 text-sm" data-close-modal type="button">Cerrar</button>
+        </div>
+        <div id="imagePreview" class="mt-4 grid aspect-square max-h-[65vh] place-items-center rounded-lg bg-[#f7fafb] p-4"></div>
+        <button id="replaceImage" type="button" class="btn-primary mt-4 w-full px-4 py-2.5 text-sm">Reemplazar imagen</button>
+    </section>
+</div>
+
+<div id="deleteProductModal" class="confirm-modal fixed inset-0 z-50 hidden items-center justify-center bg-black/45 p-4">
+    <section class="confirm-card">
+        <div class="confirm-icon" aria-hidden="true">!</div>
+        <div class="confirm-copy">
+            <p>Confirmar eliminación</p>
+            <h2>¿Eliminar este producto?</h2>
+            <span id="deleteProductName">Esta acción quitará el producto de la base de datos.</span>
+        </div>
+        <div class="confirm-actions">
+            <button id="cancelDeleteProduct" class="btn-light" type="button">Cancelar</button>
+            <button id="confirmDeleteProduct" class="btn-danger" type="button">Eliminar</button>
+        </div>
+    </section>
+</div>
+
+<section id="salePrintArea" class="print-note hidden"></section>
+<input id="rowImageInput" type="file" accept="image/*" class="hidden">
+<script type="module" src="js/admin.js?v=5"></script>
+</body>
+</html>
