@@ -246,6 +246,28 @@
 }
 
 @media screen {
+    .product-card,
+    .product-card:hover {
+        animation: none !important;
+        will-change: auto !important;
+    }
+
+    .product-card::before {
+        animation: none !important;
+        transform: none !important;
+    }
+
+    .product-card:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 16px 34px rgba(13, 37, 53, .1) !important;
+    }
+
+    :root[data-theme="dark"] .product-card:hover {
+        box-shadow: 0 16px 34px rgba(0, 0, 0, .26) !important;
+    }
+}
+
+@media screen {
     .store-header {
         border-bottom: 1px solid color-mix(in srgb, var(--line) 72%, transparent) !important;
         background:
@@ -1243,5 +1265,153 @@
 
     .product-card-body {
         min-height: 7.4rem !important;
+    }
+}
+
+@media screen {
+    @keyframes sxmyFadeUp {
+        from {
+            opacity: 0;
+            transform: translateY(12px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes sxmySoftScale {
+        from {
+            opacity: 0;
+            transform: translateY(8px) scale(.98);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+
+    @keyframes sxmyGlow {
+        0%, 100% {
+            box-shadow: 0 10px 26px rgba(13, 37, 53, .06);
+        }
+        50% {
+            box-shadow: 0 16px 34px rgba(18, 104, 214, .12);
+        }
+    }
+
+    @keyframes sxmySlideLine {
+        from {
+            transform: scaleX(0);
+        }
+        to {
+            transform: scaleX(1);
+        }
+    }
+
+    .store-header,
+    .store-filterbar {
+        animation: sxmyFadeUp .34s ease both;
+    }
+
+    .store-filterbar {
+        animation-delay: .05s;
+    }
+
+    .store-filter-chip,
+    .nav-pill,
+    .cart-toggle,
+    #loginLink,
+    .theme-toggle {
+        will-change: transform;
+    }
+
+    .store-filter-chip:active,
+    .nav-pill:active,
+    .cart-toggle:active,
+    #loginLink:active,
+    .product-detail-link:active {
+        transform: translateY(0) scale(.98);
+    }
+
+    .product-card {
+        animation: sxmySoftScale .38s ease both;
+        will-change: transform, box-shadow;
+    }
+
+    .product-card:nth-child(1) { animation-delay: .02s; }
+    .product-card:nth-child(2) { animation-delay: .04s; }
+    .product-card:nth-child(3) { animation-delay: .06s; }
+    .product-card:nth-child(4) { animation-delay: .08s; }
+    .product-card:nth-child(5) { animation-delay: .1s; }
+    .product-card:nth-child(6) { animation-delay: .12s; }
+    .product-card:nth-child(7) { animation-delay: .14s; }
+    .product-card:nth-child(8) { animation-delay: .16s; }
+    .product-card:nth-child(9) { animation-delay: .18s; }
+    .product-card:nth-child(10) { animation-delay: .2s; }
+
+    .product-card::before {
+        transform-origin: left center;
+        animation: sxmySlideLine .45s ease both;
+    }
+
+    .product-card:hover {
+        animation-name: sxmyGlow;
+        animation-duration: 1.8s;
+        animation-iteration-count: infinite;
+    }
+
+    .product-image-shell img {
+        transition: transform .24s ease, filter .24s ease;
+    }
+
+    .checkout-panel,
+    .sale-modal-card {
+        animation: sxmySoftScale .22s ease both;
+    }
+
+    .cart-line,
+    .sale-preview-item {
+        animation: sxmyFadeUp .22s ease both;
+    }
+
+    .sale-preview-note {
+        animation: sxmySoftScale .24s ease both;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+            animation-duration: .001ms !important;
+            animation-iteration-count: 1 !important;
+            scroll-behavior: auto !important;
+            transition-duration: .001ms !important;
+        }
+    }
+}
+
+@media screen {
+    .product-card,
+    .product-card:hover {
+        animation: none !important;
+        animation-delay: 0s !important;
+        animation-duration: 0s !important;
+        animation-iteration-count: 1 !important;
+        will-change: auto !important;
+    }
+
+    .product-card::before {
+        animation: none !important;
+        transform: none !important;
+    }
+
+    .product-card:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 16px 34px rgba(13, 37, 53, .1) !important;
+    }
+
+    :root[data-theme="dark"] .product-card:hover {
+        box-shadow: 0 16px 34px rgba(0, 0, 0, .26) !important;
     }
 }

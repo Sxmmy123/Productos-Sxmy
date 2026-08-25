@@ -1148,3 +1148,181 @@
         font-size: .72rem;
     }
 }
+
+@media screen {
+    @keyframes sxmyAdminFadeUp {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes sxmyAdminPop {
+        from {
+            opacity: 0;
+            transform: translateY(8px) scale(.985);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+
+    @keyframes sxmyRankGrow {
+        from {
+            transform: scaleX(0);
+        }
+        to {
+            transform: scaleX(1);
+        }
+    }
+
+    @keyframes sxmyMetricPulse {
+        0%, 100% {
+            box-shadow: 0 10px 28px rgba(13, 37, 53, .055);
+        }
+        50% {
+            box-shadow: 0 16px 34px rgba(18, 104, 214, .12);
+        }
+    }
+
+    .admin-sidebar,
+    .admin-topbar,
+    .section-toolbar,
+    .products-view-shell,
+    .analytics-panel,
+    .sales-table,
+    .metric-card {
+        animation: sxmyAdminFadeUp .28s ease both;
+    }
+
+    .section-toolbar {
+        animation-delay: .03s;
+    }
+
+    .products-view-shell,
+    .analytics-panel,
+    .sales-table {
+        animation-delay: .06s;
+    }
+
+    .sidebar-link,
+    .sidebar-store,
+    .sidebar-logout,
+    .sidebar-collapse-toggle,
+    .product-options-menu summary,
+    .filter-chip,
+    .view-button,
+    .action-icon-button,
+    .btn-primary,
+    .btn-light,
+    .btn-danger {
+        transition: transform .18s ease, background .18s ease, border-color .18s ease, color .18s ease, box-shadow .18s ease;
+        will-change: transform;
+    }
+
+    .sidebar-link:hover,
+    .sidebar-store:hover,
+    .sidebar-logout:hover,
+    .filter-chip:hover,
+    .product-options-menu summary:hover,
+    .view-button:hover,
+    .action-icon-button:hover,
+    .btn-primary:hover,
+    .btn-light:hover,
+    .btn-danger:hover {
+        transform: translateY(-1px);
+    }
+
+    .sidebar-link:active,
+    .sidebar-store:active,
+    .sidebar-logout:active,
+    .filter-chip:active,
+    .product-options-menu summary:active,
+    .view-button:active,
+    .action-icon-button:active,
+    .btn-primary:active,
+    .btn-light:active,
+    .btn-danger:active {
+        transform: translateY(0) scale(.985);
+    }
+
+    .admin-section:not(.hidden) {
+        animation: sxmyAdminPop .24s ease both;
+    }
+
+    .admin-product-card,
+    .admin-product-line,
+    .sale-card,
+    .rank-row,
+    .metric-card {
+        animation: sxmyAdminPop .26s ease both;
+    }
+
+    .admin-product-card:nth-child(1),
+    .admin-product-line:nth-child(1),
+    .sale-card:nth-child(1),
+    .rank-row:nth-child(1) { animation-delay: .02s; }
+
+    .admin-product-card:nth-child(2),
+    .admin-product-line:nth-child(2),
+    .sale-card:nth-child(2),
+    .rank-row:nth-child(2) { animation-delay: .04s; }
+
+    .admin-product-card:nth-child(3),
+    .admin-product-line:nth-child(3),
+    .sale-card:nth-child(3),
+    .rank-row:nth-child(3) { animation-delay: .06s; }
+
+    .admin-product-card:nth-child(4),
+    .admin-product-line:nth-child(4),
+    .sale-card:nth-child(4),
+    .rank-row:nth-child(4) { animation-delay: .08s; }
+
+    .metric-card:hover {
+        animation-name: sxmyMetricPulse;
+        animation-duration: 1.8s;
+        animation-iteration-count: infinite;
+    }
+
+    .rank-bar {
+        transform-origin: left center;
+        animation: sxmyRankGrow .7s cubic-bezier(.2, .75, .2, 1) both;
+    }
+
+    .sale-detail:not(.hidden) {
+        animation: sxmyAdminFadeUp .22s ease both;
+    }
+
+    .product-options-menu[open] > div,
+    .modal-card,
+    .confirm-card {
+        animation: sxmyAdminPop .18s ease both;
+    }
+
+    .image-thumb img,
+    .admin-product-card-media,
+    .admin-product-line-main .image-thumb {
+        transition: transform .22s ease, filter .22s ease;
+    }
+
+    .image-thumb:hover img {
+        transform: scale(1.035);
+        filter: saturate(1.05);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+            animation-duration: .001ms !important;
+            animation-iteration-count: 1 !important;
+            scroll-behavior: auto !important;
+            transition-duration: .001ms !important;
+        }
+    }
+}
