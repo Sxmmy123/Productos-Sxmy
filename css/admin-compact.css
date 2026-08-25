@@ -1326,3 +1326,169 @@
         }
     }
 }
+
+@media screen {
+    #productosSection,
+    #productosSection .section-toolbar,
+    #productosSection .section-toolbar > div,
+    .admin-product-toolbar,
+    .product-filter-row {
+        overflow: visible !important;
+    }
+
+    #productosSection .section-toolbar {
+        position: relative !important;
+        z-index: 80 !important;
+    }
+
+    .products-view-shell {
+        position: relative !important;
+        z-index: 1 !important;
+    }
+
+    .product-options-menu {
+        position: relative !important;
+        z-index: 5000 !important;
+    }
+
+    .product-options-menu[open] {
+        z-index: 6000 !important;
+    }
+
+    .product-options-menu > div {
+        z-index: 7000 !important;
+        overflow: visible !important;
+    }
+
+    .product-options-menu[open] > div {
+        box-shadow: 0 24px 60px rgba(13, 37, 53, .22) !important;
+    }
+
+    :root[data-theme="dark"] .product-options-menu[open] > div {
+        box-shadow: 0 24px 60px rgba(0, 0, 0, .36) !important;
+    }
+}
+
+@media screen and (max-width: 900px) {
+    .admin-layout {
+        display: block !important;
+        grid-template-columns: 1fr !important;
+    }
+
+    .admin-main {
+        padding: .55rem !important;
+    }
+
+    .admin-topbar {
+        display: grid !important;
+        position: sticky !important;
+        top: .55rem !important;
+        z-index: 120 !important;
+        grid-template-columns: 2.35rem minmax(0, 1fr) auto !important;
+        align-items: center !important;
+        gap: .55rem !important;
+        min-height: 3.05rem !important;
+        margin-bottom: .75rem !important;
+        padding: .48rem .55rem !important;
+        border: 1px solid var(--line) !important;
+        border-radius: .9rem !important;
+        background: color-mix(in srgb, var(--surface) 94%, transparent) !important;
+        box-shadow: 0 12px 28px rgba(13, 37, 53, .09) !important;
+        backdrop-filter: blur(16px);
+    }
+
+    .admin-topbar .hamburger-button {
+        display: inline-grid !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        width: 2.18rem !important;
+        min-width: 2.18rem !important;
+        height: 2.18rem !important;
+        place-items: center !important;
+        border: 1px solid var(--line) !important;
+        border-radius: .68rem !important;
+        background: var(--surface-soft) !important;
+        color: var(--text) !important;
+    }
+
+    .admin-topbar .hamburger-button span {
+        display: block !important;
+        width: 1.05rem !important;
+        height: 2px !important;
+        border-radius: 999px !important;
+        background: currentColor !important;
+    }
+
+    .admin-topbar > .btn-primary {
+        display: none !important;
+    }
+
+    .admin-topbar h1 {
+        margin: 0 !important;
+        overflow: hidden !important;
+        font-size: .96rem !important;
+        font-weight: 720 !important;
+        line-height: 1.15 !important;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+    }
+
+    .admin-sidebar {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        z-index: 140 !important;
+        width: min(310px, 84vw) !important;
+        height: 100vh !important;
+        padding: 1rem .8rem !important;
+        transform: translateX(-105%) !important;
+        transition: transform .22s ease !important;
+        box-shadow: 0 24px 60px rgba(13, 37, 53, .24) !important;
+    }
+
+    body.sidebar-collapsed .admin-sidebar {
+        width: min(310px, 84vw) !important;
+        padding: 1rem .8rem !important;
+    }
+
+    body.sidebar-open .admin-sidebar {
+        transform: translateX(0) !important;
+    }
+
+    .sidebar-overlay {
+        position: fixed !important;
+        inset: 0 !important;
+        z-index: 130 !important;
+        display: none !important;
+        background: rgba(3, 10, 16, .48) !important;
+        backdrop-filter: blur(3px);
+    }
+
+    body.sidebar-open .sidebar-overlay {
+        display: block !important;
+    }
+
+    .sidebar-close {
+        display: inline-grid !important;
+    }
+
+    .sidebar-collapse-toggle {
+        display: none !important;
+    }
+
+    .sidebar-icon,
+    body.sidebar-collapsed .sidebar-icon {
+        display: inline-grid !important;
+    }
+
+    .sidebar-copy,
+    body.sidebar-collapsed .sidebar-copy,
+    body.sidebar-collapsed .sidebar-action-text {
+        display: block !important;
+    }
+
+    :root[data-theme="dark"] .admin-topbar {
+        background: rgba(15, 27, 37, .94) !important;
+        box-shadow: 0 18px 38px rgba(0, 0, 0, .28) !important;
+    }
+}
