@@ -213,18 +213,16 @@ function renderProducts() {
         grid.insertAdjacentHTML("beforeend", `
             <article class="product-card ${productStateClass(product)}" data-detail-product="${escapeHtml(product.id)}">
                 <div class="product-image-shell">
+                    <p class="code-pill image-code-pill">${escapeHtml(product.codigo)}</p>
                     ${hasImage
                         ? `<img src="${escapeHtml(product.imagenUrl)}" alt="${escapeHtml(product.nombre)}" class="h-full w-full rounded-lg object-contain" loading="lazy">`
                         : `<div class="no-image">Sin imagen</div>`}
                 </div>
                 <div class="product-card-body">
-                    <div class="flex items-start justify-between gap-3">
-                        <p class="code-pill">${escapeHtml(product.codigo)}</p>
-                        <p class="stock-pill ${product.stock === "" || product.stock > 0 ? "stock-ok" : "stock-out"}">${stockLabel(product)}</p>
-                    </div>
                     <h3>${escapeHtml(product.nombre)}</h3>
-                    <div class="mt-2 flex flex-wrap items-baseline gap-2">
+                    <div class="price-stock-row">
                         <p class="product-price">${formatMoney(product.precioVenta)} Bs</p>
+                        <p class="stock-pill ${product.stock === "" || product.stock > 0 ? "stock-ok" : "stock-out"}">${stockLabel(product)}</p>
                     </div>
                     <p class="product-desc mt-2 min-h-10 text-sm leading-5 text-[#60727d]">${escapeHtml(product.descripcion)}</p>
                     <button class="product-detail-link" data-detail-product="${escapeHtml(product.id)}" type="button">Ver detalle</button>
@@ -469,7 +467,7 @@ function openProductDetail(id) {
     detailName.textContent = product.nombre || "Detalle";
     const hasImage = Boolean(product.imagenUrl);
     productDetailContent.innerHTML = `
-        <div class="product-detail-image">
+        <div class="product-detail-image" data-close-product-detail title="Tocar para cerrar">
             ${hasImage
                 ? `<img src="${escapeHtml(product.imagenUrl)}" alt="${escapeHtml(product.nombre)}">`
                 : `<div class="no-image">Sin imagen</div>`}
@@ -674,6 +672,7 @@ salePreviewModal.addEventListener("click", (event) => {
 });
 productDetailModal.addEventListener("click", (event) => {
     if (event.target === productDetailModal) closeProductDetail();
+    if (event.target.closest("[data-close-product-detail]")) closeProductDetail();
 });
 document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") {
