@@ -1,0 +1,689 @@
+@media screen {
+    .print-note {
+        display: none !important;
+    }
+
+    .sale-preview-canvas .note-page {
+        box-shadow: 0 22px 54px rgba(15, 23, 42, .16);
+    }
+}
+
+.note-page,
+.note-page * {
+    box-sizing: border-box;
+    color-scheme: light;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+}
+
+.note-page {
+    width: 100%;
+    max-width: 7.72in;
+    margin: 0 auto;
+    padding: .22in;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: #fff;
+    color: #111827 !important;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.note-page :where(p, strong, span, td, th, h1, h2, h3, em, div) {
+    color: #111827;
+}
+
+.note-hero {
+    display: grid;
+    grid-template-columns: .95in minmax(0, 1fr) 1.85in;
+    gap: .16in;
+    align-items: center;
+    padding-bottom: .14in;
+    border-bottom: 2px solid #1f3a5f;
+}
+
+.note-logo {
+    display: grid;
+    aspect-ratio: 1 / 1;
+    place-items: center;
+    border: 2px solid #1f3a5f;
+    border-radius: 14px;
+    background: #f8fafc;
+    color: #1f3a5f;
+    text-align: center;
+}
+
+.note-logo span {
+    display: block;
+    color: #1f3a5f !important;
+    font-size: 30px;
+    line-height: .78;
+    font-weight: 800;
+}
+
+.note-logo strong {
+    display: block;
+    margin-top: 4px;
+    color: #334155 !important;
+    font-size: 9px;
+    line-height: 1.08;
+    font-weight: 700;
+}
+
+.note-brand h1 {
+    margin: 0;
+    color: #0f172a !important;
+    font-size: 27px;
+    line-height: .95;
+    font-weight: 760;
+}
+
+.note-brand h1 span {
+    display: block;
+    color: #475569 !important;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.note-brand p {
+    margin: 7px 0 5px;
+    color: #475569 !important;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.note-brand em {
+    display: block;
+    color: #1f3a5f !important;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 11px;
+    font-style: normal;
+    font-weight: 600;
+}
+
+.note-box {
+    overflow: hidden;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: #fff;
+}
+
+.note-box h2 {
+    margin: 0;
+    background: #1f3a5f;
+    color: #fff !important;
+    padding: 8px 10px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 750;
+}
+
+.note-box p {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    margin: 0;
+    border-top: 1px solid #e2e8f0;
+    padding: 7px 9px;
+    font-size: 10px;
+}
+
+.note-box span {
+    color: #b91c1c !important;
+    font-weight: 760;
+}
+
+.note-thanks {
+    margin: .1in 0 .12in;
+    color: #475569 !important;
+    text-align: right;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 11px;
+    font-style: normal;
+    font-weight: 600;
+}
+
+.note-client {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) .9in;
+    gap: .12in;
+    align-items: center;
+    margin-bottom: .15in;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    padding: .1in .13in;
+    background: #f8fafc;
+}
+
+.note-client-lines p {
+    display: grid;
+    grid-template-columns: .78in minmax(0, 1fr);
+    gap: .08in;
+    align-items: end;
+    margin: 4px 0;
+    font-size: 11px;
+}
+
+.note-client-lines strong {
+    color: #334155 !important;
+}
+
+.note-client-lines span {
+    min-height: 16px;
+    border-bottom: 1px solid #cbd5e1;
+    color: #111827 !important;
+}
+
+.note-cart-icon {
+    display: grid;
+    aspect-ratio: 1 / 1;
+    place-items: center;
+    border: 1px solid #cbd5e1;
+    border-radius: 12px;
+    background: #fff;
+    color: #1f3a5f !important;
+    font-size: 9px;
+    font-weight: 760;
+}
+
+.note-table {
+    width: 100%;
+    overflow: hidden;
+    border: 1px solid #cbd5e1;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 8px;
+    background: #fff;
+    font-size: 10.5px;
+}
+
+.note-table th {
+    background: #1f3a5f;
+    color: #fff !important;
+    padding: 7px 7px;
+    text-align: center;
+    font-size: 10px;
+    font-weight: 750;
+}
+
+.note-table td {
+    border-top: 1px solid #e2e8f0;
+    border-right: 1px solid #e2e8f0;
+    padding: 6px 8px;
+    background: #fff;
+    color: #111827 !important;
+    vertical-align: middle;
+}
+
+.note-table td:first-child,
+.note-table td:nth-child(3),
+.note-table td:nth-child(4) {
+    text-align: center;
+    white-space: nowrap;
+}
+
+.note-table td:nth-child(2) {
+    color: #111827 !important;
+    font-weight: 620;
+}
+
+.note-table th:last-child,
+.note-table td:last-child {
+    border-right: 0;
+}
+
+.note-summary {
+    display: grid;
+    grid-template-columns: 1fr 1.05fr;
+    gap: .18in;
+    margin-top: .14in;
+}
+
+.note-payment,
+.note-totals {
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: #fff;
+}
+
+.note-payment {
+    padding: .1in .13in;
+}
+
+.note-payment h3 {
+    margin: 0 0 7px;
+    color: #1f3a5f !important;
+    font-size: 10px;
+    font-weight: 760;
+}
+
+.note-payment p {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin: 5px 0;
+    color: #111827 !important;
+    font-size: 11px;
+}
+
+.note-payment span {
+    display: inline-grid;
+    height: 13px;
+    width: 13px;
+    place-items: center;
+    border: 1px solid #64748b;
+    border-radius: 3px;
+    color: #111827 !important;
+    font-size: 9px;
+    font-weight: 800;
+}
+
+.note-totals {
+    overflow: hidden;
+}
+
+.note-totals p {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin: 0;
+    border-bottom: 1px solid #e2e8f0;
+    padding: 7px 12px;
+    color: #111827 !important;
+    font-size: 11px;
+}
+
+.note-totals span {
+    color: #111827 !important;
+    font-weight: 760;
+}
+
+.note-totals .note-pay {
+    align-items: center;
+    border-bottom: 0;
+    background: #0f172a;
+    color: #fff !important;
+    font-size: 12px;
+    font-weight: 760;
+}
+
+.note-totals .note-pay strong,
+.note-totals .note-pay span {
+    color: #fff !important;
+}
+
+.note-pay span {
+    font-size: 20px;
+}
+
+.note-script {
+    margin: .12in 0 .08in;
+    color: #475569 !important;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 11px;
+    font-style: normal;
+    font-weight: 600;
+}
+
+.note-footer {
+    display: grid;
+    grid-template-columns: 1fr 1.15fr 1fr;
+    gap: .1in;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    padding: .09in .12in;
+    background: #f8fafc;
+}
+
+.note-footer div {
+    border-right: 1px solid #e2e8f0;
+}
+
+.note-footer div:last-child {
+    border-right: 0;
+}
+
+.note-footer strong {
+    display: block;
+    color: #1f3a5f !important;
+    font-size: 8.5px;
+    font-weight: 760;
+}
+
+.note-footer span {
+    display: block;
+    margin-top: 4px;
+    color: #111827 !important;
+    font-size: 10px;
+    font-weight: 650;
+}
+
+@media print {
+    @page {
+        size: letter;
+        margin: .25in;
+    }
+
+    html,
+    body {
+        width: 8.5in !important;
+        min-height: 11in !important;
+        margin: 0 !important;
+        background: #fff !important;
+    }
+
+    body > *:not(.print-note) {
+        display: none !important;
+    }
+
+    .print-note,
+    .print-note.hidden {
+        display: block !important;
+        position: static !important;
+        width: 100% !important;
+        height: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: visible !important;
+        background: #fff !important;
+    }
+
+    .note-page {
+        width: 7.75in !important;
+        max-width: 7.75in !important;
+        min-height: 0 !important;
+        max-height: 10.45in !important;
+        padding: .16in !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        page-break-inside: avoid;
+        break-inside: avoid;
+    }
+
+    .note-table td {
+        color: #111827 !important;
+    }
+}
+
+.note-page {
+    font-size: 10.5px;
+    line-height: 1.34;
+}
+
+.note-page :where(p, strong, span, td, th, h1, h2, h3, em, div) {
+    font-weight: 520;
+}
+
+.note-logo span {
+    font-size: 24px;
+    font-weight: 650;
+}
+
+.note-logo strong {
+    font-size: 8.5px;
+    font-weight: 560;
+}
+
+.note-brand h1 {
+    font-size: 21px;
+    font-weight: 620;
+    line-height: 1;
+}
+
+.note-brand h1 span {
+    font-size: 14px;
+    font-weight: 560;
+}
+
+.note-brand p,
+.note-brand em,
+.note-thanks,
+.note-script {
+    font-size: 10px;
+    font-weight: 520;
+}
+
+.note-box h2 {
+    padding: 7px 9px;
+    font-size: 10.5px;
+    font-weight: 620;
+}
+
+.note-box p {
+    font-size: 10px;
+}
+
+.note-box strong,
+.note-box span,
+.note-client-lines strong,
+.note-table th,
+.note-table td:nth-child(2),
+.note-payment h3,
+.note-totals strong,
+.note-totals span,
+.note-footer strong,
+.note-footer span {
+    font-weight: 560;
+}
+
+.note-box span {
+    color: #111827 !important;
+}
+
+.note-client {
+    grid-template-columns: 1fr;
+    padding: .11in .13in;
+}
+
+.note-client-lines p {
+    font-size: 10.5px;
+}
+
+.note-cart-icon {
+    display: none !important;
+}
+
+.note-table {
+    font-size: 10.3px;
+}
+
+.note-table th {
+    padding: 6px 7px;
+    font-size: 10px;
+}
+
+.note-table td {
+    padding: 5.5px 8px;
+}
+
+.note-payment p,
+.note-totals p {
+    font-size: 10.5px;
+}
+
+.note-totals .note-pay {
+    background: #f8fafc !important;
+    color: #111827 !important;
+    font-size: 10.5px !important;
+    font-weight: 560 !important;
+}
+
+.note-totals .note-pay strong,
+.note-totals .note-pay span {
+    color: #111827 !important;
+}
+
+.note-pay span {
+    font-size: 10.5px !important;
+}
+
+.note-footer strong {
+    font-size: 8.5px;
+}
+
+.note-footer span {
+    font-size: 9.8px;
+}
+
+@media print {
+    .note-page {
+        font-size: 10.3px !important;
+    }
+
+    .note-pay span {
+        font-size: 10.5px !important;
+    }
+}
+
+.sale-preview-canvas {
+    background: #f8fafc !important;
+}
+
+.sale-preview-canvas .note-page {
+    box-shadow: 0 10px 26px rgba(15, 23, 42, .08) !important;
+}
+
+.note-page {
+    border-color: #e2e8f0 !important;
+}
+
+.note-client-lines span {
+    position: relative;
+    min-height: 19px;
+    border-bottom: 1px solid #94a3b8 !important;
+}
+
+.note-client-lines span.is-empty {
+    background: linear-gradient(180deg, transparent 68%, #f1f5f9 68%);
+}
+
+.note-client-lines span.is-empty::after {
+    content: " ";
+    position: absolute;
+    right: 0;
+    bottom: 2px;
+    left: 0;
+    border-bottom: 1px dashed #cbd5e1;
+}
+
+.note-table {
+    table-layout: fixed;
+    font-size: 11px !important;
+}
+
+.note-table th {
+    padding: 7px 7px !important;
+    font-size: 10.8px !important;
+    letter-spacing: 0;
+}
+
+.note-table td {
+    padding: 6.5px 8px !important;
+    font-size: 10.8px !important;
+}
+
+.note-table th:nth-child(1),
+.note-table td:nth-child(1) {
+    width: .34in;
+}
+
+.note-table th:nth-child(2),
+.note-table td:nth-child(2) {
+    width: .68in;
+}
+
+.note-table th:nth-child(3),
+.note-table td:nth-child(3) {
+    width: .5in;
+}
+
+.note-table th:nth-child(5),
+.note-table td:nth-child(5),
+.note-table th:nth-child(6),
+.note-table td:nth-child(6) {
+    width: .88in;
+}
+
+.note-table td:first-child,
+.note-table td:nth-child(2),
+.note-table td:nth-child(3),
+.note-table td:nth-child(5),
+.note-table td:nth-child(6) {
+    text-align: center !important;
+    white-space: nowrap;
+}
+
+.note-table td:nth-child(4) {
+    color: #111827 !important;
+    font-weight: 560 !important;
+    text-align: left !important;
+    white-space: normal !important;
+}
+
+.note-table td:nth-child(3) {
+    font-weight: 520 !important;
+}
+
+.note-footer {
+    align-items: center;
+}
+
+.note-footer > div {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    gap: .08in;
+    border-right: 1px solid #e2e8f0;
+}
+
+.note-footer > div:last-child {
+    border-right: 0;
+}
+
+.note-footer > div > div {
+    min-width: 0;
+    border-right: 0 !important;
+}
+
+.note-footer-icon {
+    display: inline-grid;
+    flex: 0 0 .31in;
+    width: .31in;
+    height: .31in;
+    place-items: center;
+    border-radius: 999px;
+    background: #eef6ff;
+    color: #1f3a5f;
+}
+
+.note-footer-icon svg {
+    display: block;
+    width: .19in;
+    height: .19in;
+    fill: currentColor;
+}
+
+.note-whatsapp-icon {
+    background: #e7f8ee;
+    color: #128c7e;
+}
+
+.note-location-icon {
+    background: #eaf2ff;
+    color: #1f5fbf;
+}
+
+@media print {
+    .sale-preview-canvas {
+        background: #fff !important;
+    }
+
+    .note-page {
+        border-color: #e5e7eb !important;
+    }
+
+    .note-table th,
+    .note-table td {
+        font-size: 10.6px !important;
+    }
+}

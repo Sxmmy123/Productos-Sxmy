@@ -1,0 +1,45 @@
+{
+  "name": "Productos SXMY",
+  "short_name": "SXMY",
+  "description": "Catalogo, ventas e inventario de Productos SXMY.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#f5f7f8",
+  "theme_color": "#0f172a",
+  "categories": ["business", "shopping", "productivity"],
+  "lang": "es-BO",
+  "icons": [
+    {
+      "src": "assets/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Tienda",
+      "short_name": "Tienda",
+      "url": "./index.html"
+    },
+    {
+      "name": "Panel",
+      "short_name": "Panel",
+      "url": "./admin.html"
+    }
+  ]
+}

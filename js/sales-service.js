@@ -13,6 +13,14 @@ export function formatMoney(value) {
     return Number(value || 0).toFixed(2).replace(".00", "");
 }
 
+export function formatSaleNumber(value, fallback = "000001") {
+    const raw = String(value || "").trim();
+    if (/^\d+$/.test(raw)) return raw.padStart(6, "0");
+    const fallbackRaw = String(fallback || "1").trim();
+    if (/^\d+$/.test(fallbackRaw)) return fallbackRaw.padStart(6, "0");
+    return "000001";
+}
+
 export function dateTimeText(value = new Date()) {
     const date = value instanceof Date ? value : new Date(value);
     return date.toLocaleString("es-BO", {
@@ -37,7 +45,7 @@ export async function saveSale(sale) {
     const total = cleanItems.reduce((sum, item) => sum + item.subtotal, 0);
     const descuento = Math.min(Math.max(Number(sale.descuento || 0), 0), total);
     const payload = {
-        numero: buildSaleNumber(now),
+        numero: await buildSaleNumber(),
         cliente: String(sale.cliente || "Cliente").trim() || "Cliente",
         direccion: String(sale.direccion || "").trim(),
         telefono: String(sale.telefono || "").trim(),
@@ -59,9 +67,15 @@ export async function saveSale(sale) {
 
 export async function getSales() {
     const snapshot = await getDocs(salesRef);
-    return snapshot.docs
+    const normalized = snapshot.docs
         .map((item) => normalizeSale({ id: item.id, ...item.data() }))
-        .sort((a, b) => b.fechaOrden - a.fechaOrden);
+        .sort((a, b) => a.fechaOrden - b.fechaOrden);
+
+    normalized.forEach((sale, index) => {
+        sale.numeroVista = sale.numero || formatSaleNumber(index + 1);
+    });
+
+    return normalized.sort((a, b) => b.fechaOrden - a.fechaOrden);
 }
 
 function normalizeSale(sale) {
@@ -70,7 +84,7 @@ function normalizeSale(sale) {
     const items = Array.isArray(sale.items) ? sale.items : [];
     return {
         id: sale.id,
-        numero: sale.numero || "",
+        numero: normalizeSaleNumber(sale.numero),
         cliente: sale.cliente || "Cliente",
         direccion: sale.direccion || "",
         telefono: sale.telefono || "",
@@ -95,10 +109,18 @@ function normalizeSale(sale) {
     };
 }
 
-function buildSaleNumber(date) {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    const tail = String(date.getTime()).slice(-6);
-    return `${year}${month}${day}-${tail}`;
+function normalizeSaleNumber(value) {
+    const raw = String(value || "").trim();
+    return /^\d+$/.test(raw) ? formatSaleNumber(raw) : "";
+}
+
+async function buildSaleNumber() {
+    const snapshot = await getDocs(salesRef);
+    let maxNumber = 0;
+    snapshot.docs.forEach((doc) => {
+        const storedNumber = normalizeSaleNumber(doc.data().numero);
+        if (storedNumber) maxNumber = Math.max(maxNumber, Number(storedNumber));
+    });
+    if (!maxNumber) maxNumber = snapshot.size;
+    return formatSaleNumber(maxNumber + 1);
 }

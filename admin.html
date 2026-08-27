@@ -3,10 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0f172a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Productos SXMY">
 <title>Panel - Inventario SXMY</title>
-<script src="https://cdn.tailwindcss.com"></script>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/svg+xml" href="assets/icons/icon.svg">
+<link rel="apple-touch-icon" href="assets/icons/icon-192.png">
 <link rel="stylesheet" href="css/style.css">
-<link rel="stylesheet" href="css/admin-compact.css?v=18">
+<link rel="stylesheet" href="css/utilities.css?v=1">
+<link rel="stylesheet" href="css/admin-compact.css?v=20">
+<link rel="stylesheet" href="css/sale-note.css?v=4">
 </head>
 <body class="min-h-screen bg-[#edf1f4] text-[#111827]">
 <div class="admin-layout">
@@ -283,8 +290,9 @@
     </section>
 </div>
 
-<section id="salePrintArea" class="print-note hidden"></section>
+<section id="salePrintArea" class="print-note"></section>
 <input id="rowImageInput" type="file" accept="image/*" class="hidden">
-<script type="module" src="js/admin.js?v=5"></script>
+<script type="module" src="js/admin.js?v=10"></script>
+<script src="js/pwa.js?v=1"></script>
 </body>
 </html>

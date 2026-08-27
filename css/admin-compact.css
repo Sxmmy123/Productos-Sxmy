@@ -1059,7 +1059,11 @@
         padding: .55rem .7rem;
     }
 
-    .rank-content > span {
+    .rank-row.has-media .rank-content {
+        grid-template-columns: 2rem 2.25rem minmax(0, 1fr) auto;
+    }
+
+    .rank-content > .rank-index {
         display: grid;
         width: 1.55rem;
         height: 1.55rem;
@@ -1084,6 +1088,32 @@
     .rank-content small {
         color: var(--muted);
         font-size: .7rem;
+    }
+
+    .rank-product-image,
+    .rank-product-code {
+        display: grid;
+        width: 2.25rem;
+        height: 2.25rem;
+        place-items: center;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: .55rem;
+        background: var(--surface);
+    }
+
+    .rank-product-image {
+        object-fit: cover;
+    }
+
+    .rank-product-code {
+        color: var(--brand);
+        font-size: .67rem;
+        font-weight: 720;
+    }
+
+    .rank-product-info {
+        min-width: 0;
     }
 
     .rank-content em {
@@ -1132,9 +1162,15 @@
         background: #102131;
     }
 
-    :root[data-theme="dark"] .rank-content > span {
+    :root[data-theme="dark"] .rank-content > .rank-index {
         background: rgba(101, 169, 255, .14);
         color: #8bc1ff;
+    }
+
+    :root[data-theme="dark"] .rank-product-image,
+    :root[data-theme="dark"] .rank-product-code {
+        border-color: #294052;
+        background: #0f1b25;
     }
 }
 
@@ -1143,9 +1179,24 @@
         grid-template-columns: 1.8rem minmax(0, 1fr);
     }
 
+    .rank-row.has-media .rank-content {
+        grid-template-columns: 1.8rem 2.1rem minmax(0, 1fr);
+    }
+
     .rank-content em {
         grid-column: 2;
         font-size: .72rem;
+    }
+
+    .rank-row.has-media .rank-content em {
+        grid-column: 3;
+        font-size: .72rem;
+    }
+
+    .rank-product-image,
+    .rank-product-code {
+        width: 2.1rem;
+        height: 2.1rem;
     }
 }
 
@@ -1490,5 +1541,134 @@
     :root[data-theme="dark"] .admin-topbar {
         background: rgba(15, 27, 37, .94) !important;
         box-shadow: 0 18px 38px rgba(0, 0, 0, .28) !important;
+    }
+}
+
+@media screen {
+    .admin-layout {
+        background:
+            radial-gradient(circle at top left, color-mix(in srgb, var(--accent) 7%, transparent), transparent 24rem),
+            var(--bg) !important;
+    }
+
+    .admin-sidebar {
+        border-right-color: color-mix(in srgb, var(--line) 82%, transparent) !important;
+    }
+
+    .sidebar-brand a,
+    .sidebar-text {
+        font-weight: 720 !important;
+    }
+
+    .sidebar-link {
+        border-radius: .78rem !important;
+    }
+
+    .sidebar-link.active {
+        box-shadow: inset 3px 0 0 var(--accent);
+    }
+
+    .section-toolbar,
+    .analytics-panel,
+    .table-scroll,
+    .sales-table,
+    .metric-card {
+        border-color: color-mix(in srgb, var(--line) 90%, transparent) !important;
+        box-shadow: 0 10px 25px rgba(13, 37, 53, .055) !important;
+    }
+
+    .section-toolbar h1,
+    .analytics-panel h2 {
+        color: var(--text) !important;
+        font-weight: 690 !important;
+        letter-spacing: 0 !important;
+    }
+
+    .form-field,
+    .form-area {
+        border-color: color-mix(in srgb, var(--line) 92%, transparent) !important;
+        background: var(--surface-soft) !important;
+    }
+
+    .form-field:focus,
+    .form-area:focus {
+        border-color: color-mix(in srgb, var(--accent) 62%, var(--line)) !important;
+        box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 14%, transparent) !important;
+    }
+
+    .btn-primary,
+    .btn-light,
+    .btn-danger,
+    .product-options-menu summary,
+    .view-button {
+        font-weight: 660 !important;
+    }
+
+    .product-view-switch {
+        background: color-mix(in srgb, var(--surface-soft) 76%, var(--surface)) !important;
+    }
+
+    .view-button.active {
+        box-shadow: 0 7px 18px rgba(13, 37, 53, .08);
+    }
+
+    .admin-product-card,
+    .admin-product-line,
+    .sale-card {
+        border-color: color-mix(in srgb, var(--line) 90%, transparent) !important;
+    }
+
+    .admin-product-card:hover,
+    .admin-product-line:hover,
+    .sale-card-head:hover {
+        border-color: color-mix(in srgb, var(--accent) 24%, var(--line)) !important;
+    }
+
+    #productsTableView th {
+        letter-spacing: .02em !important;
+    }
+
+    #productsTableView td {
+        color: var(--text) !important;
+    }
+
+    .sale-card-head {
+        border-radius: .65rem !important;
+    }
+
+    .metric-card strong {
+        letter-spacing: 0 !important;
+    }
+
+    :root[data-theme="dark"] .admin-layout {
+        background:
+            radial-gradient(circle at top left, rgba(101, 169, 255, .1), transparent 24rem),
+            var(--bg) !important;
+    }
+
+    :root[data-theme="dark"] .form-field,
+    :root[data-theme="dark"] .form-area {
+        background: #102131 !important;
+        border-color: #294052 !important;
+        color: #eef6fb !important;
+    }
+
+    :root[data-theme="dark"] .section-toolbar,
+    :root[data-theme="dark"] .analytics-panel,
+    :root[data-theme="dark"] .table-scroll,
+    :root[data-theme="dark"] .sales-table,
+    :root[data-theme="dark"] .metric-card {
+        box-shadow: 0 16px 34px rgba(0, 0, 0, .22) !important;
+    }
+}
+
+@media screen and (max-width: 900px) {
+    .admin-topbar {
+        min-height: 2.9rem !important;
+        border-radius: .82rem !important;
+    }
+
+    .admin-sidebar {
+        border-right: 1px solid var(--line) !important;
     }
 }

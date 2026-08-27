@@ -3,10 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0f172a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Productos SXMY">
 <title>Tienda - Inventario SXMY</title>
-<script src="https://cdn.tailwindcss.com"></script>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/svg+xml" href="assets/icons/icon.svg">
+<link rel="apple-touch-icon" href="assets/icons/icon-192.png">
 <link rel="stylesheet" href="css/style.css">
-<link rel="stylesheet" href="css/store-cart.css?v=11">
+<link rel="stylesheet" href="css/utilities.css?v=1">
+<link rel="stylesheet" href="css/store-cart.css?v=19">
+<link rel="stylesheet" href="css/sale-note.css?v=4">
 </head>
 <body class="min-h-screen bg-[#f5f7f8] text-[#111827]">
 <header class="store-header">
@@ -19,17 +26,24 @@
             <input id="search" class="form-field" placeholder="Buscar producto o codigo">
         </div>
         <div class="store-actions">
-            <button class="theme-toggle" data-theme-toggle type="button">Oscuro</button>
-            <span id="adminBadge" class="admin-chip hidden">Admin</span>
-            <a id="loginLink" class="text-link" href="login.html">Login</a>
-            <div id="adminNav" class="hidden flex-wrap items-center gap-2">
-                <a class="nav-pill" href="admin.html#productos">Panel</a>
-                <button id="cartToggle" class="cart-toggle" type="button" title="Ver carrito">
-                    <span class="cart-icon" aria-hidden="true"></span>
-                    <span>Carrito</span>
-                    <strong id="cartBadge">0</strong>
-                </button>
-                <button id="logout" class="nav-pill" type="button">Salir</button>
+            <button id="cartToggle" class="cart-toggle hidden" type="button" title="Ver carrito">
+                <span class="cart-icon" aria-hidden="true"></span>
+                <span>Carrito</span>
+                <strong id="cartBadge">0</strong>
+            </button>
+            <button id="storeMenuToggle" class="store-menu-toggle" type="button" aria-label="Abrir menu" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div id="storeMenu" class="store-menu">
+                <button class="theme-toggle" data-theme-toggle type="button">Oscuro</button>
+                <span id="adminBadge" class="admin-chip hidden">Admin</span>
+                <a id="loginLink" class="text-link" href="login.html">Ingresar</a>
+                <div id="adminNav" class="hidden flex-wrap items-center gap-2">
+                    <a class="nav-pill" href="admin.html#productos">Panel</a>
+                    <button id="logout" class="nav-pill" type="button">Salir</button>
+                </div>
             </div>
         </div>
     </nav>
@@ -48,12 +62,8 @@
     <div id="statusBox" class="mb-4 rounded-lg border border-[#d8e0e4] bg-white px-4 py-3 text-sm text-[#52616b]">Cargando productos...</div>
 
     <section class="store-filterbar" aria-label="Filtros de catalogo">
-        <div class="store-filter-scroll">
+        <div id="storeAlphabetFilters" class="store-filter-scroll">
             <button class="store-filter-chip active" data-store-filter="all" type="button">Todos</button>
-            <button class="store-filter-chip" data-store-filter="stock" type="button">Con stock</button>
-            <button class="store-filter-chip" data-store-filter="out" type="button">Sin stock</button>
-            <button class="store-filter-chip" data-store-filter="cheap" type="button">Mas baratos</button>
-            <button class="store-filter-chip" data-store-filter="recent" type="button">Recientes</button>
         </div>
         <span id="visibleProductCount" class="store-count-inline">0 productos</span>
     </section>
@@ -158,8 +168,9 @@
     </section>
 </div>
 
-<section id="salePrintArea" class="print-note hidden"></section>
+<section id="salePrintArea" class="print-note"></section>
 
-<script type="module" src="js/catalog.js"></script>
+<script type="module" src="js/catalog.js?v=7"></script>
+<script src="js/pwa.js?v=1"></script>
 </body>
 </html>

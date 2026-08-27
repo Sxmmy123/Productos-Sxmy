@@ -10,7 +10,7 @@ import {
     updateProduct,
     uploadProductImage
 } from "./product-service.js";
-import { dateTimeText, formatMoney, getSales } from "./sales-service.js";
+import { dateTimeText, formatMoney, formatSaleNumber, getSales } from "./sales-service.js";
 import { setupThemeToggle } from "./theme-service.js";
 
 setupThemeToggle();
@@ -390,6 +390,7 @@ async function loadSales() {
 async function loadAll() {
     setStatus("Cargando datos...");
     await Promise.all([loadProducts(), loadSales()]);
+    renderAnalysis();
     setStatus("Panel listo.", "ok");
 }
 
@@ -597,7 +598,7 @@ function renderSales() {
                 ${data.map((sale) => `
                     <article class="sale-card" data-sale-card="${escapeHtml(sale.id)}">
                         <button class="sale-card-head sales-row-grid" data-sale-toggle="${escapeHtml(sale.id)}" type="button">
-                            <span class="sale-number">${escapeHtml(sale.numero || sale.id)}</span>
+                            <span class="sale-number">${escapeHtml(formatSaleNumber(sale.numero || sale.numeroVista))}</span>
                             <span class="sale-customer">${escapeHtml(sale.cliente || "Cliente")}</span>
                             <span class="sale-muted">${sale.items.length} productos</span>
                             <span class="sale-muted">${escapeHtml(sale.vendedorNombre || "Vendedor")}</span>
@@ -657,12 +658,25 @@ function renderAnalysis() {
 
     const productMap = new Map();
     const dayMap = new Map();
+    const findProductForSaleItem = (item) => products.find((product) =>
+        product.id === item.productId ||
+        product.codigo === item.codigo ||
+        product.nombre === item.nombre
+    );
     sales.forEach((sale) => {
         const day = sale.fechaIso ? sale.fechaIso.slice(0, 10) : "Sin fecha";
         dayMap.set(day, (dayMap.get(day) || 0) + sale.total);
         sale.items.forEach((item) => {
             const key = item.productId || item.codigo || item.nombre;
-            const current = productMap.get(key) || { nombre: item.nombre, codigo: item.codigo, cantidad: 0, total: 0 };
+            const product = findProductForSaleItem(item);
+            const current = productMap.get(key) || {
+                nombre: item.nombre,
+                codigo: item.codigo,
+                cantidad: 0,
+                total: 0,
+                imagenUrl: product?.imagenUrl || ""
+            };
+            if (!current.imagenUrl && product?.imagenUrl) current.imagenUrl = product.imagenUrl;
             current.cantidad += item.cantidad;
             current.total += item.subtotal;
             productMap.set(key, current);
@@ -672,19 +686,24 @@ function renderAnalysis() {
     const rankedProducts = [...productMap.values()].sort((a, b) => b.cantidad - a.cantidad);
     metricToday.textContent = `${formatMoney(todayIncome)} Bs`;
     metricTop.textContent = rankedProducts[0]?.nombre || "Sin ventas";
-    topProducts.innerHTML = renderRank(rankedProducts.slice(0, 8), (item) => `${item.cantidad} unid. - ${formatMoney(item.total)} Bs`, "No hay productos vendidos.");
+    topProducts.innerHTML = renderRank(rankedProducts.slice(0, 8), (item) => `${item.cantidad} unid. - ${formatMoney(item.total)} Bs`, "No hay productos vendidos.", true);
     salesByDay.innerHTML = renderRank([...dayMap.entries()].sort((a, b) => b[0].localeCompare(a[0])).slice(0, 8).map(([day, total]) => ({ nombre: day, codigo: "", total })), (item) => `${formatMoney(item.total)} Bs`, "No hay ventas por dia.");
 }
 
-function renderRank(items, rightText, emptyText) {
+function renderRank(items, rightText, emptyText, showMedia = false) {
     if (!items.length) return `<p class="rounded-lg border border-dashed border-[#b8c7cf] bg-[#f7fafb] p-4 text-sm text-[#60727d]">${emptyText}</p>`;
     const values = items.map((item) => Number(item.cantidad ?? item.total ?? 0));
     const maxValue = Math.max(...values, 1);
     return items.map((item, index) => `
-        <div class="rank-row" style="--rank:${Math.max(5, (Number(item.cantidad ?? item.total ?? 0) / maxValue) * 100)}%">
+        <div class="rank-row ${showMedia ? "has-media" : ""}" style="--rank:${Math.max(5, (Number(item.cantidad ?? item.total ?? 0) / maxValue) * 100)}%">
             <div class="rank-content">
-                <span>${index + 1}</span>
-                <div>
+                <span class="rank-index">${index + 1}</span>
+                ${showMedia && item.imagenUrl ? `
+                    <img class="rank-product-image" src="${escapeHtml(item.imagenUrl)}" alt="${escapeHtml(item.nombre)}">
+                ` : showMedia && item.codigo ? `
+                    <span class="rank-product-code">${escapeHtml(item.codigo)}</span>
+                ` : ""}
+                <div class="rank-product-info">
                     <strong>${escapeHtml(item.nombre)}</strong>
                     ${item.codigo ? `<small>${escapeHtml(item.codigo)}</small>` : ""}
                 </div>
@@ -695,11 +714,19 @@ function renderRank(items, rightText, emptyText) {
     `).join("");
 }
 
+function noteFieldHtml(value, options = {}) {
+    const raw = String(value || "").trim();
+    const text = options.hideDefaultClient && raw.toLowerCase() === "cliente" ? "" : raw;
+    return `<span class="${text ? "" : "is-empty"}">${escapeHtml(text)}</span>`;
+}
+
 function renderSaleNote(sale) {
     const subtotal = Number(sale.subtotal || sale.total || 0);
     const discount = Number(sale.descuento || 0);
-    const noteNumber = String(sale.numero || sale.id || "0001-000000").toUpperCase();
+    const noteNumber = formatSaleNumber(sale.numero || sale.numeroVista);
     const fecha = escapeHtml(sale.fechaTexto || "");
+    const items = Array.isArray(sale.items) ? sale.items : [];
+    salePrintArea.classList.remove("hidden");
     salePrintArea.innerHTML = `
         <div class="note-page">
             <header class="note-hero">
@@ -718,18 +745,19 @@ function renderSaleNote(sale) {
             <p class="note-thanks">Gracias por su compra!</p>
             <section class="note-client">
                 <div class="note-client-lines">
-                    <p><strong>Cliente:</strong><span>${escapeHtml(sale.cliente || "")}</span></p>
-                    <p><strong>Direccion:</strong><span>${escapeHtml(sale.direccion || "")}</span></p>
-                    <p><strong>Telefono:</strong><span>${escapeHtml(sale.telefono || "")}</span></p>
+                    <p><strong>Cliente:</strong>${noteFieldHtml(sale.cliente, { hideDefaultClient: true })}</p>
+                    <p><strong>Direccion:</strong>${noteFieldHtml(sale.direccion)}</p>
+                    <p><strong>Telefono:</strong>${noteFieldHtml(sale.telefono)}</p>
                 </div>
-                <div class="note-cart-icon">CARRITO</div>
             </section>
             <table class="note-table">
-                <thead><tr><th>CANT.</th><th>DETALLE</th><th>P. UNITARIO</th><th>SUBTOTAL</th></tr></thead>
+                <thead><tr><th>N</th><th>CODIGO</th><th>CANT.</th><th>DETALLE</th><th>P. UNITARIO</th><th>SUBTOTAL</th></tr></thead>
                 <tbody>
-                    ${sale.items.map((item) => `
+                    ${items.map((item, index) => `
                         <tr>
-                            <td>${item.cantidad}</td>
+                            <td>${index + 1}</td>
+                            <td>${escapeHtml(item.codigo || "")}</td>
+                            <td>${escapeHtml(String(item.cantidad || ""))}</td>
                             <td>${escapeHtml(item.nombre)}</td>
                             <td>${formatMoney(item.precio)} Bs</td>
                             <td>${formatMoney(item.subtotal)} Bs</td>
@@ -751,9 +779,19 @@ function renderSaleNote(sale) {
             </section>
             <p class="note-script">Gracias por confiar en Productos Sxmy!</p>
             <footer class="note-footer">
-                <div><strong>NUMERO CELULAR</strong><span>77755897</span></div>
-                <div><strong>UBICACION</strong><span>Caranavi<br>Frente Colegio Kennedy</span></div>
-                <div><strong>PRODUCTOS SXMY</strong><span>Tecnologia, creatividad y soluciones en un solo lugar.</span></div>
+                <div class="note-footer-item">
+                    <span class="note-footer-icon note-whatsapp-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" role="img"><path d="M12.04 2.5a9.35 9.35 0 0 0-7.94 14.28L3 21.5l4.84-1.07A9.36 9.36 0 1 0 12.04 2.5Zm0 1.75a7.61 7.61 0 0 1 6.44 11.7 7.58 7.58 0 0 1-9.9 2.73l-.3-.16-2.8.62.63-2.72-.18-.31a7.6 7.6 0 0 1 6.11-11.86Zm-3.3 3.82c-.15 0-.4.06-.61.29-.21.23-.8.78-.8 1.9s.82 2.2.93 2.35c.12.15 1.58 2.54 3.9 3.45 1.93.76 2.33.61 2.75.57.42-.04 1.35-.55 1.54-1.08.19-.53.19-.99.13-1.08-.06-.1-.21-.15-.44-.27-.23-.11-1.35-.67-1.56-.74-.21-.08-.36-.12-.52.11-.15.23-.6.74-.73.89-.13.15-.27.17-.5.06-.23-.12-.97-.36-1.84-1.14-.68-.61-1.14-1.36-1.27-1.59-.13-.23-.01-.35.1-.47.1-.1.23-.27.34-.4.11-.13.15-.23.23-.38.08-.15.04-.29-.02-.4-.06-.11-.52-1.25-.71-1.71-.19-.44-.38-.38-.52-.39h-.45Z"/></svg>
+                    </span>
+                    <div><strong>NUMERO CELULAR</strong><span>77755897</span></div>
+                </div>
+                <div class="note-footer-item">
+                    <span class="note-footer-icon note-location-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" role="img"><path d="M12 2.75a7.1 7.1 0 0 0-7.1 7.1c0 4.68 5.76 10.63 6.01 10.88a1.52 1.52 0 0 0 2.18 0c.25-.25 6.01-6.2 6.01-10.88A7.1 7.1 0 0 0 12 2.75Zm0 9.6a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5Z"/></svg>
+                    </span>
+                    <div><strong>UBICACION</strong><span>Caranavi<br>Frente Colegio Kennedy</span></div>
+                </div>
+                <div class="note-footer-item"><div><strong>PRODUCTOS SXMY</strong><span>Tecnologia, creatividad y soluciones en un solo lugar.</span></div></div>
             </footer>
         </div>
     `;
@@ -921,7 +959,7 @@ salesList.addEventListener("click", (event) => {
     const sale = sales.find((item) => item.id === button.dataset.salePrint);
     if (!sale) return;
     renderSaleNote(sale);
-    window.print();
+    requestAnimationFrame(() => window.print());
 });
 
 document.querySelectorAll("[data-section-target]").forEach((button) => {

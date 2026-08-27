@@ -1,7 +1,7 @@
 import { auth } from "../firebase/firebase-config.js";
 import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 import { escapeHtml, getProducts, updateProduct } from "./product-service.js";
-import { formatMoney, saveSale as saveSaleRecord } from "./sales-service.js";
+import { formatMoney, formatSaleNumber, saveSale as saveSaleRecord } from "./sales-service.js";
 import { getUserProfile } from "./user-service.js";
 import { setupThemeToggle } from "./theme-service.js";
 
@@ -13,6 +13,7 @@ let currentUser = null;
 let currentProfile = null;
 let lastSale = null;
 let activeQuickFilter = "all";
+let audioContext = null;
 
 const grid = document.getElementById("grid");
 const search = document.getElementById("search");
@@ -25,6 +26,10 @@ const loginLink = document.getElementById("loginLink");
 const adminNav = document.getElementById("adminNav");
 const adminBadge = document.getElementById("adminBadge");
 const logout = document.getElementById("logout");
+const storeHeader = document.querySelector(".store-header");
+const storeFilterbar = document.querySelector(".store-filterbar");
+const storeMenu = document.getElementById("storeMenu");
+const storeMenuToggle = document.getElementById("storeMenuToggle");
 const saleMode = document.getElementById("saleMode");
 const adminCheckout = document.getElementById("adminCheckout");
 const cartToggle = document.getElementById("cartToggle");
@@ -44,7 +49,7 @@ const printLastSale = document.getElementById("printLastSale");
 const saleStatus = document.getElementById("saleStatus");
 const salePrintArea = document.getElementById("salePrintArea");
 const visibleProductCount = document.getElementById("visibleProductCount");
-const storeFilterButtons = [...document.querySelectorAll("[data-store-filter]")];
+const storeAlphabetFilters = document.getElementById("storeAlphabetFilters");
 const salePreviewModal = document.getElementById("salePreviewModal");
 const salePreviewClose = document.getElementById("salePreviewClose");
 const salePreviewDismiss = document.getElementById("salePreviewDismiss");
@@ -83,11 +88,70 @@ function productHasStock(product) {
     return product.stock === "" || Number(product.stock || 0) > 0;
 }
 
+function playCartSound(type) {
+    try {
+        audioContext ||= new (window.AudioContext || window.webkitAudioContext)();
+        const oscillator = audioContext.createOscillator();
+        const gain = audioContext.createGain();
+        const now = audioContext.currentTime;
+        const isAdd = type === "add";
+
+        oscillator.type = "sine";
+        oscillator.frequency.setValueAtTime(isAdd ? 720 : 340, now);
+        oscillator.frequency.exponentialRampToValueAtTime(isAdd ? 920 : 260, now + .08);
+        gain.gain.setValueAtTime(.001, now);
+        gain.gain.exponentialRampToValueAtTime(isAdd ? .08 : .065, now + .012);
+        gain.gain.exponentialRampToValueAtTime(.001, now + .12);
+
+        oscillator.connect(gain);
+        gain.connect(audioContext.destination);
+        oscillator.start(now);
+        oscillator.stop(now + .13);
+    } catch {
+        // El navegador puede bloquear audio en algunos modos; la venta no debe detenerse por eso.
+    }
+}
+
 function productStateClass(product) {
     const states = [];
     if (!product.imagenUrl) states.push("state-no-image");
     if (!productHasStock(product)) states.push("state-out-stock");
     return states.join(" ");
+}
+
+function productInitial(product) {
+    const initial = String(product.nombre || "")
+        .trim()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .charAt(0)
+        .toUpperCase();
+    return /^[A-Z]$/.test(initial) ? initial : "#";
+}
+
+function availableStoreLetters() {
+    return [...new Set(products
+        .filter((product) => product.activo !== false)
+        .map(productInitial))]
+        .sort((a, b) => {
+            if (a === "#") return 1;
+            if (b === "#") return -1;
+            return a.localeCompare(b);
+        });
+}
+
+function renderStoreFilters() {
+    if (!storeAlphabetFilters) return;
+    const letters = availableStoreLetters();
+    if (activeQuickFilter !== "all" && !letters.includes(activeQuickFilter)) {
+        activeQuickFilter = "all";
+    }
+    storeAlphabetFilters.innerHTML = `
+        <button class="store-filter-chip ${activeQuickFilter === "all" ? "active" : ""}" data-store-filter="all" type="button" aria-pressed="${activeQuickFilter === "all"}">Todos</button>
+        ${letters.map((letter) => `
+            <button class="store-filter-chip store-letter-chip ${activeQuickFilter === letter ? "active" : ""}" data-store-filter="${letter}" type="button" aria-pressed="${activeQuickFilter === letter}">${letter}</button>
+        `).join("")}
+    `;
 }
 
 function visibleProducts() {
@@ -100,15 +164,13 @@ function visibleProducts() {
             product.descripcion.toLowerCase().includes(query)
         );
     }
-    if (activeQuickFilter === "stock") data = data.filter(productHasStock);
-    if (activeQuickFilter === "out") data = data.filter((product) => !productHasStock(product));
-    if (activeQuickFilter === "cheap") data = [...data].sort((a, b) => Number(a.precioVenta || 0) - Number(b.precioVenta || 0));
-    if (activeQuickFilter === "recent") data = [...data].sort((a, b) => Number(b.createdAtMillis || 0) - Number(a.createdAtMillis || 0));
+    if (activeQuickFilter !== "all") data = data.filter((product) => productInitial(product) === activeQuickFilter);
+    data = [...data].sort((a, b) => String(a.nombre || "").localeCompare(String(b.nombre || ""), "es", { sensitivity: "base" }));
     return data;
 }
 
 function updateStoreFilterButtons() {
-    storeFilterButtons.forEach((button) => {
+    document.querySelectorAll("[data-store-filter]").forEach((button) => {
         const active = button.dataset.storeFilter === activeQuickFilter;
         button.classList.toggle("active", active);
         button.setAttribute("aria-pressed", String(active));
@@ -116,6 +178,8 @@ function updateStoreFilterButtons() {
 }
 
 function renderProducts() {
+    renderStoreFilters();
+    requestAnimationFrame(updateStoreHeaderSpace);
     const data = visibleProducts();
     productCount.textContent = `${data.length} productos`;
     if (visibleProductCount) visibleProductCount.textContent = `${data.length} productos`;
@@ -139,11 +203,10 @@ function renderProducts() {
         const adminControls = currentUser ? `
                     <div class="product-actions">
                         <div class="qty-control">
-                            <button data-cart="remove" data-id="${escapeHtml(product.id)}">-</button>
-                            <strong class="min-w-9 text-center text-sm">${qty}</strong>
                             <button data-cart="add" data-id="${escapeHtml(product.id)}" ${disabled ? "disabled" : ""}>+</button>
+                            <strong class="qty-value">${qty}</strong>
+                            <button data-cart="remove" data-id="${escapeHtml(product.id)}">-</button>
                         </div>
-                        <button class="btn-primary px-4 py-2 text-sm" data-cart="add" data-id="${escapeHtml(product.id)}" ${disabled ? "disabled" : ""}>Agregar</button>
                     </div>
         ` : "";
 
@@ -192,6 +255,7 @@ function changeCart(id, direction) {
         if (item.qty <= 0) cart = cart.filter((cartItem) => cartItem.id !== id);
     }
 
+    playCartSound(direction > 0 ? "add" : "remove");
     renderProducts();
     renderCart();
 }
@@ -237,6 +301,8 @@ async function setAdminState(user) {
     adminBadge.classList.toggle("hidden", !user);
     adminNav.classList.toggle("hidden", !user);
     adminNav.classList.toggle("flex", Boolean(user));
+    cartToggle.classList.toggle("hidden", !user);
+    closeStoreMenu();
     adminCheckout.classList.add("hidden");
     saleMode.textContent = "La venta se guardara en Historial.";
     saveSale.disabled = !user || !cart.length;
@@ -248,8 +314,22 @@ async function setAdminState(user) {
 
 function openCheckout() {
     if (!currentUser) return;
+    closeStoreMenu();
     adminCheckout.classList.remove("hidden");
     adminCheckout.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function closeStoreMenu() {
+    storeMenu?.classList.remove("is-open");
+    storeMenuToggle?.setAttribute("aria-expanded", "false");
+}
+
+function updateStoreHeaderSpace() {
+    if (!storeHeader) return;
+    const headerHeight = Math.ceil(storeHeader.getBoundingClientRect().height);
+    const filterHeight = storeFilterbar ? Math.ceil(storeFilterbar.getBoundingClientRect().height) : 0;
+    document.documentElement.style.setProperty("--store-mobile-header-space", `${headerHeight}px`);
+    document.documentElement.style.setProperty("--store-mobile-filter-space", `${filterHeight}px`);
 }
 
 function closeCheckout() {
@@ -326,39 +406,15 @@ function buildSalePayload() {
 function renderSalePreview(sale) {
     const subtotal = Number(sale.subtotal || sale.total || 0);
     const discount = Number(sale.descuento || 0);
+    renderSaleNote(sale);
     salePreviewContent.innerHTML = `
-        <div class="sale-preview-note">
-            <div class="preview-note-top">
-                <div>
-                    <span>PRODUCTOS</span>
-                    <strong>SXMY</strong>
-                </div>
-                <em>NOTA DE VENTA</em>
-            </div>
-            <div class="preview-note-meta">
-                <span>Nro. ${escapeHtml(sale.numero || sale.id || "")}</span>
-                <span>${escapeHtml(sale.fechaTexto || "")}</span>
-            </div>
-            <div class="preview-note-client">
-                <p><strong>Cliente:</strong> ${escapeHtml(sale.cliente || "Cliente")}</p>
-                <p><strong>Telefono:</strong> ${escapeHtml(sale.telefono || "Sin telefono")}</p>
-                <p><strong>Direccion:</strong> ${escapeHtml(sale.direccion || "Sin direccion")}</p>
-            </div>
-            <div class="preview-note-lines">
-                ${sale.items.slice(0, 6).map((item) => `
-                    <p><span>${item.cantidad}</span><strong>${escapeHtml(item.nombre)}</strong><em>${formatMoney(item.subtotal)} Bs</em></p>
-                `).join("")}
-                ${sale.items.length > 6 ? `<small>+ ${sale.items.length - 6} productos mas</small>` : ""}
-            </div>
-            <div class="preview-note-total">
-                <span>Total</span>
-                <strong>${formatMoney(sale.total)} Bs</strong>
-            </div>
+        <div class="sale-preview-canvas">
+            ${salePrintArea.innerHTML}
         </div>
         <div class="sale-preview-summary">
             <div>
                 <span>Nota</span>
-                <strong>${escapeHtml(sale.numero || sale.id || "")}</strong>
+                <strong>${escapeHtml(formatSaleNumber(sale.numero || sale.numeroVista))}</strong>
             </div>
             <div>
                 <span>Cliente</span>
@@ -397,7 +453,13 @@ function openSalePreview(sale) {
 function printSale(sale) {
     if (!sale) return;
     renderSaleNote(sale);
-    window.print();
+    requestAnimationFrame(() => window.print());
+}
+
+function noteFieldHtml(value, options = {}) {
+    const raw = String(value || "").trim();
+    const text = options.hideDefaultClient && raw.toLowerCase() === "cliente" ? "" : raw;
+    return `<span class="${text ? "" : "is-empty"}">${escapeHtml(text)}</span>`;
 }
 
 function openProductDetail(id) {
@@ -471,8 +533,10 @@ async function finalizeSale() {
 function renderSaleNote(sale) {
     const subtotal = Number(sale.subtotal || sale.total || 0);
     const discount = Number(sale.descuento || 0);
-    const noteNumber = String(sale.numero || sale.id || "0001-000000").toUpperCase();
+    const noteNumber = formatSaleNumber(sale.numero || sale.numeroVista);
     const fecha = escapeHtml(sale.fechaTexto || "");
+    const items = Array.isArray(sale.items) ? sale.items : [];
+    salePrintArea.classList.remove("hidden");
     salePrintArea.innerHTML = `
         <div class="note-page">
             <header class="note-hero">
@@ -491,18 +555,19 @@ function renderSaleNote(sale) {
             <p class="note-thanks">Gracias por su compra!</p>
             <section class="note-client">
                 <div class="note-client-lines">
-                    <p><strong>Cliente:</strong><span>${escapeHtml(sale.cliente || "")}</span></p>
-                    <p><strong>Direccion:</strong><span>${escapeHtml(sale.direccion || "")}</span></p>
-                    <p><strong>Telefono:</strong><span>${escapeHtml(sale.telefono || "")}</span></p>
+                    <p><strong>Cliente:</strong>${noteFieldHtml(sale.cliente, { hideDefaultClient: true })}</p>
+                    <p><strong>Direccion:</strong>${noteFieldHtml(sale.direccion)}</p>
+                    <p><strong>Telefono:</strong>${noteFieldHtml(sale.telefono)}</p>
                 </div>
-                <div class="note-cart-icon">CARRITO</div>
             </section>
             <table class="note-table">
-                <thead><tr><th>CANT.</th><th>DETALLE</th><th>P. UNITARIO</th><th>SUBTOTAL</th></tr></thead>
+                <thead><tr><th>N</th><th>CODIGO</th><th>CANT.</th><th>DETALLE</th><th>P. UNITARIO</th><th>SUBTOTAL</th></tr></thead>
                 <tbody>
-                    ${sale.items.map((item) => `
+                    ${items.map((item, index) => `
                         <tr>
-                            <td>${item.cantidad}</td>
+                            <td>${index + 1}</td>
+                            <td>${escapeHtml(item.codigo || "")}</td>
+                            <td>${escapeHtml(String(item.cantidad || ""))}</td>
                             <td>${escapeHtml(item.nombre)}</td>
                             <td>${formatMoney(item.precio)} Bs</td>
                             <td>${formatMoney(item.subtotal)} Bs</td>
@@ -524,9 +589,19 @@ function renderSaleNote(sale) {
             </section>
             <p class="note-script">Gracias por confiar en Productos Sxmy!</p>
             <footer class="note-footer">
-                <div><strong>NUMERO CELULAR</strong><span>77755897</span></div>
-                <div><strong>UBICACION</strong><span>Caranavi<br>Frente Colegio Kennedy</span></div>
-                <div><strong>PRODUCTOS SXMY</strong><span>Tecnologia, creatividad y soluciones en un solo lugar.</span></div>
+                <div class="note-footer-item">
+                    <span class="note-footer-icon note-whatsapp-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" role="img"><path d="M12.04 2.5a9.35 9.35 0 0 0-7.94 14.28L3 21.5l4.84-1.07A9.36 9.36 0 1 0 12.04 2.5Zm0 1.75a7.61 7.61 0 0 1 6.44 11.7 7.58 7.58 0 0 1-9.9 2.73l-.3-.16-2.8.62.63-2.72-.18-.31a7.6 7.6 0 0 1 6.11-11.86Zm-3.3 3.82c-.15 0-.4.06-.61.29-.21.23-.8.78-.8 1.9s.82 2.2.93 2.35c.12.15 1.58 2.54 3.9 3.45 1.93.76 2.33.61 2.75.57.42-.04 1.35-.55 1.54-1.08.19-.53.19-.99.13-1.08-.06-.1-.21-.15-.44-.27-.23-.11-1.35-.67-1.56-.74-.21-.08-.36-.12-.52.11-.15.23-.6.74-.73.89-.13.15-.27.17-.5.06-.23-.12-.97-.36-1.84-1.14-.68-.61-1.14-1.36-1.27-1.59-.13-.23-.01-.35.1-.47.1-.1.23-.27.34-.4.11-.13.15-.23.23-.38.08-.15.04-.29-.02-.4-.06-.11-.52-1.25-.71-1.71-.19-.44-.38-.38-.52-.39h-.45Z"/></svg>
+                    </span>
+                    <div><strong>NUMERO CELULAR</strong><span>77755897</span></div>
+                </div>
+                <div class="note-footer-item">
+                    <span class="note-footer-icon note-location-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" role="img"><path d="M12 2.75a7.1 7.1 0 0 0-7.1 7.1c0 4.68 5.76 10.63 6.01 10.88a1.52 1.52 0 0 0 2.18 0c.25-.25 6.01-6.2 6.01-10.88A7.1 7.1 0 0 0 12 2.75Zm0 9.6a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5Z"/></svg>
+                    </span>
+                    <div><strong>UBICACION</strong><span>Caranavi<br>Frente Colegio Kennedy</span></div>
+                </div>
+                <div class="note-footer-item"><div><strong>PRODUCTOS SXMY</strong><span>Tecnologia, creatividad y soluciones en un solo lugar.</span></div></div>
             </footer>
         </div>
     `;
@@ -547,11 +622,13 @@ async function start() {
 }
 
 search.addEventListener("input", renderProducts);
-storeFilterButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-        activeQuickFilter = button.dataset.storeFilter || "all";
-        renderProducts();
-    });
+window.addEventListener("load", updateStoreHeaderSpace);
+window.addEventListener("resize", updateStoreHeaderSpace);
+storeAlphabetFilters?.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-store-filter]");
+    if (!button) return;
+    activeQuickFilter = button.dataset.storeFilter || "all";
+    renderProducts();
 });
 clearCart.addEventListener("click", () => {
     clearOrder();
@@ -565,6 +642,7 @@ list.addEventListener("click", (event) => {
     if (button.dataset.cartLine === "remove") changeCart(id, -1);
     if (button.dataset.cartLine === "delete") {
         cart = cart.filter((item) => item.id !== id);
+        playCartSound("remove");
         renderProducts();
         renderCart();
     }
@@ -572,6 +650,20 @@ list.addEventListener("click", (event) => {
 cancelOrder.addEventListener("click", clearOrder);
 cartToggle.addEventListener("click", openCheckout);
 checkoutClose.addEventListener("click", closeCheckout);
+storeMenuToggle?.addEventListener("click", (event) => {
+    event.stopPropagation();
+    const open = !storeMenu?.classList.contains("is-open");
+    storeMenu?.classList.toggle("is-open", open);
+    storeMenuToggle.setAttribute("aria-expanded", String(open));
+});
+document.addEventListener("click", (event) => {
+    if (!storeMenu?.classList.contains("is-open")) return;
+    if (event.target.closest("#storeMenu") || event.target.closest("#storeMenuToggle")) return;
+    closeStoreMenu();
+});
+storeMenu?.addEventListener("click", (event) => {
+    if (event.target.closest("a") || event.target.closest("#logout")) closeStoreMenu();
+});
 openSaleModal.addEventListener("click", openModal);
 saleModalClose.addEventListener("click", closeModal);
 saleModal.addEventListener("click", (event) => {
@@ -588,6 +680,7 @@ document.addEventListener("keydown", (event) => {
         closeModal();
         closePreview();
         closeProductDetail();
+        closeStoreMenu();
     }
 });
 grid.addEventListener("click", (event) => {

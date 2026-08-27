@@ -368,3 +368,112 @@
         }
     }
 }
+
+@media screen {
+    .login-panel {
+        position: relative;
+    }
+
+    .login-brand {
+        color: #1269d6 !important;
+        font-weight: 780 !important;
+    }
+
+    .login-copy p {
+        color: #1269d6 !important;
+        font-size: .72rem !important;
+        font-weight: 760 !important;
+    }
+
+    .login-copy h1 {
+        color: #1f2d38 !important;
+        font-size: clamp(1.55rem, 2.2vw, 1.92rem) !important;
+        font-weight: 520 !important;
+    }
+
+    .login-copy span {
+        max-width: 20rem;
+        line-height: 1.45;
+    }
+
+    .login-form {
+        gap: 1rem !important;
+    }
+
+    .login-form label:not(.remember-row) {
+        color: #22313d !important;
+        font-weight: 700 !important;
+    }
+
+    .login-form .form-field {
+        border-bottom-color: #c9d4dc !important;
+        font-size: .9rem !important;
+    }
+
+    .login-form .form-field:focus {
+        border-color: #1269d6 !important;
+    }
+
+    .password-toggle {
+        right: -.15rem !important;
+    }
+
+    .remember-row {
+        align-items: center;
+        justify-content: space-between;
+        border-radius: .7rem;
+        background: rgba(18, 105, 214, .055);
+        padding: .62rem .7rem;
+        color: #52616b !important;
+    }
+
+    .remember-row input {
+        order: 2;
+    }
+
+    .login-submit {
+        width: min(100%, 9.5rem);
+        border-radius: .72rem !important;
+        background: linear-gradient(135deg, #1269d6, #19c4e8) !important;
+        font-weight: 720 !important;
+    }
+
+    .login-status {
+        min-height: 2.25rem;
+        display: flex;
+        align-items: center;
+    }
+
+    :root[data-theme="dark"] .login-copy p {
+        color: #73cfff !important;
+    }
+
+    :root[data-theme="dark"] .login-copy h1,
+    :root[data-theme="dark"] .login-form label:not(.remember-row) {
+        color: #eef6fb !important;
+    }
+
+    :root[data-theme="dark"] .remember-row {
+        background: rgba(115, 207, 255, .08);
+        color: #b7c7d5 !important;
+    }
+}
+
+@media screen and (max-width: 520px) {
+    .login-brand-row {
+        align-items: flex-start !important;
+    }
+
+    .login-copy {
+        margin-top: 1.7rem !important;
+    }
+
+    .login-submit {
+        width: 100% !important;
+    }
+
+    .login-status {
+        justify-content: center;
+        text-align: center;
+    }
+}

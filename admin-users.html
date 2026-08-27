@@ -3,10 +3,16 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0f172a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Productos SXMY">
 <title>Cajeros - Inventario SXMY</title>
-<script src="https://cdn.tailwindcss.com"></script>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/svg+xml" href="assets/icons/icon.svg">
+<link rel="apple-touch-icon" href="assets/icons/icon-192.png">
 <link rel="stylesheet" href="css/style.css">
-<link rel="stylesheet" href="css/admin-compact.css?v=18">
+<link rel="stylesheet" href="css/utilities.css?v=1">
+<link rel="stylesheet" href="css/admin-compact.css?v=19">
 </head>
 <body class="min-h-screen bg-[#f5f7f8] text-[#111827]">
 <div class="admin-layout">
@@ -60,7 +66,7 @@
                         <input id="cashierEmail" type="email" class="form-field mt-1" placeholder="cajero@correo.com" required>
                     </div>
                     <div>
-                        <label class="text-sm font-semibold text-[#374151]" for="cashierPassword">Contrasena</label>
+                        <label class="text-sm font-semibold text-[#374151]" for="cashierPassword">Contraseña</label>
                         <input id="cashierPassword" type="password" minlength="6" class="form-field mt-1" placeholder="Minimo 6 caracteres" required>
                     </div>
                     <button class="btn-primary w-full px-4 py-2.5 text-sm" type="submit">Crear usuario</button>
@@ -82,5 +88,6 @@
 </div>
 
 <script type="module" src="js/admin-users.js?v=2"></script>
+<script src="js/pwa.js?v=1"></script>
 </body>
 </html>
