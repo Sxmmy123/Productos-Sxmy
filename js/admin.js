@@ -277,7 +277,7 @@ function renderAlternativeProducts(data) {
                         </div>
                     </div>
                     <div class="admin-product-line-meta">
-                        <span>Compra ${formatMoney(product.precioCompra)} Bs</span>
+                        <span class="card-buy-price">Compra ${formatMoney(product.precioCompra)} Bs</span>
                         <span>Stock ${escapeHtml(stockText)}</span>
                         <span>${productDate(product)}</span>
                     </div>
@@ -303,7 +303,7 @@ function renderAlternativeProducts(data) {
                     <h3>${escapeHtml(product.nombre)}</h3>
                     <p>${escapeHtml(product.descripcion)}</p>
                     <div class="admin-product-card-facts">
-                        <span>Compra ${formatMoney(product.precioCompra)} Bs</span>
+                        <span class="card-buy-price">Compra ${formatMoney(product.precioCompra)} Bs</span>
                         <span>Stock ${escapeHtml(stockText)}</span>
                         <span>${productDate(product)}</span>
                     </div>
@@ -694,24 +694,132 @@ function renderRank(items, rightText, emptyText, showMedia = false) {
     if (!items.length) return `<p class="rounded-lg border border-dashed border-[#b8c7cf] bg-[#f7fafb] p-4 text-sm text-[#60727d]">${emptyText}</p>`;
     const values = items.map((item) => Number(item.cantidad ?? item.total ?? 0));
     const maxValue = Math.max(...values, 1);
-    return items.map((item, index) => `
-        <div class="rank-row ${showMedia ? "has-media" : ""}" style="--rank:${Math.max(5, (Number(item.cantidad ?? item.total ?? 0) / maxValue) * 100)}%">
-            <div class="rank-content">
-                <span class="rank-index">${index + 1}</span>
-                ${showMedia && item.imagenUrl ? `
-                    <img class="rank-product-image" src="${escapeHtml(item.imagenUrl)}" alt="${escapeHtml(item.nombre)}">
-                ` : showMedia && item.codigo ? `
-                    <span class="rank-product-code">${escapeHtml(item.codigo)}</span>
-                ` : ""}
-                <div class="rank-product-info">
-                    <strong>${escapeHtml(item.nombre)}</strong>
-                    ${item.codigo ? `<small>${escapeHtml(item.codigo)}</small>` : ""}
+    if (showMedia) {
+        return `
+            <div class="analysis-leaderboard">
+                <div class="analysis-leader-head">
+                    <span>Nro.</span>
+                    <span>Imagen</span>
+                    <span>Producto / cantidad / total</span>
+                    <span>%</span>
                 </div>
-                <em>${rightText(item)}</em>
+                ${items.map((item, index) => {
+                    const rankValue = Math.max(6, (Number(item.cantidad ?? item.total ?? 0) / maxValue) * 100);
+                    const media = item.imagenUrl
+                        ? `<img class="analysis-leader-image" src="${escapeHtml(item.imagenUrl)}" alt="${escapeHtml(item.nombre)}">`
+                        : `<span class="analysis-leader-code">${escapeHtml(item.codigo || "--")}</span>`;
+                    return `
+                        <article class="analysis-leader-row" style="--rank:${rankValue}%">
+                            <span class="analysis-leader-number">${index + 1}</span>
+                            <div class="analysis-leader-media">${media}</div>
+                            <div class="analysis-leader-track">
+                                <i class="analysis-leader-fill" aria-hidden="true"></i>
+                                <strong class="analysis-leader-name">${escapeHtml(item.nombre)}</strong>
+                                <span class="analysis-leader-units">
+                                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6h15l-1.6 7.2a2 2 0 0 1-2 1.6H9.1a2 2 0 0 1-2-1.7L5.8 4.8H3"/><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/></svg>
+                                    ${Number(item.cantidad || 0)} unid.
+                                </span>
+                                <em class="analysis-leader-total">
+                                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 8h8.5a3.5 3.5 0 0 1 0 7H7z"/><path d="M7 8V5"/><path d="M7 15v4"/><path d="M12 8V5"/><path d="M12 15v4"/></svg>
+                                    ${formatMoney(item.total)} Bs
+                                </em>
+                            </div>
+                            <span class="analysis-leader-percent">${Math.round(rankValue)}%</span>
+                        </article>
+                    `;
+                }).join("")}
             </div>
-            <i class="rank-bar" aria-hidden="true"></i>
+        `;
+    }
+    if (!showMedia) {
+        return `
+            <div class="analysis-leaderboard analysis-dayboard">
+                <div class="analysis-leader-head">
+                    <span>Nro.</span>
+                    <span>Dia</span>
+                    <span>Ventas del dia</span>
+                    <span>%</span>
+                </div>
+                ${items.map((item, index) => {
+                    const rankValue = Math.max(6, (Number(item.total ?? item.cantidad ?? 0) / maxValue) * 100);
+                    return `
+                        <article class="analysis-leader-row" style="--rank:${rankValue}%">
+                            <span class="analysis-leader-number">${index + 1}</span>
+                            <div class="analysis-leader-media"><span class="analysis-day-token">Dia</span></div>
+                            <div class="analysis-leader-track">
+                                <i class="analysis-leader-fill" aria-hidden="true"></i>
+                                <strong class="analysis-leader-name">${escapeHtml(item.nombre)}</strong>
+                                <span class="analysis-leader-units">Ventas</span>
+                                <em class="analysis-leader-total">${rightText(item)}</em>
+                            </div>
+                            <span class="analysis-leader-percent">${Math.round(rankValue)}%</span>
+                        </article>
+                    `;
+                }).join("")}
+            </div>
+        `;
+    }
+    const listClass = showMedia ? "rank-list rank-list-products" : "rank-list rank-list-days";
+    return `
+        <div class="${listClass}">
+            <div class="rank-list-head">
+                ${showMedia ? `
+                    <span>N°</span>
+                    <span>Imagen</span>
+                    <span>Producto / cantidad / total</span>
+                    <span>%</span>
+                ` : `
+                    <span>#</span>
+                    <span>Dia</span>
+                    <span>Total</span>
+                `}
+            </div>
+            ${items.map((item, index) => {
+                const rankValue = Math.max(5, (Number(item.cantidad ?? item.total ?? 0) / maxValue) * 100);
+                const media = showMedia
+                    ? item.imagenUrl
+                        ? `<img class="rank-product-image" src="${escapeHtml(item.imagenUrl)}" alt="${escapeHtml(item.nombre)}">`
+                        : `<span class="rank-product-code">${escapeHtml(item.codigo || "--")}</span>`
+                    : "";
+                if (showMedia) {
+                    return `
+                        <div class="rank-row has-media" style="--rank:${rankValue}%">
+                            <div class="rank-content rank-product-row">
+                                <span class="rank-index">${index + 1}</span>
+                                ${media}
+                                <div class="rank-data-bar">
+                                    <i aria-hidden="true"></i>
+                                    <strong>${escapeHtml(item.nombre)}</strong>
+                                    <span class="rank-data-units">
+                                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6h15l-1.6 7.2a2 2 0 0 1-2 1.6H9.1a2 2 0 0 1-2-1.7L5.8 4.8H3"/><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/></svg>
+                                        ${Number(item.cantidad || 0)} unid.
+                                    </span>
+                                    <em class="rank-data-total">
+                                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 8h8.5a3.5 3.5 0 0 1 0 7H7z"/><path d="M7 8V5"/><path d="M7 15v4"/><path d="M12 8V5"/><path d="M12 15v4"/></svg>
+                                        ${formatMoney(item.total)} Bs
+                                    </em>
+                                </div>
+                                <span class="rank-percent">${Math.round(rankValue)}%</span>
+                            </div>
+                        </div>
+                    `;
+                }
+                return `
+                    <div class="rank-row" style="--rank:${rankValue}%">
+                        <div class="rank-content">
+                            <span class="rank-index">${index + 1}</span>
+                            <div class="rank-product-info">
+                                <strong>${escapeHtml(item.nombre)}</strong>
+                                <small>Ventas registradas</small>
+                            </div>
+                            <em>${rightText(item)}</em>
+                        </div>
+                        <i class="rank-bar" aria-hidden="true"></i>
+                    </div>
+                `;
+            }).join("")}
         </div>
-    `).join("");
+    `;
 }
 
 function noteFieldHtml(value, options = {}) {

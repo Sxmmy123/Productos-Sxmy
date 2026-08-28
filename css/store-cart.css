@@ -2557,3 +2557,172 @@
         color: #b5c7d4;
     }
 }
+
+@media screen {
+    .sale-modal {
+        z-index: 520 !important;
+    }
+
+    #saleModal {
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 1rem !important;
+        background: rgba(6, 16, 24, .58) !important;
+        backdrop-filter: blur(10px);
+    }
+
+    #saleModal .sale-modal-card {
+        display: grid !important;
+        grid-template-rows: auto minmax(0, 1fr) auto !important;
+        width: min(100%, 30rem) !important;
+        max-height: min(92dvh, 36rem) !important;
+        overflow: hidden !important;
+        border-radius: 1rem !important;
+    }
+
+    #saleModal .sale-modal-head {
+        min-height: 0 !important;
+        padding: .85rem 1rem !important;
+        border-bottom: 1px solid var(--line);
+    }
+
+    #saleModal .sale-modal-head .eyebrow {
+        margin: 0 0 .12rem !important;
+        font-size: .68rem !important;
+    }
+
+    #saleModal .sale-modal-head h2 {
+        margin: 0 !important;
+        font-size: 1.05rem !important;
+        font-weight: 680 !important;
+        letter-spacing: 0 !important;
+    }
+
+    #saleModal .sale-modal-body {
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        align-content: start !important;
+        gap: .75rem !important;
+        padding: 1rem !important;
+        overflow: auto !important;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    #saleModal .sale-modal-body > div {
+        display: grid;
+        gap: .28rem;
+        min-height: 0 !important;
+    }
+
+    #saleModal .sale-modal-body > div:nth-child(3) {
+        grid-column: 1 / -1;
+    }
+
+    #saleModal .sale-modal-body label {
+        color: var(--text) !important;
+        font-size: .76rem !important;
+        font-weight: 620 !important;
+        line-height: 1.25;
+    }
+
+    #saleModal .sale-modal-body .form-field {
+        min-height: 2.55rem !important;
+        margin-top: 0 !important;
+        padding: .65rem .78rem !important;
+        font-size: .86rem !important;
+        line-height: 1.25 !important;
+    }
+
+    #saleModal .sale-modal-actions {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: .6rem !important;
+        padding: .85rem 1rem !important;
+        border-top: 1px solid var(--line);
+        background: color-mix(in srgb, var(--surface) 94%, transparent) !important;
+        box-shadow: none !important;
+    }
+
+    #saleModal .sale-modal-actions .btn-primary,
+    #saleModal .sale-modal-actions .btn-light {
+        min-height: 2.55rem !important;
+        padding: .62rem .7rem !important;
+        font-size: .8rem !important;
+        font-weight: 650 !important;
+    }
+
+    :root[data-theme="dark"] #saleModal .sale-modal-head,
+    :root[data-theme="dark"] #saleModal .sale-modal-actions {
+        border-color: #294052;
+        background: rgba(15, 27, 37, .96) !important;
+    }
+}
+
+@media screen and (max-width: 760px) {
+    #saleModal {
+        z-index: 540 !important;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: .55rem !important;
+        padding-top: max(.55rem, env(safe-area-inset-top)) !important;
+    }
+
+    #saleModal .sale-modal-card {
+        width: 100% !important;
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: calc(100dvh - 1.1rem) !important;
+        align-self: center !important;
+        border-radius: .9rem !important;
+        grid-template-rows: auto auto auto !important;
+    }
+
+    #saleModal .sale-modal-head {
+        padding: .72rem .85rem !important;
+    }
+
+    #saleModal .sale-modal-head .eyebrow {
+        font-size: .62rem !important;
+    }
+
+    #saleModal .sale-modal-head h2 {
+        font-size: .98rem !important;
+    }
+
+    #saleModal .sale-modal-body {
+        grid-template-columns: 1fr !important;
+        min-height: 0 !important;
+        gap: .55rem !important;
+        padding: .72rem .85rem !important;
+        overflow: visible !important;
+    }
+
+    #saleModal .sale-modal-body > div {
+        gap: .18rem !important;
+    }
+
+    #saleModal .sale-modal-body label {
+        font-size: .72rem !important;
+    }
+
+    #saleModal .sale-modal-body .form-field {
+        min-height: 2.35rem !important;
+        padding: .58rem .72rem !important;
+        font-size: .8rem !important;
+    }
+
+    #saleModal .sale-modal-actions {
+        position: relative !important;
+        bottom: 0;
+        grid-template-columns: 1fr 1fr !important;
+        gap: .48rem !important;
+        padding: .62rem .85rem calc(.62rem + env(safe-area-inset-bottom)) !important;
+    }
+
+    #saleModal .sale-modal-actions .btn-primary,
+    #saleModal .sale-modal-actions .btn-light {
+        min-height: 2.4rem !important;
+        padding: .58rem .55rem !important;
+        font-size: .74rem !important;
+    }
+}
