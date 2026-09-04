@@ -1,4 +1,4 @@
-const CACHE_NAME = "productos-sxmy-v5";
+const CACHE_NAME = "productos-sxmy-v7";
 const APP_SHELL = [
     "./",
     "./index.html",
@@ -9,6 +9,8 @@ const APP_SHELL = [
     "./css/style.css",
     "./css/utilities.css",
     "./css/store-cart.css",
+    "./css/store-sidebar.css",
+    "./css/store-pushbuy.css",
     "./css/admin-compact.css",
     "./css/login.css",
     "./css/sale-note.css",

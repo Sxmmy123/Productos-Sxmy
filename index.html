@@ -14,17 +14,78 @@
 <link rel="stylesheet" href="css/utilities.css?v=1">
 <link rel="stylesheet" href="css/store-cart.css?v=26">
 <link rel="stylesheet" href="css/sale-note.css?v=4">
+<link rel="stylesheet" href="css/store-sidebar.css?v=1">
+<link rel="stylesheet" href="css/store-pushbuy.css?v=1">
 </head>
-<body class="min-h-screen bg-[#f5f7f8] text-[#111827]">
-<header class="store-header">
-    <nav class="store-nav">
-        <a class="brand-mark" href="index.html">
-            <img class="brand-logo" src="assets/icons/icon.svg" alt="">
-            <span class="brand-copy">
-                <span>Productos SXMY</span>
-                <small>Electronica y robotica</small>
-            </span>
-        </a>
+<body class="store-page min-h-screen bg-[#f5f7f8] text-[#111827]">
+<div class="store-layout">
+    <div id="sidebarOverlay" class="sidebar-overlay"></div>
+    <aside id="storeSidebar" class="admin-sidebar store-sidebar" aria-label="Navegacion principal">
+        <div class="sidebar-brand">
+            <div class="sidebar-brand-copy">
+                <a href="index.html">PRODUCTOS SXMY</a>
+                <span id="adminBadge" class="sidebar-role">Tienda publica</span>
+            </div>
+            <button id="sidebarCollapse" class="sidebar-collapse-toggle" type="button" title="Contraer menu" aria-label="Contraer menu">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
+            </button>
+            <button id="sidebarClose" class="icon-button sidebar-close" type="button" title="Cerrar menu" aria-label="Cerrar menu">X</button>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a class="sidebar-link active" href="index.html" title="Tienda" aria-current="page">
+                <span class="sidebar-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 9l2-5h14l2 5"/><path d="M4 9h16v11H4z"/><path d="M9 20v-6h6v6"/></svg></span>
+                <span class="sidebar-copy"><span class="sidebar-text">Tienda</span><small>Catalogo y ventas</small></span>
+            </a>
+            <div id="adminNav" class="sidebar-auth-nav hidden">
+                <a class="sidebar-link" href="admin.html#productos" title="Productos">
+                    <span class="sidebar-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 7h16"/><path d="M4 12h16"/><path d="M4 17h10"/></svg></span>
+                    <span class="sidebar-copy"><span class="sidebar-text">Productos</span><small>Inventario, precios y stock</small></span>
+                </a>
+                <a class="sidebar-link" href="admin.html#historial" title="Historial">
+                    <span class="sidebar-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 6h13"/><path d="M8 12h13"/><path d="M8 18h13"/><path d="M3 6h.01"/><path d="M3 12h.01"/><path d="M3 18h.01"/></svg></span>
+                    <span class="sidebar-copy"><span class="sidebar-text">Historial</span><small>Notas de venta</small></span>
+                </a>
+                <a class="sidebar-link" href="admin.html#analisis" title="Analisis">
+                    <span class="sidebar-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 19V5"/><path d="M4 19h16"/><path d="M8 16v-5"/><path d="M13 16V8"/><path d="M18 16v-3"/></svg></span>
+                    <span class="sidebar-copy"><span class="sidebar-text">Analisis</span><small>Mas vendidos por dia</small></span>
+                </a>
+                <a id="cashiersLink" class="sidebar-link" href="admin-users.html" title="Cajeros">
+                    <span class="sidebar-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="9.5" cy="7" r="4"/><path d="M20 8v6"/><path d="M23 11h-6"/></svg></span>
+                    <span class="sidebar-copy"><span class="sidebar-text">Cajeros</span><small>Usuarios y ventas</small></span>
+                </a>
+            </div>
+        </nav>
+
+        <div class="sidebar-actions">
+            <label id="pushbuyControl" class="pushbuy-control hidden" title="Activar compra al tocar">
+                <span class="pushbuy-control-copy">
+                    <strong>Pushbuy</strong>
+                    <small>Tocar producto para agregar</small>
+                </span>
+                <input id="pushbuyToggle" class="pushbuy-input" type="checkbox" role="switch" aria-label="Activar Pushbuy">
+                <span class="pushbuy-switch" aria-hidden="true"><span></span></span>
+            </label>
+            <button class="theme-toggle theme-toggle-wide" data-theme-toggle type="button">Oscuro</button>
+            <a id="loginLink" class="sidebar-login" href="login.html" title="Ingresar">
+                <span class="sidebar-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M14 7l5 5-5 5"/><path d="M19 12H7"/><path d="M3 3v18"/></svg></span>
+                <span class="sidebar-action-text">Ingresar</span>
+            </a>
+            <button id="logout" class="sidebar-logout hidden" type="button" title="Salir">
+                <span class="sidebar-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/><path d="M21 3v18"/></svg></span>
+                <span class="sidebar-action-text">Salir</span>
+            </button>
+        </div>
+    </aside>
+
+    <div class="store-workspace">
+    <header class="store-header">
+        <nav class="store-nav">
+            <button id="sidebarToggle" class="hamburger-button" type="button" title="Abrir menu" aria-label="Abrir menu" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
         <div class="store-search">
             <input id="search" class="form-field" placeholder="Buscar producto o codigo">
         </div>
@@ -34,25 +95,11 @@
                 <span>Carrito</span>
                 <strong id="cartBadge">0</strong>
             </button>
-            <button id="storeMenuToggle" class="store-menu-toggle" type="button" aria-label="Abrir menu" aria-expanded="false">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-            <div id="storeMenu" class="store-menu">
-                <button class="theme-toggle" data-theme-toggle type="button">Oscuro</button>
-                <span id="adminBadge" class="admin-chip hidden">Admin</span>
-                <a id="loginLink" class="text-link" href="login.html">Ingresar</a>
-                <div id="adminNav" class="hidden flex-wrap items-center gap-2">
-                    <a class="nav-pill" href="admin.html#productos">Panel</a>
-                    <button id="logout" class="nav-pill" type="button">Salir</button>
-                </div>
-            </div>
         </div>
-    </nav>
-</header>
+        </nav>
+    </header>
 
-<main class="store-main">
+    <main class="store-main">
     <section class="store-hero">
         <div>
             <p class="eyebrow">Catalogo publico</p>
@@ -102,7 +149,9 @@
             <div id="saleStatus" class="sale-status">Carrito listo.</div>
         </div>
     </section>
-</main>
+    </main>
+    </div>
+</div>
 
 <div id="saleModal" class="sale-modal hidden">
     <section class="sale-modal-card">
@@ -173,7 +222,7 @@
 
 <section id="salePrintArea" class="print-note"></section>
 
-<script type="module" src="js/catalog.js?v=11"></script>
+<script type="module" src="js/catalog.js?v=13"></script>
 <script src="js/pwa.js?v=1"></script>
 </body>
 </html>

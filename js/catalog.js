@@ -16,8 +16,10 @@ let activeQuickFilter = "all";
 let audioContext = null;
 let productsLoaded = false;
 let storeLoading = true;
+let pushbuyEnabled = false;
 
 const SALE_DRAFT_PREFIX = "productos-sxmy-sale-draft:";
+const PUSHBUY_PREFIX = "productos-sxmy-pushbuy:";
 
 const grid = document.getElementById("grid");
 const search = document.getElementById("search");
@@ -32,8 +34,13 @@ const adminBadge = document.getElementById("adminBadge");
 const logout = document.getElementById("logout");
 const storeHeader = document.querySelector(".store-header");
 const storeFilterbar = document.querySelector(".store-filterbar");
-const storeMenu = document.getElementById("storeMenu");
-const storeMenuToggle = document.getElementById("storeMenuToggle");
+const sidebarToggle = document.getElementById("sidebarToggle");
+const sidebarClose = document.getElementById("sidebarClose");
+const sidebarOverlay = document.getElementById("sidebarOverlay");
+const sidebarCollapse = document.getElementById("sidebarCollapse");
+const cashiersLink = document.getElementById("cashiersLink");
+const pushbuyControl = document.getElementById("pushbuyControl");
+const pushbuyToggle = document.getElementById("pushbuyToggle");
 const saleMode = document.getElementById("saleMode");
 const adminCheckout = document.getElementById("adminCheckout");
 const cartToggle = document.getElementById("cartToggle");
@@ -90,6 +97,35 @@ function canAddMore(product) {
 
 function productHasStock(product) {
     return product.stock === "" || Number(product.stock || 0) > 0;
+}
+
+function pushbuyStorageKey(userId = currentUser?.uid) {
+    return userId ? `${PUSHBUY_PREFIX}${userId}` : "";
+}
+
+function restorePushbuy(userId) {
+    try {
+        return localStorage.getItem(pushbuyStorageKey(userId)) === "1";
+    } catch {
+        return false;
+    }
+}
+
+function applyPushbuyMode(enabled, persist = false) {
+    pushbuyEnabled = Boolean(currentUser && enabled);
+    document.body.classList.toggle("pushbuy-enabled", pushbuyEnabled);
+    pushbuyControl?.classList.toggle("hidden", !currentUser);
+    if (pushbuyToggle) {
+        pushbuyToggle.checked = pushbuyEnabled;
+        pushbuyToggle.setAttribute("aria-checked", String(pushbuyEnabled));
+    }
+    if (persist && currentUser) {
+        try {
+            localStorage.setItem(pushbuyStorageKey(), pushbuyEnabled ? "1" : "0");
+        } catch (error) {
+            console.warn("No se pudo guardar la preferencia Pushbuy.", error);
+        }
+    }
 }
 
 function saleDraftKey(userId = currentUser?.uid) {
@@ -295,7 +331,7 @@ function renderProducts() {
         const qty = cart.find((item) => item.id === product.id)?.qty || 0;
         const hasImage = Boolean(product.imagenUrl);
         const disabled = !canAddMore(product);
-        const adminControls = currentUser ? `
+        const adminControls = currentUser && !pushbuyEnabled ? `
                     <div class="product-actions">
                         <div class="qty-control">
                             <button data-cart="add" data-id="${escapeHtml(product.id)}" ${disabled ? "disabled" : ""}>+</button>
@@ -307,11 +343,18 @@ function renderProducts() {
 
         const detailAttribute = currentUser ? "" : `data-detail-product="${escapeHtml(product.id)}"`;
         const detailButton = currentUser ? "" : `<button class="product-detail-link" data-detail-product="${escapeHtml(product.id)}" type="button">Ver detalle</button>`;
+        const pushbuyAttribute = currentUser && pushbuyEnabled
+            ? `data-pushbuy-product="${escapeHtml(product.id)}" role="button" tabindex="0" aria-disabled="${disabled}" aria-label="Agregar ${escapeHtml(product.nombre)} al carrito"`
+            : "";
+        const pushbuyQuantity = currentUser && pushbuyEnabled && qty > 0
+            ? `<span class="pushbuy-quantity" aria-label="${qty} ${qty === 1 ? "unidad" : "unidades"} en el carrito">${qty}</span>`
+            : "";
 
         grid.insertAdjacentHTML("beforeend", `
-            <article class="product-card ${productStateClass(product)}" ${detailAttribute}>
+            <article class="product-card ${pushbuyEnabled && currentUser ? `pushbuy-card ${disabled ? "pushbuy-maxed" : ""}` : ""} ${productStateClass(product)}" ${detailAttribute} ${pushbuyAttribute}>
                 <div class="product-image-shell">
                     <p class="code-pill image-code-pill">${escapeHtml(product.codigo)}</p>
+                    ${pushbuyQuantity}
                     ${hasImage
                         ? `<img src="${escapeHtml(product.imagenUrl)}" alt="${escapeHtml(product.nombre)}" class="h-full w-full rounded-lg object-contain" loading="lazy">`
                         : `<div class="no-image">Sin imagen</div>`}
@@ -348,14 +391,14 @@ function storeLoadingState() {
     `).join("");
 }
 
-function changeCart(id, direction) {
+function changeCart(id, direction, { refreshProducts = true } = {}) {
     const product = products.find((item) => item.id === id);
-    if (!product) return;
+    if (!product) return false;
     const item = cart.find((cartItem) => cartItem.id === id);
 
     if (direction > 0 && !canAddMore(product)) {
         saleStatus.textContent = "No hay mas stock disponible para ese producto.";
-        return;
+        return false;
     }
 
     if (!item && direction > 0) cart.push({ ...product, qty: 1 });
@@ -366,8 +409,83 @@ function changeCart(id, direction) {
 
     playCartSound(direction > 0 ? "add" : "remove");
     saveSaleDraft();
-    renderProducts();
+    if (refreshProducts) renderProducts();
     renderCart();
+    return true;
+}
+
+function updatePushbuyCardQuantity(card, product) {
+    if (!card || !product) return;
+    const qty = cart.find((item) => item.id === product.id)?.qty || 0;
+    const imageShell = card.querySelector(".product-image-shell");
+    let badge = card.querySelector(".pushbuy-quantity");
+
+    if (!badge && qty > 0 && imageShell) {
+        badge = document.createElement("span");
+        badge.className = "pushbuy-quantity";
+        imageShell.appendChild(badge);
+    }
+    if (badge) {
+        badge.textContent = String(qty);
+        badge.setAttribute("aria-label", `${qty} ${qty === 1 ? "unidad" : "unidades"} en el carrito`);
+    }
+
+    const maxed = !canAddMore(product);
+    card.classList.toggle("pushbuy-maxed", maxed);
+    card.setAttribute("aria-disabled", String(maxed));
+}
+
+function animatePushbuy(card) {
+    if (!card || !cartToggle || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        cartToggle?.classList.add("pushbuy-cart-pulse");
+        setTimeout(() => cartToggle?.classList.remove("pushbuy-cart-pulse"), 360);
+        return;
+    }
+
+    const source = card.querySelector(".product-image-shell") || card;
+    const sourceRect = source.getBoundingClientRect();
+    const targetRect = cartToggle.getBoundingClientRect();
+    if (!sourceRect.width || !targetRect.width) return;
+
+    const flyer = source.cloneNode(true);
+    flyer.className = "pushbuy-flyer";
+    Object.assign(flyer.style, {
+        left: `${sourceRect.left}px`,
+        top: `${sourceRect.top}px`,
+        width: `${sourceRect.width}px`,
+        height: `${sourceRect.height}px`
+    });
+    document.body.appendChild(flyer);
+
+    const sourceX = sourceRect.left + sourceRect.width / 2;
+    const sourceY = sourceRect.top + sourceRect.height / 2;
+    const targetX = targetRect.left + targetRect.width / 2;
+    const targetY = targetRect.top + targetRect.height / 2;
+
+    requestAnimationFrame(() => {
+        flyer.style.transform = `translate3d(${targetX - sourceX}px, ${targetY - sourceY}px, 0) scale(.08) rotate(7deg)`;
+        flyer.style.opacity = "0";
+        flyer.style.borderRadius = "50%";
+    });
+
+    const finish = () => {
+        flyer.remove();
+        cartToggle.classList.add("pushbuy-cart-pulse");
+        setTimeout(() => cartToggle.classList.remove("pushbuy-cart-pulse"), 360);
+    };
+    flyer.addEventListener("transitionend", finish, { once: true });
+    setTimeout(() => flyer.isConnected && finish(), 760);
+}
+
+function addProductWithPushbuy(card) {
+    const id = card?.dataset.pushbuyProduct;
+    const product = products.find((item) => item.id === id);
+    if (!product || !canAddMore(product)) {
+        saleStatus.textContent = "No hay mas stock disponible para ese producto.";
+        return;
+    }
+    animatePushbuy(card);
+    if (changeCart(id, 1, { refreshProducts: false })) updatePushbuyCardQuantity(card, product);
 }
 
 function renderCart() {
@@ -407,11 +525,16 @@ function renderCart() {
 async function setAdminState(user) {
     currentUser = user;
     currentProfile = user ? await getUserProfile(user.uid) : null;
+    applyPushbuyMode(user ? restorePushbuy(user.uid) : false);
     const restoredUnits = user ? restoreSaleDraft(user.uid) : 0;
     loginLink.classList.toggle("hidden", Boolean(user));
-    adminBadge.classList.toggle("hidden", !user);
     adminNav.classList.toggle("hidden", !user);
-    adminNav.classList.toggle("flex", Boolean(user));
+    logout.classList.toggle("hidden", !user);
+    const isCashier = currentProfile?.rol === "cajero";
+    cashiersLink?.classList.toggle("hidden", !user || isCashier);
+    adminBadge.textContent = user
+        ? `${isCashier ? "Cajero" : "Administrador"} | ${currentProfile?.nombre || user.email || "Usuario"}`
+        : "Tienda publica";
     cartToggle.classList.toggle("hidden", !user);
     closeStoreMenu();
     adminCheckout.classList.add("hidden");
@@ -433,8 +556,25 @@ function openCheckout() {
 }
 
 function closeStoreMenu() {
-    storeMenu?.classList.remove("is-open");
-    storeMenuToggle?.setAttribute("aria-expanded", "false");
+    document.body.classList.remove("sidebar-open");
+    sidebarToggle?.setAttribute("aria-expanded", "false");
+}
+
+function openSidebar() {
+    document.body.classList.add("sidebar-open");
+    sidebarToggle?.setAttribute("aria-expanded", "true");
+}
+
+function setSidebarCollapsed(collapsed) {
+    document.body.classList.toggle("sidebar-collapsed", collapsed);
+    localStorage.setItem("sxmy-sidebar-collapsed", collapsed ? "1" : "0");
+    const label = collapsed ? "Expandir menu" : "Contraer menu";
+    sidebarCollapse?.setAttribute("aria-label", label);
+    sidebarCollapse?.setAttribute("title", label);
+}
+
+function initSidebar() {
+    setSidebarCollapsed(localStorage.getItem("sxmy-sidebar-collapsed") === "1");
 }
 
 function updateStoreHeaderSpace() {
@@ -780,19 +920,18 @@ list.addEventListener("click", (event) => {
 cancelOrder.addEventListener("click", clearOrder);
 cartToggle.addEventListener("click", openCheckout);
 checkoutClose.addEventListener("click", closeCheckout);
-storeMenuToggle?.addEventListener("click", (event) => {
-    event.stopPropagation();
-    const open = !storeMenu?.classList.contains("is-open");
-    storeMenu?.classList.toggle("is-open", open);
-    storeMenuToggle.setAttribute("aria-expanded", String(open));
+sidebarToggle?.addEventListener("click", openSidebar);
+sidebarClose?.addEventListener("click", closeStoreMenu);
+sidebarOverlay?.addEventListener("click", closeStoreMenu);
+sidebarCollapse?.addEventListener("click", () => {
+    setSidebarCollapsed(!document.body.classList.contains("sidebar-collapsed"));
 });
-document.addEventListener("click", (event) => {
-    if (!storeMenu?.classList.contains("is-open")) return;
-    if (event.target.closest("#storeMenu") || event.target.closest("#storeMenuToggle")) return;
-    closeStoreMenu();
+pushbuyToggle?.addEventListener("change", () => {
+    applyPushbuyMode(pushbuyToggle.checked, true);
+    renderProducts();
 });
-storeMenu?.addEventListener("click", (event) => {
-    if (event.target.closest("a") || event.target.closest("#logout")) closeStoreMenu();
+document.querySelectorAll(".store-sidebar a").forEach((link) => {
+    link.addEventListener("click", closeStoreMenu);
 });
 openSaleModal.addEventListener("click", openModal);
 saleModalClose.addEventListener("click", closeModal);
@@ -821,9 +960,21 @@ grid.addEventListener("click", (event) => {
         changeCart(button.dataset.id, button.dataset.cart === "add" ? 1 : -1);
         return;
     }
+    const pushbuyCard = event.target.closest("[data-pushbuy-product]");
+    if (currentUser && pushbuyEnabled && pushbuyCard) {
+        addProductWithPushbuy(pushbuyCard);
+        return;
+    }
     if (currentUser) return;
     const card = event.target.closest("[data-detail-product]");
     if (card) openProductDetail(card.dataset.detailProduct);
+});
+grid.addEventListener("keydown", (event) => {
+    if (!currentUser || !pushbuyEnabled || !["Enter", " "].includes(event.key)) return;
+    const card = event.target.closest("[data-pushbuy-product]");
+    if (!card) return;
+    event.preventDefault();
+    addProductWithPushbuy(card);
 });
 saveSale.addEventListener("click", finalizeSale);
 printLastSale.addEventListener("click", () => {
@@ -840,5 +991,6 @@ logout.addEventListener("click", async () => {
     window.location.href = "index.html";
 });
 
+initSidebar();
 onAuthStateChanged(auth, setAdminState);
 start();
