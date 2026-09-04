@@ -12,15 +12,18 @@
 <link rel="apple-touch-icon" href="assets/icons/icon-192.png">
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/utilities.css?v=1">
-<link rel="stylesheet" href="css/store-cart.css?v=23">
+<link rel="stylesheet" href="css/store-cart.css?v=26">
 <link rel="stylesheet" href="css/sale-note.css?v=4">
 </head>
 <body class="min-h-screen bg-[#f5f7f8] text-[#111827]">
 <header class="store-header">
     <nav class="store-nav">
         <a class="brand-mark" href="index.html">
-            <span>Productos SXMY</span>
-            <small>Electronica y robotica</small>
+            <img class="brand-logo" src="assets/icons/icon.svg" alt="">
+            <span class="brand-copy">
+                <span>Productos SXMY</span>
+                <small>Electronica y robotica</small>
+            </span>
         </a>
         <div class="store-search">
             <input id="search" class="form-field" placeholder="Buscar producto o codigo">
@@ -59,7 +62,7 @@
         <span id="productCount" class="count-pill">0 productos</span>
     </section>
 
-    <div id="statusBox" class="mb-4 rounded-lg border border-[#d8e0e4] bg-white px-4 py-3 text-sm text-[#52616b]">Cargando productos...</div>
+    <div id="statusBox" class="hidden mb-4 rounded-lg border border-[#d8e0e4] bg-white px-4 py-3 text-sm text-[#52616b]" role="status"></div>
 
     <section class="store-filterbar" aria-label="Filtros de catalogo">
         <div id="storeAlphabetFilters" class="store-filter-scroll">
@@ -170,7 +173,7 @@
 
 <section id="salePrintArea" class="print-note"></section>
 
-<script type="module" src="js/catalog.js?v=9"></script>
+<script type="module" src="js/catalog.js?v=11"></script>
 <script src="js/pwa.js?v=1"></script>
 </body>
 </html>

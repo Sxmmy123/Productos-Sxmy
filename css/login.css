@@ -477,3 +477,107 @@
         text-align: center;
     }
 }
+
+/* Login contrast and shared identity */
+@media screen {
+    .login-page {
+        background:
+            linear-gradient(90deg, rgba(247, 250, 252, .98) 0%, rgba(247, 250, 252, .92) 34%, rgba(247, 250, 252, .48) 54%, rgba(247, 250, 252, .08) 100%),
+            url("../assets/img/login-tech-bg.png") center right / cover no-repeat !important;
+    }
+
+    .login-logo-icon {
+        display: block !important;
+        width: 2rem !important;
+        height: 2rem !important;
+        flex: 0 0 2rem;
+        border-radius: .55rem;
+        object-fit: cover;
+        box-shadow: 0 7px 16px rgba(15, 23, 42, .16);
+    }
+
+    .login-brand {
+        gap: .62rem !important;
+        color: #0f2740 !important;
+        font-size: .88rem !important;
+        font-weight: 720 !important;
+        letter-spacing: 0 !important;
+    }
+
+    .login-copy {
+        margin-top: 2.4rem !important;
+    }
+
+    .login-copy p {
+        color: #1269d6 !important;
+        font-weight: 680 !important;
+    }
+
+    .login-copy h1 {
+        color: #17212b !important;
+        font-weight: 560 !important;
+    }
+
+    .login-copy span {
+        color: #5f6f7c !important;
+    }
+
+    .login-form .form-field {
+        border-bottom-color: #aebdc8 !important;
+        color: #17212b !important;
+    }
+
+    .remember-row {
+        border: 1px solid rgba(18, 105, 214, .09);
+        background: rgba(18, 105, 214, .07) !important;
+    }
+
+    .login-submit {
+        background: #1269d6 !important;
+        box-shadow: 0 10px 22px rgba(18, 105, 214, .25) !important;
+    }
+
+    .login-status:empty {
+        display: none !important;
+        min-height: 0 !important;
+        padding: 0 !important;
+    }
+
+    :root[data-theme="dark"] .login-page {
+        background:
+            linear-gradient(90deg, rgba(6, 14, 24, .98) 0%, rgba(7, 16, 26, .94) 36%, rgba(7, 16, 26, .58) 56%, rgba(7, 16, 26, .18) 100%),
+            url("../assets/img/login-tech-bg.png") center right / cover no-repeat !important;
+    }
+
+    :root[data-theme="dark"] .login-brand,
+    :root[data-theme="dark"] .login-copy h1,
+    :root[data-theme="dark"] .login-form .form-field {
+        color: #eef6fb !important;
+    }
+}
+
+@media screen and (max-width: 900px) {
+    .login-page {
+        background:
+            linear-gradient(180deg, rgba(238, 246, 252, .68), rgba(238, 246, 252, .78)),
+            url("../assets/img/login-tech-bg.png") center / cover no-repeat !important;
+    }
+
+    .login-panel {
+        border-color: rgba(174, 189, 200, .7) !important;
+        background: rgba(255, 255, 255, .92) !important;
+        box-shadow: 0 18px 45px rgba(15, 39, 64, .16) !important;
+        backdrop-filter: blur(12px) !important;
+    }
+
+    :root[data-theme="dark"] .login-page {
+        background:
+            linear-gradient(180deg, rgba(6, 14, 24, .8), rgba(6, 14, 24, .88)),
+            url("../assets/img/login-tech-bg.png") center / cover no-repeat !important;
+    }
+
+    :root[data-theme="dark"] .login-panel {
+        border-color: #294052 !important;
+        background: rgba(11, 24, 36, .94) !important;
+    }
+}

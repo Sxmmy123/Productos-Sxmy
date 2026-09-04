@@ -14,6 +14,10 @@ let currentProfile = null;
 let lastSale = null;
 let activeQuickFilter = "all";
 let audioContext = null;
+let productsLoaded = false;
+let storeLoading = true;
+
+const SALE_DRAFT_PREFIX = "productos-sxmy-sale-draft:";
 
 const grid = document.getElementById("grid");
 const search = document.getElementById("search");
@@ -86,6 +90,88 @@ function canAddMore(product) {
 
 function productHasStock(product) {
     return product.stock === "" || Number(product.stock || 0) > 0;
+}
+
+function saleDraftKey(userId = currentUser?.uid) {
+    return userId ? `${SALE_DRAFT_PREFIX}${userId}` : "";
+}
+
+function saveSaleDraft() {
+    const key = saleDraftKey();
+    if (!key) return;
+
+    const draft = {
+        items: cart.map((item) => ({
+            id: item.id,
+            codigo: item.codigo,
+            nombre: item.nombre,
+            descripcion: item.descripcion,
+            precioVenta: Number(item.precioVenta || 0),
+            stock: item.stock,
+            activo: item.activo,
+            imagenUrl: item.imagenUrl || "",
+            qty: Number(item.qty || 0)
+        })),
+        descuento: discountAmount.value,
+        cliente: customerName.value,
+        direccion: customerAddress.value,
+        telefono: customerPhone.value,
+        metodoPago: paymentMethod.value,
+        updatedAt: Date.now()
+    };
+
+    try {
+        localStorage.setItem(key, JSON.stringify(draft));
+    } catch (error) {
+        console.warn("No se pudo guardar la orden pendiente.", error);
+    }
+}
+
+function clearSaleDraft(userId = currentUser?.uid) {
+    const key = saleDraftKey(userId);
+    if (!key) return;
+    try {
+        localStorage.removeItem(key);
+    } catch (error) {
+        console.warn("No se pudo limpiar la orden pendiente.", error);
+    }
+}
+
+function restoreSaleDraft(userId) {
+    const key = saleDraftKey(userId);
+    if (!key) return 0;
+
+    try {
+        const draft = JSON.parse(localStorage.getItem(key) || "null");
+        if (!draft || !Array.isArray(draft.items)) return 0;
+
+        cart = draft.items.map((savedItem) => {
+            const currentProduct = products.find((product) => product.id === savedItem.id);
+            if (productsLoaded && !currentProduct) return null;
+
+            const product = currentProduct || savedItem;
+            if (product.activo === false) return null;
+
+            const requestedQty = Math.max(0, Math.floor(Number(savedItem.qty || 0)));
+            const qty = product.stock === ""
+                ? requestedQty
+                : Math.min(requestedQty, Math.max(0, Number(product.stock || 0)));
+
+            return qty > 0 ? { ...product, qty } : null;
+        }).filter(Boolean);
+
+        discountAmount.value = draft.descuento ?? "";
+        customerName.value = draft.cliente ?? "";
+        customerAddress.value = draft.direccion ?? "";
+        customerPhone.value = draft.telefono ?? "";
+        paymentMethod.value = draft.metodoPago === "Transferencia" ? "Transferencia" : "Efectivo";
+
+        return cart.reduce((sum, item) => sum + Number(item.qty || 0), 0);
+    } catch (error) {
+        console.warn("La orden pendiente no se pudo recuperar.", error);
+        clearSaleDraft(userId);
+        return 0;
+    }
 }
 
 function playCartSound(type) {
@@ -180,11 +266,20 @@ function updateStoreFilterButtons() {
 function renderProducts() {
     renderStoreFilters();
     requestAnimationFrame(updateStoreHeaderSpace);
+    grid.innerHTML = "";
+    grid.setAttribute("aria-busy", String(storeLoading));
+
+    if (storeLoading) {
+        productCount.textContent = "Cargando...";
+        if (visibleProductCount) visibleProductCount.textContent = "Cargando...";
+        grid.innerHTML = storeLoadingState();
+        return;
+    }
+
     const data = visibleProducts();
     productCount.textContent = `${data.length} productos`;
     if (visibleProductCount) visibleProductCount.textContent = `${data.length} productos`;
     updateStoreFilterButtons();
-    grid.innerHTML = "";
 
     if (!products.length) {
         grid.innerHTML = emptyState("Todavia no hay productos. Entra por Login y agrega el primero.");
@@ -210,8 +305,11 @@ function renderProducts() {
                     </div>
         ` : "";
 
+        const detailAttribute = currentUser ? "" : `data-detail-product="${escapeHtml(product.id)}"`;
+        const detailButton = currentUser ? "" : `<button class="product-detail-link" data-detail-product="${escapeHtml(product.id)}" type="button">Ver detalle</button>`;
+
         grid.insertAdjacentHTML("beforeend", `
-            <article class="product-card ${productStateClass(product)}" data-detail-product="${escapeHtml(product.id)}">
+            <article class="product-card ${productStateClass(product)}" ${detailAttribute}>
                 <div class="product-image-shell">
                     <p class="code-pill image-code-pill">${escapeHtml(product.codigo)}</p>
                     ${hasImage
@@ -225,7 +323,7 @@ function renderProducts() {
                         <p class="stock-pill ${product.stock === "" || product.stock > 0 ? "stock-ok" : "stock-out"}">${stockLabel(product)}</p>
                     </div>
                     <p class="product-desc mt-2 min-h-10 text-sm leading-5 text-[#60727d]">${escapeHtml(product.descripcion)}</p>
-                    <button class="product-detail-link" data-detail-product="${escapeHtml(product.id)}" type="button">Ver detalle</button>
+                    ${detailButton}
                     ${adminControls}
                 </div>
             </article>
@@ -235,6 +333,19 @@ function renderProducts() {
 
 function emptyState(message) {
     return `<div class="rounded-lg border border-dashed border-[#b8c7cf] bg-white p-8 text-center text-sm text-[#60727d] sm:col-span-2 xl:col-span-3">${escapeHtml(message)}</div>`;
+}
+
+function storeLoadingState() {
+    return Array.from({ length: 6 }, () => `
+        <article class="product-card product-skeleton" aria-hidden="true">
+            <div class="product-image-shell skeleton-block"></div>
+            <div class="product-card-body">
+                <span class="skeleton-line skeleton-name"></span>
+                <span class="skeleton-line skeleton-price"></span>
+                <span class="skeleton-line skeleton-short"></span>
+            </div>
+        </article>
+    `).join("");
 }
 
 function changeCart(id, direction) {
@@ -254,6 +365,7 @@ function changeCart(id, direction) {
     }
 
     playCartSound(direction > 0 ? "add" : "remove");
+    saveSaleDraft();
     renderProducts();
     renderCart();
 }
@@ -295,6 +407,7 @@ function renderCart() {
 async function setAdminState(user) {
     currentUser = user;
     currentProfile = user ? await getUserProfile(user.uid) : null;
+    const restoredUnits = user ? restoreSaleDraft(user.uid) : 0;
     loginLink.classList.toggle("hidden", Boolean(user));
     adminBadge.classList.toggle("hidden", !user);
     adminNav.classList.toggle("hidden", !user);
@@ -302,7 +415,9 @@ async function setAdminState(user) {
     cartToggle.classList.toggle("hidden", !user);
     closeStoreMenu();
     adminCheckout.classList.add("hidden");
-    saleMode.textContent = "La venta se guardara en Historial.";
+    saleMode.textContent = restoredUnits > 0
+        ? `Orden pendiente recuperada: ${restoredUnits} ${restoredUnits === 1 ? "unidad" : "unidades"}.`
+        : "La venta se guardara en Historial.";
     saveSale.disabled = !user || !cart.length;
     openSaleModal.disabled = !user || !cart.length;
     if (!user) cart = [];
@@ -371,6 +486,11 @@ function clearOrder() {
     cart = [];
     lastSale = null;
     discountAmount.value = "";
+    customerName.value = "";
+    customerAddress.value = "";
+    customerPhone.value = "";
+    paymentMethod.value = "Efectivo";
+    clearSaleDraft();
     printLastSale.disabled = true;
     closeModal();
     renderProducts();
@@ -509,6 +629,7 @@ async function finalizeSale() {
         renderSaleNote(sale);
         printLastSale.disabled = false;
         cart = [];
+        clearSaleDraft();
         customerName.value = "";
         customerAddress.value = "";
         customerPhone.value = "";
@@ -607,14 +728,17 @@ function renderSaleNote(sale) {
 
 async function start() {
     try {
-        statusBox.textContent = "Cargando productos...";
-        products = await withTimeout(getProducts(), 8000);
         statusBox.classList.add("hidden");
+        renderProducts();
+        products = await withTimeout(getProducts(), 8000);
+        productsLoaded = true;
+        if (currentUser) restoreSaleDraft(currentUser.uid);
     } catch (error) {
         console.error(error);
         statusBox.textContent = `No se pudo cargar Firestore: ${errorDetail(error)}. Cuando agregues productos y tengas conexion, apareceran aqui.`;
         statusBox.className = "mb-4 rounded-lg border border-[#b8c7cf] bg-[#f7fafb] px-4 py-3 text-sm text-[#4b5563]";
     }
+    storeLoading = false;
     renderProducts();
     renderCart();
 }
@@ -631,7 +755,14 @@ storeAlphabetFilters?.addEventListener("click", (event) => {
 clearCart.addEventListener("click", () => {
     clearOrder();
 });
-discountAmount.addEventListener("input", renderCart);
+discountAmount.addEventListener("input", () => {
+    saveSaleDraft();
+    renderCart();
+});
+[customerName, customerAddress, customerPhone].forEach((field) => {
+    field.addEventListener("input", saveSaleDraft);
+});
+paymentMethod.addEventListener("change", saveSaleDraft);
 list.addEventListener("click", (event) => {
     const button = event.target.closest("[data-cart-line]");
     if (!button) return;
@@ -641,6 +772,7 @@ list.addEventListener("click", (event) => {
     if (button.dataset.cartLine === "delete") {
         cart = cart.filter((item) => item.id !== id);
         playCartSound("remove");
+        saveSaleDraft();
         renderProducts();
         renderCart();
     }
@@ -689,6 +821,7 @@ grid.addEventListener("click", (event) => {
         changeCart(button.dataset.id, button.dataset.cart === "add" ? 1 : -1);
         return;
     }
+    if (currentUser) return;
     const card = event.target.closest("[data-detail-product]");
     if (card) openProductDetail(card.dataset.detailProduct);
 });
@@ -701,6 +834,7 @@ salePreviewClose.addEventListener("click", closePreview);
 salePreviewDismiss.addEventListener("click", closePreview);
 salePreviewPrint.addEventListener("click", () => printSale(lastSale));
 productDetailClose.addEventListener("click", closeProductDetail);
+window.addEventListener("pagehide", saveSaleDraft);
 logout.addEventListener("click", async () => {
     await signOut(auth);
     window.location.href = "index.html";

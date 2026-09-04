@@ -23,8 +23,10 @@ export function setupThemeToggle() {
 
 function updateButtons(theme) {
     document.querySelectorAll("[data-theme-toggle]").forEach((button) => {
+        const label = theme === "dark" ? "Cambiar a tema claro" : "Cambiar a tema oscuro";
         button.dataset.themeState = theme;
-        button.setAttribute("aria-label", theme === "dark" ? "Cambiar a tema claro" : "Cambiar a tema oscuro");
+        button.setAttribute("aria-label", label);
+        button.title = label;
     });
 }
 
