@@ -1,0 +1,39 @@
+<dialog id="userSettingsModal" class="settings-dialog" aria-labelledby="settingsTitle">
+    <header class="settings-heading">
+        <div><h2 id="settingsTitle">Configuracion</h2><p id="settingsOwner"></p></div>
+        <button id="settingsClose" class="icon-button" type="button" title="Cerrar configuracion" aria-label="Cerrar configuracion"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button>
+    </header>
+    <div class="settings-tabs" role="tablist" aria-label="Preferencias">
+        <button id="settingsTabGeneral" type="button" role="tab" data-settings-tab="general" aria-controls="settingsGeneral" aria-selected="true">General</button>
+        <button id="settingsTabProducts" type="button" role="tab" data-settings-tab="products" aria-controls="settingsProducts" aria-selected="false">Productos</button>
+        <button id="settingsTabPrinting" type="button" role="tab" data-settings-tab="printing" aria-controls="settingsPrinting" aria-selected="false">Impresion</button>
+    </div>
+    <div class="settings-content">
+        <section id="settingsGeneral" role="tabpanel" aria-labelledby="settingsTabGeneral" data-settings-panel="general">
+            <label class="settings-field" for="settingsTheme"><span>Tema</span><select id="settingsTheme" class="form-field"><option value="light">Claro</option><option value="dark">Oscuro</option></select></label>
+            <label class="settings-switch-row"><span>Menu contraido</span><input id="settingsCollapsed" class="settings-switch" type="checkbox" role="switch"></label>
+            <label class="settings-switch-row"><span>Sonidos del carrito</span><input id="settingsSounds" class="settings-switch" type="checkbox" role="switch"></label>
+            <label class="settings-switch-row"><span>Pushbuy</span><input id="settingsPushbuy" class="settings-switch" type="checkbox" role="switch"></label>
+        </section>
+        <section id="settingsProducts" role="tabpanel" aria-labelledby="settingsTabProducts" data-settings-panel="products" hidden>
+            <label class="settings-field" for="settingsProductView"><span>Vista</span><select id="settingsProductView" class="form-field"><option value="table">Tabla</option><option value="cards">Tarjetas</option><option value="compact">Compacta</option></select></label>
+            <label class="settings-field" for="settingsProductSort"><span>Orden</span><select id="settingsProductSort" class="form-field"><option value="codigo">Codigo</option><option value="nombre">Nombre</option><option value="precio-asc">Menor precio</option><option value="precio-desc">Mayor precio</option><option value="stock">Stock</option><option value="fecha">Fecha agregada</option></select></label>
+            <fieldset class="settings-checks"><legend>Visibilidad</legend>
+                <label><input id="showActiveProducts" type="checkbox" checked> Habilitados</label>
+                <label><input id="showDisabledProducts" type="checkbox"> Deshabilitados</label>
+                <label><input id="onlyNoImage" type="checkbox"> Solo sin imagen</label>
+                <label><input id="onlyLowStock" type="checkbox"> Solo stock bajo</label>
+                <label><input id="showPriceHistory" type="checkbox"> Precios anteriores</label>
+            </fieldset>
+        </section>
+        <section id="settingsPrinting" role="tabpanel" aria-labelledby="settingsTabPrinting" data-settings-panel="printing" hidden>
+            <fieldset class="settings-paper-options"><legend>Formato de la nota de venta</legend>
+                <label><input name="settingsPaper" type="radio" value="letter" checked><span>Carta<small>216 x 279 mm</small></span></label>
+                <label><input name="settingsPaper" type="radio" value="ticket80"><span>Ticket 80 mm<small>Rollo ancho</small></span></label>
+                <label><input name="settingsPaper" type="radio" value="ticket58"><span>Ticket 58 mm<small>Rollo estrecho</small></span></label>
+            </fieldset>
+            <div id="settingsPaperPreview" class="settings-paper-preview" aria-label="Vista del formato seleccionado"></div>
+        </section>
+    </div>
+    <footer class="settings-footer"><span id="settingsSaveStatus" role="status"></span><button id="settingsDone" class="btn-primary" type="button">Listo</button></footer>
+</dialog>

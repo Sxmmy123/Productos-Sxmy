@@ -1,0 +1,27 @@
+<div id="analysisStatus" class="form-message" role="status"></div>
+<div class="section-toolbar">
+    <div class="module-heading"><h1>Analisis</h1><p id="analysisPeriod"></p></div>
+    <div class="analysis-filters">
+        <select id="analysisDateFilter" class="form-field" aria-label="Periodo del analisis">
+            <option value="month">Este mes</option><option value="today">Hoy</option><option value="week">Esta semana</option>
+            <option value="all">Todas las fechas</option><option value="custom">Elegir fechas</option>
+        </select>
+        <div id="analysisCustomDates" class="date-range" hidden>
+            <label>Desde<input id="analysisFrom" type="date" class="form-field"></label><label>Hasta<input id="analysisTo" type="date" class="form-field"></label>
+        </div>
+    </div>
+</div>
+<div class="analytics-metrics">
+    <article class="metric-card"><span>Ventas</span><strong id="metricSales">0</strong></article>
+    <article class="metric-card"><span>Ingresos netos</span><strong id="metricIncome">0 Bs</strong></article>
+    <article class="metric-card"><span>Unidades vendidas</span><strong id="metricUnits">0</strong></article>
+    <article class="metric-card"><span>Hoy</span><strong id="metricToday">0 Bs</strong></article>
+    <article class="metric-card"><span>Efectivo</span><strong id="metricCash">0 Bs</strong></article>
+    <article class="metric-card"><span>Transferencia</span><strong id="metricTransfer">0 Bs</strong></article>
+    <article class="metric-card"><span>Periodo anterior</span><strong id="metricComparison">--</strong></article>
+    <article class="metric-card"><span>Producto mas vendido</span><strong id="metricTop">Sin ventas</strong></article>
+</div>
+<div class="analytics-grid">
+    <section class="analytics-panel"><div class="analytics-panel-heading"><h2>Mas vendidos</h2><span>% del lider</span></div><div id="topProducts"></div></section>
+    <section class="analytics-panel"><div class="analytics-panel-heading"><h2>Ventas por dia</h2><span>% del mayor ingreso</span></div><div id="salesByDay"></div></section>
+</div>

@@ -1,0 +1,90 @@
+<header class="section-toolbar">
+    <div class="module-heading"><h1>Compras</h1><p id="purchaseHeadingSummary">Listas y precios de compra</p></div>
+    <button id="purchaseRefresh" class="icon-button" type="button" title="Actualizar inventario y compras" aria-label="Actualizar inventario y compras"><svg class="purchase-icon" aria-hidden="true"><use href="assets/icons/compras.svg#refresh-cw"/></svg></button>
+</header>
+<div class="purchase-tabs" role="tablist" aria-label="Compras">
+    <button id="purchaseNewTab" role="tab" aria-selected="true" aria-controls="purchaseEditor" type="button">Nueva compra</button>
+    <button id="purchaseHistoryTab" role="tab" aria-selected="false" aria-controls="purchaseHistory" type="button">Compras registradas</button>
+</div>
+<section id="purchaseEditor" class="purchase-editor" role="tabpanel" aria-labelledby="purchaseNewTab">
+    <div class="purchase-metadata">
+        <label>Proveedor<input id="purchaseSupplier" class="form-field" maxlength="160" placeholder="Opcional"></label>
+        <label>Fecha de compra<input id="purchaseDate" class="form-field" type="date" required></label>
+    </div>
+    <details id="purchaseSource" class="purchase-source" open>
+        <summary>Lista original</summary>
+        <label class="sr-only" for="purchaseText">Lista de productos, cantidades y precios</label>
+        <textarea id="purchaseText" class="form-area" rows="7" maxlength="16000" placeholder="LISTA DE PEDIDO&#10;* 6 Testers digitales&#10;270 Bs&#10;* 25 Protoboards de 400 puntos&#10;450 Bs"></textarea>
+        <div class="purchase-source-actions">
+            <button id="purchaseInterpret" class="btn-primary" type="button">Interpretar lista</button>
+            <button id="purchaseUpload" class="btn-light" type="button"><svg class="purchase-icon" aria-hidden="true"><use href="assets/icons/compras.svg#upload"/></svg> Cargar TXT</button>
+            <input id="purchaseFile" type="file" accept=".txt,text/plain" hidden>
+        </div>
+    </details>
+    <p id="purchaseStatus" class="form-message" role="status" aria-live="polite"></p>
+    <div id="purchaseWarnings" class="purchase-warnings" hidden></div>
+    <div class="purchase-package-option"><label><input id="purchaseUsePackageHistory" type="checkbox" checked> Usar unidades por paquete del historial</label><span id="purchasePackageStatus" role="status"></span></div>
+    <div class="purchase-review-toolbar">
+        <span id="purchaseRowSummary">0 productos</span>
+        <div>
+            <button id="purchaseSelectIncreases" class="btn-light" type="button">Seleccionar subidas</button>
+            <button id="purchaseClearUpdates" class="btn-light" type="button">Quitar seleccion</button>
+            <button id="purchaseAddRow" class="btn-light" type="button"><svg class="purchase-icon" aria-hidden="true"><use href="assets/icons/compras.svg#plus"/></svg> Fila</button>
+        </div>
+    </div>
+    <div id="purchaseComparisonSummary" class="purchase-comparison-summary" aria-live="polite"></div>
+    <div class="purchase-table-wrap">
+        <table class="purchase-review-table">
+            <thead><tr><th scope="col">N</th><th scope="col">Producto</th><th scope="col">Cant.</th><th scope="col">Compra unitaria Bs</th><th scope="col">Estado</th><th scope="col"><span class="sr-only">Quitar fila</span></th></tr></thead>
+            <tbody id="purchaseRows"></tbody>
+        </table>
+    </div>
+    <div id="purchaseEmpty" class="empty-row">Sin productos en esta compra.</div>
+    <footer class="purchase-checkout">
+        <div><span id="purchaseTotalLabel">Total de compra</span><strong id="purchaseTotal">0 Bs</strong><small id="purchaseSelectedSummary">Sin cambios de inventario</small></div>
+        <div><button id="purchaseDiscard" class="btn-light" type="button">Nueva lista</button><button id="purchaseApplyInventory" class="btn-light" type="button" disabled>Aplicar al inventario</button><button id="purchaseReviewSave" class="btn-primary" type="button" disabled>Registrar compra</button></div>
+    </footer>
+</section>
+<section id="purchaseHistory" role="tabpanel" aria-labelledby="purchaseHistoryTab" hidden>
+    <div class="purchase-history-toolbar"><label class="sr-only" for="purchaseSearch">Buscar en la pagina de compras</label><input id="purchaseSearch" class="form-field" placeholder="Buscar proveedor o producto en esta pagina"></div>
+    <p id="purchaseHistoryStatus" class="form-message" role="status"></p>
+    <div id="purchaseHistoryList"></div>
+    <nav class="purchase-pagination" aria-label="Paginas de compras"><button id="purchasePrevious" class="btn-light" type="button" disabled>Anterior</button><span id="purchasePageLabel">Pagina 1</span><button id="purchaseNext" class="btn-light" type="button" disabled>Siguiente</button></nav>
+</section>
+<dialog id="purchaseMatchDialog" class="purchase-dialog" aria-labelledby="purchaseMatchTitle">
+    <header><h2 id="purchaseMatchTitle">Producto de inventario</h2><button data-close-purchase-dialog class="icon-button" type="button" aria-label="Cerrar"><svg class="purchase-icon" aria-hidden="true"><use href="assets/icons/compras.svg#x"/></svg></button></header>
+    <div class="purchase-dialog-body"><p id="purchaseMatchOriginal"></p><label class="sr-only" for="purchaseMatchSearch">Buscar producto de inventario</label><input id="purchaseMatchSearch" class="form-field" placeholder="Buscar nombre o codigo"><div id="purchaseMatchResults" class="purchase-match-results"></div></div>
+    <footer><button id="purchaseUnlink" class="btn-light" type="button">Solo registrar</button><button data-close-purchase-dialog class="btn-light" type="button">Cancelar</button></footer>
+</dialog>
+<dialog id="purchaseInventoryDialog" class="purchase-dialog" aria-labelledby="purchaseInventoryTitle">
+    <header><h2 id="purchaseInventoryTitle">Aplicar al inventario</h2><button data-close-purchase-dialog class="icon-button" type="button" aria-label="Cerrar"><svg class="purchase-icon" aria-hidden="true"><use href="assets/icons/compras.svg#x"/></svg></button></header>
+    <div class="purchase-dialog-body"><p id="purchaseInventorySummary"></p><div id="purchaseInventoryChanges"></div><p id="purchaseInventoryStatus" class="form-message" role="status"></p></div>
+    <footer><button data-close-purchase-dialog class="btn-light" type="button">Volver</button><button id="purchaseConfirmInventory" class="btn-primary" type="button">Aplicar cambios</button></footer>
+</dialog>
+<dialog id="purchaseNewProductDialog" class="purchase-dialog" aria-labelledby="purchaseNewProductTitle">
+    <header><h2 id="purchaseNewProductTitle">Registrar producto</h2><button data-close-purchase-dialog class="icon-button" type="button" aria-label="Cerrar"><svg class="purchase-icon" aria-hidden="true"><use href="assets/icons/compras.svg#x"/></svg></button></header>
+    <form id="purchaseNewProductForm" class="purchase-product-form">
+        <div class="purchase-dialog-body">
+            <label>Nombre<input id="purchaseNewName" class="form-field" maxlength="200" required></label>
+            <label>Descripcion<textarea id="purchaseNewDescription" class="form-area" rows="3" maxlength="1000"></textarea></label>
+            <div class="purchase-product-prices"><label>Compra unitaria Bs<input id="purchaseNewBuy" class="form-field" type="number" readonly></label><label>Venta Bs<input id="purchaseNewSale" class="form-field" type="number" min="0" step="0.01" inputmode="decimal" required></label></div>
+            <button id="purchaseNewSuggested" class="purchase-margin" type="button"></button><p id="purchaseNewStatus" class="form-message" role="status"></p>
+        </div>
+        <footer><button data-close-purchase-dialog class="btn-light" type="button">Cancelar</button><button id="purchaseConfirmNewProduct" class="btn-primary" type="submit">Registrar producto</button></footer>
+    </form>
+</dialog>
+<dialog id="purchaseConfirmDialog" class="purchase-dialog" aria-labelledby="purchaseConfirmTitle">
+    <header><h2 id="purchaseConfirmTitle">Registrar compra</h2><button data-close-purchase-dialog class="icon-button" type="button" aria-label="Cerrar"><svg class="purchase-icon" aria-hidden="true"><use href="assets/icons/compras.svg#x"/></svg></button></header>
+    <div class="purchase-dialog-body"><p id="purchaseConfirmSummary"></p><div id="purchaseConfirmChanges"></div><p id="purchaseConfirmStatus" class="form-message" role="status"></p></div>
+    <footer><button data-close-purchase-dialog class="btn-light" type="button">Volver</button><button id="purchaseConfirmSave" class="btn-primary" type="button">Guardar compra</button></footer>
+</dialog>
+<dialog id="purchaseDiscardDialog" class="purchase-dialog" aria-labelledby="purchaseDiscardTitle">
+    <header><h2 id="purchaseDiscardTitle">Nueva lista</h2><button data-close-purchase-dialog class="icon-button" type="button" aria-label="Cerrar"><svg class="purchase-icon" aria-hidden="true"><use href="assets/icons/compras.svg#x"/></svg></button></header>
+    <div class="purchase-dialog-body"><p>Se descartara el borrador actual. Las compras registradas no se eliminaran.</p></div>
+    <footer><button data-close-purchase-dialog class="btn-light" type="button">Cancelar</button><button id="purchaseConfirmDiscard" class="btn-danger" type="button">Descartar borrador</button></footer>
+</dialog>
+<dialog id="purchaseReinterpretDialog" class="purchase-dialog" aria-labelledby="purchaseReinterpretTitle">
+    <header><h2 id="purchaseReinterpretTitle">Interpretar de nuevo</h2><button data-close-purchase-dialog class="icon-button" type="button" aria-label="Cerrar"><svg class="purchase-icon" aria-hidden="true"><use href="assets/icons/compras.svg#x"/></svg></button></header>
+    <div class="purchase-dialog-body"><p>La nueva interpretacion reemplazara la tabla editable y su seleccion de cambios. El inventario no se modificara.</p></div>
+    <footer><button data-close-purchase-dialog class="btn-light" type="button">Conservar tabla</button><button id="purchaseConfirmReinterpret" class="btn-primary" type="button">Reinterpretar</button></footer>
+</dialog>

@@ -1,0 +1,162 @@
+<div id="statusBox" class="hidden mb-4 rounded-lg border border-[#cfd9df] bg-white px-4 py-3 text-sm text-[#4b5563]" role="status"></div>
+<div class="section-toolbar rounded-lg border border-[#cfd9df] bg-white p-4 shadow-sm">
+            <div class="flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
+                <div>
+                    <h1 class="text-2xl font-black text-[#12313f]">Productos</h1>
+                    <p id="totalProducts" class="mt-1 text-sm text-[#60727d]">0 productos</p>
+                </div>
+                <div class="admin-product-toolbar grid gap-2 md:grid-cols-[minmax(190px,320px)_180px_auto] md:items-center">
+                    <input id="adminSearch" class="form-field" placeholder="Buscar por nombre o codigo">
+                    <select id="adminSort" class="form-field">
+                        <option value="codigo">Orden por codigo</option>
+                        <option value="precio-asc">Menor precio</option>
+                        <option value="precio-desc">Mayor precio</option>
+                        <option value="stock">Stock</option>
+                        <option value="nombre">Nombre</option>
+                        <option value="fecha">Fecha agregada</option>
+                    </select>
+                    <div class="product-filter-row flex flex-wrap items-center gap-2">
+                        <button class="btn-light" data-open-settings="products" type="button">Opciones</button>
+                        <button id="openBulkModal" class="btn-light" type="button" title="Importar productos">CSV</button>
+                        <button id="openProductModal" class="btn-primary h-10 px-4 text-sm" type="button">+ Producto</button>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-4 product-view-switch" aria-label="Vista de productos">
+                <button class="view-button" data-product-view="table" type="button">Tabla</button>
+                <button class="view-button" data-product-view="cards" type="button">Tarjetas</button>
+                <button class="view-button" data-product-view="compact" type="button">Compacta</button>
+            </div>
+        </div>
+
+        <section class="products-view-shell">
+            <div id="productsTableView" class="table-scroll overflow-x-auto rounded-lg border border-[#cfd9df] bg-white shadow-sm">
+                <table class="min-w-full text-left text-sm">
+                    <thead class="border-b border-[#cfd9df] bg-[#f7fafb] text-xs uppercase tracking-wide text-[#60727d]">
+                        <tr>
+                            <th class="px-4 py-3">Imagen</th>
+                            <th class="px-4 py-3">Codigo</th>
+                            <th class="px-4 py-3">Producto</th>
+                            <th class="px-4 py-3">Compra</th>
+                            <th class="px-4 py-3">Venta</th>
+                            <th class="px-4 py-3">Stock</th>
+                            <th class="px-4 py-3">Fecha</th>
+                            <th class="px-4 py-3">Estado</th>
+                            <th class="px-4 py-3">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="productsTable"></tbody>
+                </table>
+            </div>
+            <div id="productsAltView" class="hidden"></div>
+        </section>
+
+<div id="productModal" class="product-modal fixed inset-0 z-50 hidden items-center justify-center bg-black/35 p-4">
+    <section class="max-h-[92vh] w-full max-w-xl overflow-y-auto rounded-lg border border-[#b8c7cf] bg-white shadow-2xl">
+        <div class="flex items-center justify-between border-b border-[#d6e0e6] px-5 py-4">
+            <div>
+                <h2 id="productModalTitle" class="text-xl font-black text-[#12313f]">Agregar producto</h2>
+                <p class="mt-1 text-sm text-[#60727d]">La imagen puedes agregarla o reemplazarla desde la lista.</p>
+            </div>
+            <button class="btn-light px-3 py-2 text-sm" data-close-modal type="button">Cerrar</button>
+        </div>
+        <form id="productForm" class="space-y-3 p-5">
+            <input type="hidden" id="productId">
+            <input type="hidden" id="currentImageUrl">
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="text-sm font-semibold text-[#374151]" for="codigo">Codigo</label>
+                    <input id="codigo" class="form-field mt-1" placeholder="001" required>
+                </div>
+                <div>
+                    <label class="text-sm font-semibold text-[#374151]" for="stock">Stock opcional</label>
+                    <input id="stock" type="number" min="0" step="1" class="form-field mt-1" placeholder="Opcional">
+                </div>
+            </div>
+            <div>
+                <label class="text-sm font-semibold text-[#374151]" for="nombre">Nombre</label>
+                <input id="nombre" class="form-field mt-1" required>
+            </div>
+            <div>
+                <label for="stockMinimo">Stock minimo opcional</label>
+                <input id="stockMinimo" type="number" min="0" step="1" class="form-field" placeholder="Sin alerta">
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="text-sm font-semibold text-[#374151]" for="precioCompra">Precio compra</label>
+                    <input id="precioCompra" type="number" min="0" step="0.01" class="form-field mt-1">
+                </div>
+                <div>
+                    <label class="text-sm font-semibold text-[#374151]" for="precioVenta">Precio venta</label>
+                    <input id="precioVenta" type="number" min="0" step="0.01" class="form-field mt-1" required>
+                </div>
+            </div>
+            <div>
+                <label class="text-sm font-semibold text-[#374151]" for="descripcion">Descripcion</label>
+                <textarea id="descripcion" rows="3" class="form-area mt-1"></textarea>
+            </div>
+            <label class="flex items-center gap-2 text-sm font-semibold text-[#374151]"><input id="activo" type="checkbox" class="h-4 w-4 accent-[#146c43]" checked> Producto habilitado</label>
+            <div class="grid grid-cols-2 gap-2 pt-2">
+                <button type="submit" class="btn-primary px-4 py-2.5 text-sm">Guardar</button>
+                <button type="button" id="resetForm" class="btn-light px-4 py-2.5 text-sm">Limpiar</button>
+            </div>
+        </form>
+    </section>
+</div>
+
+<div id="bulkModal" class="product-modal fixed inset-0 z-50 hidden items-center justify-center bg-black/35 p-4">
+    <section class="w-full max-w-xl rounded-lg border border-[#b8c7cf] bg-white shadow-2xl">
+        <div class="flex items-center justify-between border-b border-[#d6e0e6] px-5 py-4">
+            <div>
+                <h2 id="bulkModalTitle" class="text-xl font-black text-[#12313f]">Agregar en masa</h2>
+                <p class="mt-1 text-sm text-[#60727d]">CSV de productos. Imagenes opcionales por codigo.</p>
+            </div>
+            <button class="btn-light px-3 py-2 text-sm" data-close-modal type="button">Cerrar</button>
+        </div>
+        <div class="space-y-3 p-5">
+            <div>
+                <label class="text-sm font-semibold text-[#374151]" for="bulkCsv">Archivo CSV</label>
+                <input id="bulkCsv" type="file" accept=".csv,text/csv" class="file-input">
+            </div>
+            <div>
+                <label class="text-sm font-semibold text-[#374151]" for="bulkImages">Carpeta de imagenes</label>
+                <input id="bulkImages" type="file" accept="image/*" multiple webkitdirectory directory class="file-input">
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+                <button id="bulkImport" type="button" class="btn-primary px-4 py-2.5 text-sm">Importar CSV</button>
+                <button id="downloadTemplate" type="button" class="btn-light px-4 py-2.5 text-sm">Plantilla</button>
+            </div>
+            <div id="bulkStatus" class="rounded-lg border border-[#d6e0e6] bg-[#f7fafb] px-4 py-3 text-sm text-[#60727d]">Sin archivo seleccionado.</div>
+        </div>
+    </section>
+</div>
+
+<div id="imageModal" class="product-modal fixed inset-0 z-50 hidden items-center justify-center bg-black/50 p-4">
+    <section class="w-full max-w-2xl rounded-lg border border-[#b8c7cf] bg-white p-4 shadow-2xl">
+        <div class="product-image-heading flex items-center justify-between gap-3 border-b border-[#d6e0e6] pb-3">
+            <div>
+                <h2 id="imageModalTitle" class="text-xl font-black text-[#12313f]">Imagen</h2>
+                <p class="text-sm text-[#60727d]">Puedes reemplazarla por una nueva.</p>
+            </div>
+            <button class="btn-light px-3 py-2 text-sm" data-close-modal type="button">Cerrar</button>
+        </div>
+        <div id="imagePreview" class="mt-4 grid aspect-square max-h-[65vh] place-items-center rounded-lg bg-[#f7fafb] p-4"></div>
+        <button id="replaceImage" type="button" class="btn-primary mt-4 w-full px-4 py-2.5 text-sm">Reemplazar imagen</button>
+    </section>
+</div>
+
+<div id="deleteProductModal" class="product-modal confirm-modal fixed inset-0 z-50 hidden items-center justify-center bg-black/45 p-4">
+    <section class="confirm-card">
+        <div class="confirm-icon" aria-hidden="true">!</div>
+        <div class="confirm-copy">
+            <p>Confirmar eliminación</p>
+            <h2 id="deleteProductTitle">¿Eliminar este producto?</h2>
+            <span id="deleteProductName">Esta acción quitará el producto de la base de datos.</span>
+        </div>
+        <div class="confirm-actions">
+            <button id="cancelDeleteProduct" class="btn-light" type="button">Cancelar</button>
+            <button id="confirmDeleteProduct" class="btn-danger" type="button">Eliminar</button>
+        </div>
+    </section>
+</div>
+<input id="rowImageInput" type="file" accept="image/*" class="hidden">

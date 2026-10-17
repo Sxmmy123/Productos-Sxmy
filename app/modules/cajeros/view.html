@@ -1,0 +1,45 @@
+        <div id="cashiersStatusBox" class="hidden mb-4 rounded-lg border border-[#cfd9df] bg-white px-4 py-3 text-sm text-[#4b5563]">Cargando...</div>
+
+        <section class="cashiers-layout">
+            <form id="cashierForm" class="rounded-lg border border-[#cfd9df] bg-white p-4 shadow-sm">
+                <h2 class="text-xl font-black text-[#111827]">Crear cajero</h2>
+                <p class="mt-1 text-sm text-[#65727c]">El cajero podra entrar, vender, agregar productos e imprimir notas.</p>
+                <div class="mt-4 space-y-3">
+                    <div>
+                        <label class="text-sm font-semibold text-[#374151]" for="cashierName">Nombre</label>
+                        <input id="cashierName" class="form-field mt-1" placeholder="Ej. Cajero 1" required>
+                    </div>
+                    <div>
+                        <label class="text-sm font-semibold text-[#374151]" for="cashierEmail">Correo</label>
+                        <input id="cashierEmail" type="email" class="form-field mt-1" placeholder="cajero@correo.com" required>
+                    </div>
+                    <div>
+                        <label class="text-sm font-semibold text-[#374151]" for="cashierPassword">Contraseña</label>
+                        <input id="cashierPassword" type="password" minlength="6" class="form-field mt-1" placeholder="Minimo 6 caracteres" required>
+                    </div>
+                    <button class="btn-primary w-full px-4 py-2.5 text-sm" type="submit">Crear usuario</button>
+                </div>
+            </form>
+
+            <section>
+                <div class="cashiers-toolbar">
+                    <div>
+                        <h2 class="text-xl font-black text-[#111827]">Usuarios cajeros</h2>
+                        <p id="usersSummary" class="mt-1 text-sm text-[#65727c]">0 cajeros</p>
+                    </div>
+                    <input id="userSearch" class="form-field" placeholder="Buscar cajero o correo">
+                </div>
+                <div id="usersList" class="grid gap-3"></div>
+            </section>
+        </section>
+<div id="cashierEditModal" class="staff-modal" hidden>
+    <section class="staff-modal-card" role="dialog" aria-modal="true" aria-labelledby="cashierEditTitle">
+        <div class="staff-modal-heading"><h2 id="cashierEditTitle">Editar cajero</h2><button id="cashierEditClose" class="icon-button" type="button" aria-label="Cerrar">X</button></div>
+        <form id="cashierEditForm">
+            <label for="cashierEditName">Nombre</label><input id="cashierEditName" class="form-field" maxlength="100" required>
+            <label for="cashierEditEmail">Correo</label><input id="cashierEditEmail" type="email" class="form-field" maxlength="254" required>
+            <p id="cashierEditStatus" class="form-message" role="status"></p>
+            <div class="staff-modal-actions"><button id="cashierEditCancel" class="btn-light" type="button">Cancelar</button><button id="cashierEditSave" class="btn-primary" type="submit">Guardar cambios</button></div>
+        </form>
+    </section>
+</div>

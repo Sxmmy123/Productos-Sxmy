@@ -1,0 +1,8 @@
+{
+  "indexes": [
+    { "collectionGroup": "ventas", "queryScope": "COLLECTION", "fields": [{ "fieldPath": "vendedorUid", "order": "ASCENDING" }, { "fieldPath": "createdAt", "order": "DESCENDING" }] },
+    { "collectionGroup": "ventas", "queryScope": "COLLECTION", "fields": [{ "fieldPath": "numero", "order": "ASCENDING" }, { "fieldPath": "createdAt", "order": "DESCENDING" }] },
+    { "collectionGroup": "ventas", "queryScope": "COLLECTION", "fields": [{ "fieldPath": "numero", "order": "ASCENDING" }, { "fieldPath": "vendedorUid", "order": "ASCENDING" }, { "fieldPath": "createdAt", "order": "DESCENDING" }] }
+  ],
+  "fieldOverrides": []
+}

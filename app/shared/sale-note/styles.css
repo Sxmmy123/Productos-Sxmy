@@ -1,0 +1,625 @@
+.note-page,
+.note-page * {
+    box-sizing: border-box;
+    color-scheme: light;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+}
+
+.note-page {
+    page: sxmy-letter;
+    width: 100%;
+    max-width: 7.9in;
+    margin: 0 auto;
+    padding: 18px;
+    background: #fff;
+    color: #151515 !important;
+    font: 11.5px/1.35 Arial, Helvetica, sans-serif;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0;
+}
+
+.note-page :where(p, h1, h2) {
+    margin: 0;
+}
+
+.note-page :where(p, strong, span, td, th, h1, h2, div) {
+    color: inherit !important;
+}
+
+.note-page strong,
+.note-page th {
+    font-weight: 600;
+}
+
+.note-page .note-hero {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 0;
+    padding: 12px;
+    border-left: 5px solid #0a2c59;
+    border-right: 5px solid #ddc094;
+    align-items: center;
+    break-inside: avoid;
+}
+
+.note-page .note-hero > * {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.note-page .note-brand h1 {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.note-page .note-brand {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+
+.note-page .note-brand > div {
+    min-width: 0;
+}
+
+.note-page .note-logo {
+    display: block;
+    flex: 0 0 36px;
+    width: 36px;
+    height: 36px;
+}
+
+.note-page .note-brand p {
+    margin-top: 3px;
+    font-size: 10.5px;
+    color: #665f58 !important;
+}
+
+.note-page .note-title {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.2;
+    text-align: right;
+    color: #0a2c59 !important;
+}
+
+.note-page .note-details {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, .9fr);
+    gap: 16px;
+    margin: 9px 0 12px;
+    padding: 10px 12px;
+    background: #eae8e9;
+    break-inside: avoid;
+    overflow-wrap: anywhere;
+}
+
+.note-page .note-client,
+.note-page .note-box {
+    display: grid;
+    gap: 2px;
+    align-content: start;
+    min-width: 0;
+}
+
+.note-page .note-box p {
+    display: grid;
+    grid-template-columns: 85px minmax(0, 1fr);
+    gap: 6px;
+}
+
+.note-page .note-box p > :first-child {
+    font-weight: 600;
+}
+
+.note-page .note-reference strong {
+    color: #0a2c59 !important;
+}
+
+.note-page .note-walk-in {
+    align-self: center;
+}
+
+.note-page .note-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    font: inherit;
+}
+
+.note-page .note-number-column { width: 4%; }
+.note-page .note-code-column { width: 9%; }
+.note-page .note-quantity-column { width: 9%; }
+.note-page .note-money-column { width: 16%; }
+.note-page .note-total-column { width: 18%; }
+
+.note-page .note-table th {
+    padding: 5px 6px;
+    border: 0;
+    background: #0a2c59;
+    color: #fff !important;
+    font-size: 10.5px;
+    text-align: left;
+    overflow-wrap: anywhere;
+}
+
+.note-page .note-table td {
+    padding: 6px;
+    border-bottom: 0;
+    vertical-align: top;
+    overflow-wrap: anywhere;
+}
+
+.note-page .note-table:not(.note-table-ticket) tbody tr:nth-child(even) td {
+    background: #eae8e9;
+}
+
+.note-page .note-table:not(.note-table-ticket) :is(th, td):nth-child(5) {
+    text-align: center;
+}
+
+.note-page .note-table:not(.note-table-ticket) :is(th, td):nth-child(4),
+.note-page .note-table:not(.note-table-ticket) :is(th, td):last-child {
+    text-align: right;
+}
+
+.note-page .note-summary {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 7px;
+    break-inside: avoid;
+}
+
+.note-page .note-totals {
+    width: 30%;
+    min-width: 180px;
+}
+
+.note-page .note-totals p {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 2px 6px;
+}
+
+.note-page .note-totals .note-pay {
+    margin-top: 2px;
+    padding: 5px 6px;
+    border-top: 0;
+    background: #f0e9e1;
+    color: #0a2c59 !important;
+    font-size: inherit;
+    font-weight: 600;
+}
+
+.note-page .note-footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 3px 14px;
+    margin-top: 14px;
+    padding: 8px 12px;
+    background: #0a2c59;
+    color: #fff !important;
+    font-size: 10px;
+    break-inside: avoid;
+}
+
+.note-page .note-footer-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    overflow-wrap: anywhere;
+}
+
+.note-page .note-footer-icon {
+    display: inline-flex;
+    flex: 0 0 13px;
+    width: 13px;
+    height: 13px;
+    color: #fff !important;
+}
+
+.note-page .note-footer-icon svg {
+    width: 100%;
+    height: 100%;
+    fill: currentColor;
+}
+
+.note-page .note-seller {
+    overflow-wrap: anywhere;
+}
+
+/* Ticket columns reserve room for quantities and amounts before wrapping names. */
+.note-page.note-ticket {
+    page: sxmy-ticket;
+    width: var(--ticket-width, 80mm) !important;
+    max-width: none;
+    padding: 2mm 4mm;
+    font-size: 10px;
+    line-height: 1.25;
+}
+
+.note-page.note-ticket[data-ticket-width="58"] {
+    padding: 2mm 5mm;
+    font-size: 9px;
+}
+
+.note-ticket .note-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 5px;
+    padding: 3px 5px;
+    border-left-width: 2px;
+    border-right-width: 2px;
+}
+
+.note-ticket .note-brand {
+    gap: 6px;
+}
+
+.note-ticket .note-brand h1 {
+    font-size: 10.5px;
+    white-space: nowrap;
+}
+
+.note-ticket .note-logo {
+    flex-basis: 18px;
+    width: 18px;
+    height: 18px;
+}
+
+.note-ticket .note-brand p {
+    display: none;
+}
+
+.note-ticket .note-title {
+    font-size: 9px;
+    white-space: nowrap;
+}
+
+.note-ticket[data-ticket-width="58"] .note-hero {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2px;
+}
+
+.note-ticket[data-ticket-width="58"] .note-title {
+    padding-left: 24px;
+    text-align: left;
+}
+
+.note-ticket .note-details {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 3px;
+    margin: 5px 0;
+    padding: 4px 5px;
+    font-size: 9px;
+}
+
+.note-ticket .note-box {
+    order: -1;
+}
+
+.note-ticket .note-box p {
+    grid-template-columns: 56px minmax(0, 1fr);
+    gap: 6px;
+}
+
+.note-ticket .note-box p > :first-child {
+    white-space: nowrap;
+}
+
+.note-ticket[data-ticket-width="58"] .note-details {
+    padding: 4px 5px;
+    font-size: 8.5px;
+}
+
+.note-ticket[data-ticket-width="58"] .note-box p {
+    grid-template-columns: 46px minmax(0, 1fr);
+    gap: 6px;
+}
+
+.note-ticket .note-table-ticket {
+    table-layout: auto;
+}
+
+.note-ticket .note-ticket-name-column { width: auto; }
+
+.note-ticket .note-ticket-unit-column,
+.note-ticket .note-ticket-quantity-column,
+.note-ticket .note-ticket-total-column {
+    width: 1%;
+}
+
+.note-ticket .note-table-ticket th {
+    padding: 4px 2px;
+    font-size: 8.5px;
+    white-space: nowrap;
+}
+
+.note-ticket[data-ticket-width="58"] .note-table-ticket th {
+    font-size: 7.5px;
+}
+
+.note-ticket .note-table-ticket td {
+    padding: 4px 2px;
+    border-bottom: 1px solid #d8d3cd;
+}
+
+.note-ticket .note-table-ticket :is(th, td):nth-child(n+2) {
+    padding-right: 3px;
+    padding-left: 3px;
+    text-align: right;
+    white-space: nowrap;
+}
+
+.note-ticket .note-table-ticket :is(th, td):nth-child(3) {
+    text-align: center;
+}
+
+.note-ticket .note-ticket-item:nth-child(even) td {
+    background: #eae8e9;
+}
+
+.note-ticket .note-ticket-product {
+    min-width: 0;
+}
+
+.note-ticket .note-ticket-product-line {
+    display: flex;
+    gap: 3px;
+    align-items: baseline;
+}
+
+.note-ticket .note-item-number {
+    flex: 0 0 auto;
+    font-size: 8px;
+    color: #665f58 !important;
+}
+
+.note-ticket .note-ticket-item-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1px 5px;
+    margin-top: 2px;
+    font-size: 8px;
+    color: #665f58 !important;
+}
+
+.note-ticket[data-ticket-width="58"] .note-ticket-item-meta {
+    font-size: 7.5px;
+}
+
+.note-ticket .note-ticket-item-meta > span {
+    min-width: 0;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+}
+
+.note-ticket .note-item-description {
+    overflow-wrap: anywhere;
+}
+
+.note-ticket .note-summary {
+    margin-top: 5px;
+}
+
+.note-ticket .note-totals {
+    width: 100%;
+    min-width: 0;
+}
+
+.note-ticket .note-totals p {
+    padding-right: 5px;
+    padding-left: 5px;
+}
+
+.note-ticket .note-footer {
+    display: grid;
+    gap: 2px;
+    margin-top: 6px;
+    padding: 5px 8px;
+    font-size: 9px;
+    line-height: 1.25;
+}
+
+.note-ticket[data-ticket-width="58"] .note-footer {
+    font-size: 8.5px;
+}
+
+.note-ticket .note-footer-item {
+    align-items: flex-start;
+}
+
+.note-ticket .note-footer-item > :last-child {
+    min-width: 0;
+}
+
+.note-ticket .note-footer-icon {
+    flex-basis: 11px;
+    width: 11px;
+    height: 11px;
+}
+
+@media screen {
+    .print-note {
+        display: none !important;
+    }
+
+    .sale-preview-canvas .note-ticket {
+        width: min(var(--ticket-width, 80mm), 100%) !important;
+    }
+}
+
+@media screen and (min-width: 761px) {
+    .sale-preview-canvas .note-page:not(.note-ticket) {
+        display: flex;
+        flex-direction: column;
+        min-height: 10.4in;
+    }
+
+    .sale-preview-canvas .note-page:not(.note-ticket) > * {
+        flex-shrink: 0;
+    }
+
+    .sale-preview-canvas .note-page:not(.note-ticket) .note-footer {
+        margin-top: auto;
+    }
+}
+
+@media screen and (max-width: 760px) {
+    .sale-preview-canvas .note-page:not(.note-ticket) {
+        padding: 10px;
+    }
+
+    .sale-preview-canvas .note-page:not(.note-ticket) .note-table,
+    .sale-preview-canvas .note-page:not(.note-ticket) .note-table tbody {
+        display: block;
+    }
+
+    .sale-preview-canvas .note-page:not(.note-ticket) .note-table colgroup,
+    .sale-preview-canvas .note-page:not(.note-ticket) .note-table thead {
+        display: none;
+    }
+
+    .sale-preview-canvas .note-page:not(.note-ticket) .note-table tr {
+        display: grid;
+        grid-template-columns: 18px 34px minmax(0, 1fr) minmax(0, 1fr);
+        gap: 3px;
+        padding: 6px 0;
+        border-bottom: 1px solid #d8d3cd;
+    }
+
+    .sale-preview-canvas .note-page:not(.note-ticket) .note-table td {
+        padding: 0;
+        border: 0;
+        text-align: left;
+        background: transparent !important;
+    }
+
+    .sale-preview-canvas .note-page:not(.note-ticket) .note-table tr:nth-child(even) {
+        background: #eae8e9;
+    }
+
+    .sale-preview-canvas .note-page:not(.note-ticket) .note-brand {
+        gap: 5px;
+    }
+
+    .sale-preview-canvas .note-page:not(.note-ticket) .note-logo {
+        flex-basis: 27px;
+        width: 27px;
+        height: 27px;
+    }
+
+    .sale-preview-canvas .note-page:not(.note-ticket) td:nth-child(1) { grid-area: 1 / 1; }
+    .sale-preview-canvas .note-page:not(.note-ticket) td:nth-child(2) { grid-area: 1 / 2; }
+    .sale-preview-canvas .note-page:not(.note-ticket) td:nth-child(3) { grid-area: 1 / 3 / 2 / 5; }
+    .sale-preview-canvas .note-page:not(.note-ticket) td:nth-child(5) { grid-area: 2 / 1 / 3 / 3; text-align: left; }
+    .sale-preview-canvas .note-page:not(.note-ticket) td:nth-child(4) { grid-area: 2 / 3; text-align: right; }
+    .sale-preview-canvas .note-page:not(.note-ticket) td:nth-child(6) { grid-area: 2 / 4; text-align: right; }
+
+    .sale-preview-canvas .note-page:not(.note-ticket) td:nth-child(5)::before { content: "Cant."; }
+    .sale-preview-canvas .note-page:not(.note-ticket) td:nth-child(4)::before { content: "P. unitario"; }
+    .sale-preview-canvas .note-page:not(.note-ticket) td:nth-child(6)::before { content: "Subtotal"; }
+
+    .sale-preview-canvas .note-page:not(.note-ticket) td:nth-child(n+4)::before {
+        display: block;
+        font-size: 9px;
+    }
+
+    .sale-preview-canvas .note-page:not(.note-ticket) .note-title {
+        flex: 1;
+        font-size: 13px;
+    }
+
+    .sale-preview-canvas .note-page:not(.note-ticket) .note-hero {
+        padding: 8px;
+    }
+
+    .sale-preview-canvas .note-page:not(.note-ticket) .note-details {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 5px;
+        padding: 7px;
+    }
+
+    .sale-preview-canvas .note-page:not(.note-ticket) .note-box p {
+        grid-template-columns: 85px minmax(0, 1fr);
+    }
+}
+
+@media print {
+    @page { size: letter; margin: .3in; }
+    @page sxmy-letter { size: letter; margin: .3in; }
+
+    :root {
+        color-scheme: light !important;
+        background: #fff !important;
+    }
+
+    html,
+    body {
+        width: auto !important;
+        height: auto !important;
+        min-height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: visible !important;
+        background: #fff !important;
+    }
+
+    body > *:not(.print-note) {
+        display: none !important;
+    }
+
+    .print-note,
+    .print-note.hidden {
+        display: block !important;
+        position: static !important;
+        width: 100%;
+        height: auto;
+        margin: 0;
+        padding: 0;
+        overflow: visible;
+        background: #fff;
+    }
+
+    .note-page {
+        max-width: none;
+        padding: 0;
+    }
+
+    /* Cloned padding reserves footer space on every printed Letter page. */
+    .note-page:not(.note-ticket) {
+        padding-bottom: .45in;
+        box-decoration-break: clone;
+        -webkit-box-decoration-break: clone;
+    }
+
+    .note-page:not(.note-ticket) .note-footer {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin-top: 0;
+    }
+
+    .note-page.note-ticket {
+        margin: 0;
+    }
+
+    .print-note:has(.note-ticket) {
+        width: var(--ticket-width, 80mm);
+    }
+
+    .note-table thead {
+        display: table-header-group;
+    }
+
+    .note-table tr,
+    .note-ticket-item {
+        break-inside: avoid;
+    }
+}

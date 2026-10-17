@@ -1,0 +1,23 @@
+@media screen {
+    .cashiers-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        align-items: start;
+        gap: 1rem;
+    }
+    .cashiers-layout > *, .cashier-main > div { min-width: 0; }
+    .cashiers-toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: end;
+        gap: .75rem;
+        margin-bottom: .75rem;
+    }
+    .cashiers-toolbar > div { flex: 1 1 170px; }
+    .cashiers-toolbar .form-field { flex: 1 1 220px; min-width: 0; }
+    .cashier-main h3, .cashier-main p, .cashier-products { overflow-wrap: anywhere; }
+}
+
+@media screen and (min-width: 1200px) {
+    .cashiers-layout { grid-template-columns: minmax(280px, 360px) minmax(0, 1fr); }
+}

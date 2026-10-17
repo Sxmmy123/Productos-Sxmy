@@ -1,0 +1,22 @@
+<div id="historyStatus" class="form-message" role="status"></div>
+<div class="section-toolbar">
+    <div class="module-heading"><h1>Historial de ventas</h1><p id="salesSummary">Cargando...</p></div>
+    <div class="history-filters">
+        <input id="salesSearch" class="form-field" type="search" aria-label="Buscar venta" placeholder="Nota, cliente, codigo o producto">
+        <select id="salesSeller" class="form-field" aria-label="Vendedor"><option value="">Todos los vendedores</option></select>
+        <select id="salesDateFilter" class="form-field" aria-label="Periodo">
+            <option value="all">Todas las fechas</option><option value="today">Hoy</option>
+            <option value="week">Esta semana</option><option value="month">Este mes</option><option value="custom">Elegir fechas</option>
+        </select>
+        <div id="salesCustomDates" class="date-range" hidden>
+            <label>Desde<input id="salesFrom" type="date" class="form-field"></label>
+            <label>Hasta<input id="salesTo" type="date" class="form-field"></label>
+        </div>
+    </div>
+</div>
+<section id="salesList" aria-live="polite"></section>
+<nav class="pagination" aria-label="Paginas de ventas">
+    <button id="salesPrevious" class="btn-light" type="button" disabled>Anterior</button>
+    <span id="salesPageLabel">Pagina 1</span>
+    <button id="salesNext" class="btn-light" type="button" disabled>Siguiente</button>
+</nav>

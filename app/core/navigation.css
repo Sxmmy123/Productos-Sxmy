@@ -1,0 +1,252 @@
+/* Navigation shared by inventory, cashiers and the staff store. */
+@media screen {
+    body .navigation-layout {
+        display: grid !important;
+        grid-template-columns: 248px minmax(0, 1fr) !important;
+        min-height: 100vh;
+        align-items: start;
+    }
+
+    #appSidebar {
+        position: sticky !important;
+        top: 0 !important;
+        left: auto !important;
+        z-index: 150 !important;
+        display: flex !important;
+        flex-direction: column;
+        width: 100% !important;
+        height: 100vh !important;
+        height: 100dvh !important;
+        min-height: 0;
+        overflow: hidden;
+        padding: .8rem .7rem !important;
+        background: var(--surface) !important;
+        border-right: 1px solid var(--line);
+        box-shadow: none !important;
+        transform: none !important;
+    }
+
+    #appSidebar .sidebar-brand {
+        display: grid !important;
+        grid-template-columns: minmax(0, 1fr) auto !important;
+        align-items: center !important;
+        justify-items: stretch !important;
+        gap: .5rem !important;
+        flex-shrink: 0;
+        padding: .2rem .15rem .8rem !important;
+        border-bottom: 1px solid var(--line);
+    }
+
+    #appSidebar .sidebar-brand > div { min-width: 0; }
+    #appSidebar .sidebar-brand a { color: var(--text); font-size: .85rem; font-weight: 600; white-space: nowrap; }
+    #appSidebar .sidebar-brand-copy { min-width: 0; overflow: hidden; }
+    #appSidebar [data-navigation-role] {
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: .68rem;
+        font-weight: 500;
+        color: var(--muted);
+        margin-top: .2rem;
+    }
+
+    #appSidebar .sidebar-nav {
+        display: grid !important;
+        grid-template-columns: minmax(0, 1fr) !important;
+        align-content: start;
+        gap: .3rem;
+        min-height: 0;
+        overflow-y: auto;
+        overflow-x: hidden;
+        overscroll-behavior: contain;
+        scrollbar-width: thin;
+        padding: .7rem 0;
+    }
+
+    #appSidebar .sidebar-link {
+        display: grid !important;
+        grid-template-columns: 1.25rem minmax(0, 1fr) !important;
+        align-items: center !important;
+        justify-items: stretch !important;
+        gap: .7rem !important;
+        min-height: 2.8rem !important;
+        padding: .6rem .65rem !important;
+        border-radius: 8px !important;
+        transform: none !important;
+    }
+
+    #appSidebar .sidebar-auth-nav { display: grid; gap: .3rem; }
+    #appSidebar .sidebar-auth-nav.hidden { display: none; }
+    #appSidebar .sidebar-link { width: 100%; color: var(--text); background: transparent; border: 1px solid transparent; text-align: left; }
+    #appSidebar .sidebar-link:hover { background: var(--surface-soft); border-color: var(--line); color: var(--accent); }
+    #appSidebar .sidebar-link.active { background: var(--accent-soft) !important; border-color: color-mix(in srgb, var(--accent) 32%, var(--line)); color: var(--accent) !important; }
+    #appSidebar .sidebar-link::before { display: none !important; }
+    #appSidebar .sidebar-link.hidden,
+    #appSidebar [hidden] { display: none !important; }
+    .admin-section[hidden] { display: none !important; }
+    #appSidebar .sidebar-link.active { box-shadow: inset 3px 0 0 var(--accent); }
+    #appSidebar .sidebar-copy { display: grid !important; min-width: 0; }
+    #appSidebar .sidebar-text { font-size: .83rem; font-weight: 600 !important; }
+    #appSidebar .sidebar-link small { display: block; font-size: .67rem; font-weight: 400; }
+    #appSidebar .sidebar-icon { display: inline-grid !important; place-items: center; width: 1.25rem; height: 1.25rem; }
+    #appSidebar .sidebar-icon svg,
+    #appSidebar .sidebar-collapse-toggle svg { width: 1.2rem; height: 1.2rem; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+    #appSidebar .sidebar-actions {
+        display: grid !important;
+        grid-template-columns: minmax(0, 1fr) !important;
+        flex-shrink: 0;
+        gap: .4rem;
+        margin-top: auto;
+        padding-top: .65rem;
+        border-top: 1px solid var(--line);
+    }
+
+    #appSidebar .sidebar-collapse-toggle {
+        display: inline-grid !important;
+        width: 2.2rem;
+        height: 2.2rem;
+        place-items: center;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--surface);
+        color: var(--muted);
+        cursor: pointer;
+    }
+    #appSidebar .sidebar-logout {
+        display: inline-flex;
+        width: 100%;
+        min-height: 2.55rem;
+        align-items: center;
+        justify-content: center;
+        gap: .5rem;
+        padding: .55rem .7rem;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--surface);
+        color: var(--text);
+        font-size: .8rem;
+        font-weight: 500;
+        cursor: pointer;
+    }
+    #appSidebar :is(.sidebar-logout, .sidebar-collapse-toggle):hover { background: var(--surface-soft); color: var(--accent); }
+    #appSidebar .theme-toggle-wide { width: 100%; }
+    :root[data-module="productos"] .admin-section:not(#productosSection),
+    :root[data-module="historial"] .admin-section:not(#historialSection),
+    :root[data-module="analisis"] .admin-section:not(#analisisSection),
+    :root[data-module="tienda"] .admin-section:not(#tiendaSection),
+    :root[data-module="cajeros"] .admin-section:not(#cajerosSection) { display: none !important; }
+    #appSidebar .sidebar-close { display: none !important; }
+    #appSidebar :is(a, button, input):focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+    #sidebarOverlay { display: none !important; }
+    body .admin-topbar {
+        display: none !important;
+        animation: none !important;
+        transform: none !important;
+    }
+
+    :root.sidebar-collapsed .navigation-layout { grid-template-columns: 4.85rem minmax(0, 1fr) !important; }
+    :root.sidebar-collapsed #appSidebar { padding-inline: .5rem !important; }
+    :root.sidebar-collapsed #appSidebar .sidebar-brand { grid-template-columns: 1fr !important; justify-items: center !important; }
+    :root.sidebar-collapsed #appSidebar .sidebar-brand > div,
+    :root.sidebar-collapsed #appSidebar .sidebar-copy,
+    :root.sidebar-collapsed #appSidebar .sidebar-action-text { display: none !important; }
+    :root.sidebar-collapsed #appSidebar .sidebar-link { grid-template-columns: 1fr !important; justify-items: center !important; }
+    :root.sidebar-collapsed #appSidebar .sidebar-collapse-toggle svg { transform: rotate(180deg); }
+    :root.sidebar-collapsed #appSidebar :is(.theme-toggle-wide, .sidebar-logout) { width: 2.45rem !important; min-width: 2.45rem !important; padding: .2rem !important; justify-self: center; }
+}
+
+@media screen and (max-width: 900px) {
+    body .navigation-layout,
+    :root.sidebar-collapsed .navigation-layout { display: block !important; grid-template-columns: 1fr !important; }
+    body.sidebar-open { overflow: hidden; }
+
+    #appSidebar,
+    :root.sidebar-collapsed #appSidebar {
+        position: fixed !important;
+        left: 0 !important;
+        z-index: 360 !important;
+        width: min(310px, 88vw) !important;
+        padding: .8rem .7rem !important;
+        transform: translateX(-105%) !important;
+        visibility: hidden;
+        transition: transform .2s ease, visibility .2s;
+    }
+
+    :root body.sidebar-open #appSidebar {
+        transform: translateX(0) !important;
+        visibility: visible;
+        box-shadow: 12px 0 32px black !important;
+    }
+
+    body.sidebar-open #sidebarOverlay {
+        position: fixed !important;
+        inset: 0 !important;
+        z-index: 350 !important;
+        display: block !important;
+        background: var(--surface-soft);
+    }
+
+    :root.sidebar-collapsed #appSidebar .sidebar-brand { grid-template-columns: minmax(0, 1fr) auto !important; justify-items: stretch !important; }
+    :root.sidebar-collapsed #appSidebar .sidebar-brand > div { display: block !important; }
+    :root.sidebar-collapsed #appSidebar .sidebar-link { grid-template-columns: 1.25rem minmax(0, 1fr) !important; justify-items: stretch !important; }
+    :root.sidebar-collapsed #appSidebar .sidebar-copy { display: grid !important; }
+    :root.sidebar-collapsed #appSidebar .sidebar-action-text { display: inline !important; }
+    #appSidebar .sidebar-collapse-toggle { display: none !important; }
+    #appSidebar .sidebar-close { display: inline-grid !important; width: 2.4rem; height: 2.4rem; place-items: center; }
+    #appSidebar .sidebar-close svg { width: 1.2rem; height: 1.2rem; fill: none; stroke: currentColor; stroke-width: 2; }
+    :root.sidebar-collapsed #appSidebar :is(.theme-toggle-wide, .sidebar-logout) { width: 100% !important; min-width: 0 !important; height: auto !important; min-height: 2.55rem !important; padding: .5rem !important; justify-self: stretch; }
+
+    body .admin-topbar {
+        position: sticky !important;
+        top: 0 !important;
+        z-index: 120 !important;
+        display: grid !important;
+        grid-template-columns: 2.4rem minmax(0, 1fr) !important;
+        align-items: center !important;
+        gap: .65rem !important;
+        min-height: 3.25rem;
+        padding: .45rem !important;
+        margin-bottom: .65rem !important;
+        border-radius: 0 !important;
+        border: 0 !important;
+        border-bottom: 1px solid var(--line) !important;
+        background: var(--surface) !important;
+        box-shadow: none !important;
+    }
+    body .admin-topbar .hamburger-button { display: inline-grid !important; }
+    body .admin-topbar > .btn-primary { display: none !important; }
+    body .admin-topbar h1 { margin: 0 !important; font-size: 1rem !important; font-weight: 600 !important; }
+}
+
+@media screen and (prefers-reduced-motion: reduce) {
+    #appSidebar,
+    :root.sidebar-collapsed #appSidebar { transition: none !important; }
+}
+
+@media print {
+    #appSidebar, #sidebarOverlay, .admin-topbar { display: none !important; }
+    body .navigation-layout { display: none !important; }
+}
+
+@media screen {
+    #panelWorkspace { min-width: 0; }
+    #panelWorkspace > .admin-section { min-width: 0; width: 100%; }
+    body[data-panel-session="pending"] #panelWorkspace > .admin-section { visibility: hidden; }
+    :root[data-module="tienda"] #panelWorkspace > :is(.admin-topbar, #statusBox),
+    :root[data-module="cajeros"] #panelWorkspace > #statusBox { display: none !important; }
+    .module-status {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: .75rem;
+        padding: .75rem 1rem;
+        color: var(--text);
+        background: var(--surface);
+        border-bottom: 1px solid var(--line);
+        font-size: .875rem;
+    }
+    .module-status[hidden], #retryModule[hidden] { display: none !important; }
+    #retryModule { padding: .4rem .65rem; }
+}

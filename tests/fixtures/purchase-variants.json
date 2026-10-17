@@ -1,0 +1,18 @@
+{
+  "texto": "LISTA DE PEDIDO\n\n* 6 Testers digitales\n270Bs\n* 6 Testers anal\u00f3gicos\n270Bs\n* 12 Pistolas de silicona marca Ustuls\n420Bs\n* 12 Cautines econ\u00f3micos\nDe madera a 240\nDe plastico 300Bs\n* 25 Protoboards de 400 puntos\n450Bs\n* 20 Conectores banana macho\nSimple 30Bs\nCon tornillo 40Bs\n* 20 Conectores banana hembra\nSimple 30Bs\nCon reforzado 40Bs\n* 30 Motores cortos con polea integrada\n300Bs\n* 1 bolsa de portapilas 18650 para 2 celdas\n250Bs",
+  "total": 2640,
+  "filas": [
+    { "nombre": "Tester digital", "cantidad": 6, "importe": 270, "unitario": 45 },
+    { "nombre": "Tester analogico", "cantidad": 6, "importe": 270, "unitario": 45 },
+    { "nombre": "Pistola de silicona Ustuls", "cantidad": 12, "importe": 420, "unitario": 35 },
+    { "nombre": "Cautin economico de madera", "cantidad": 12, "importe": 240, "unitario": 20 },
+    { "nombre": "Cautin economico de plastico", "cantidad": 12, "importe": 300, "unitario": 25 },
+    { "nombre": "Protoboard de 400 puntos", "cantidad": 25, "importe": 450, "unitario": 18 },
+    { "nombre": "Conector banana macho simple", "cantidad": 20, "importe": 30, "unitario": 1.5 },
+    { "nombre": "Conector banana macho con tornillo", "cantidad": 20, "importe": 40, "unitario": 2 },
+    { "nombre": "Conector banana hembra simple", "cantidad": 20, "importe": 30, "unitario": 1.5 },
+    { "nombre": "Conector banana hembra reforzado", "cantidad": 20, "importe": 40, "unitario": 2 },
+    { "nombre": "Motor corto con polea integrada", "cantidad": 30, "importe": 300, "unitario": 10 },
+    { "nombre": "Portapilas 18650 para 2 celdas", "cantidad": 1, "importe": 250, "unitario": 250, "unidad": "bolsa" }
+  ]
+}

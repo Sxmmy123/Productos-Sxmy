@@ -1,0 +1,9 @@
+{
+  "name": "productos-sxmy",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --experimental-vm-modules --test tests/sales-domain.test.mjs tests/sales-service.test.cjs tests/cashier-function.test.cjs tests/preferences-domain.test.mjs tests/sale-note.test.cjs tests/purchases-domain.test.mjs tests/purchases-client-service.test.cjs tests/purchases-openai.test.mjs tests/purchases-package-memory.test.mjs",
+    "test:rules": "firebase emulators:exec --project demo-sxmy-rules --only auth,firestore --config firebase/emulators.json \"node --test tests/firestore-rules.test.mjs\""
+  }
+}
